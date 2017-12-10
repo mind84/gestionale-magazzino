@@ -1,0 +1,89 @@
+<div class="row maincontent justify-content-center">
+  <div class="col-10">
+    <div>Ricerca o inserisci nuovo oggetto</div>
+    <div>
+        <form id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
+          Codice oggetto : <input class="form-control"
+          formControlName="code"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="off" type="text"
+          value="">
+          Nome : <input class="form-control"
+          formControlName="name"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="off" type="text"
+          value="">
+          <button type="submit" class="btn submit-btn">Cerca</button>
+        </form>
+      <span style="margin-left:140px;"><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuovo articolo</button></span>
+    </div>
+  </div>
+  <div class="col-10" *ngIf="insertMode">
+    <form id="insertMaterialiForm" [formGroup] = "insertMaterialiForm" (ngSubmit)="insert(insertMaterialiForm)">
+      Codice articolo: <input class = "form-control code"
+      formControlName="code"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="off" type="text"
+      value="">
+      Nome: <input class = "form-control name"
+      formControlName="name"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="off" type="text"
+      value="">
+      Fornitore: <input class = "form-control forn"
+      formControlName="fornitore"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="off" type="text"
+      value="">
+      Prezzo per collo: <input class = "form-control price"
+      formControlName="price"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="off" type="text"
+      value="">
+      Numero di articoli per collo: <input class = "form-control collobj"
+      formControlName="collobj"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="off" type="text"
+      value="">
+      Note: <input class = "form-control note"
+      formControlName="note"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="off" type="text"
+      value="">
+      <button type="submit" class="btn submit-btn">Inserisci</button>
+    </form>
+  </div>
+  <div *ngIf="!insertMode">
+    <table>
+      <tr *ngFor="let searchRes of searchResults">
+        <td>
+          {{searchRes.code}}
+        </td>
+        <td>
+          {{searchRes.name}}
+        </td>
+        <td>
+          {{searchRes.fornitore}}
+        </td>
+        <td>
+          {{searchRes.price}}
+        </td>
+        <td>
+          {{searchRes.collobj}}
+        </td>
+        <td>
+          {{searchRes.note}}
+        </td>
+      </tr>
+    </table>
+
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="container-fluid flex-cont fade-in">
+  <app-header></app-header>
+  <div class="content">
+  <div class="row navigation">
+    <div class="col-1">
+      <button type="button" class="btn btn-primary costi navig" (click)="navigation('materiali')"> Materiali </button>
+    </div>
+    <div class="col-1">
+        <button type="button" class="btn btn-primary magazzino navig" (click)="navigation('magazzino')"> Magazzino </button>
+    </div>
+    <div class="col-1">
+        <button type="button" class="btn btn-primary ordini navig" (click)="navigation('ordini')"> Ordini </button>
+    </div>
+    <div class="col-1">
+        <button type="button" class="btn btn-primary costi navig" (click)="navigation('costi')"> Costi di gestione </button>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+
+</div>

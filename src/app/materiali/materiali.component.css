@@ -1,0 +1,18 @@
+.custom-form-control {
+  width:100px;
+  display:inline-block;
+}
+
+#searchForm {
+  display: inline;
+}
+
+#searchForm > input {
+  width:100px;
+  display:inline-block;
+}
+
+#insertMaterialiForm .ng-invalid:not(.ng-untouched) {
+  background-color:#ff00004f;
+  border-color: red;
+}

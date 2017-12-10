@@ -1,0 +1,110 @@
+.header {
+  /*text-align: center;*/
+  /*background-color: rgba(221, 219, 219, 0.44)*/
+  /*background-color: rgba(214, 63, 63, 0.85);*/
+  /*background-color:  rgba(53, 75, 94, 0.85);*/
+  /*background-color:  rgba(16, 16, 16, 0.85);*/
+  padding-top:7px;
+  padding-bottom: 7px;
+  max-height: 75px;
+  color:white;
+}
+.maintitle {
+  font-size: 3em;
+  /*font-family: vtks;
+  color: black;
+  letter-spacing: 0.19em;*/
+  font-size: 3em;
+  font-family: Open Sans, sans-serif;
+  color: white;
+  /* letter-spacing: 0.19em; */
+  font-weight: bold;
+}
+.sub-maintitle {
+  font-family: Open Sans, sans-serif;
+  /*font-family: Berkshire Swash;*/
+  font-size:1.2em;
+}
+.mainlogo {
+  border-radius: 50%;
+  width: 50px;
+}
+
+.header-container {
+  max-height: 250px;
+  background-color:  rgb(83, 131, 218);
+}
+/*search-class*/
+:host(
+  .on-searching {
+  max-height: 1000vh;
+  /*-webkit-transition: max-height 1s;
+  -moz-transition: max-height 1s;
+  -ms-transition: max-height 1s;
+  -o-transition: max-height 1s;*/
+  display:flex;
+  min-height: 100vh;
+  align-content: flex-start;
+  flex-direction: column;
+}
+)
+
+.results-container {
+  flex:1;
+  background-color:  rgba(16, 16, 16, 0.75);
+  height:0px;
+}
+
+/* xs < 768 */
+@media screen and (max-width: 576px) {
+  .img-result-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .maintitle {
+    font-size: 1.35em;
+    text-align:center;
+  }
+  .sub-maintitle {
+    text-align:center;
+  }
+  .header-main-content {
+    justify-content: center !important;
+  }
+}
+@media screen and (width: 576px) {
+    .maintitle {
+        font-size: 1.35em;
+        text-align:left;
+    }
+    .sub-maintitle {
+        text-align:left;
+    }
+    .header-main-content {
+      justify-content: center !important;
+    }
+}
+
+/* sm */
+@media screen and (min-width: 577px) {
+    .maintitle {
+        font-size: 1.35em;
+
+    }
+}
+
+/* md */
+@media screen and (min-width: 768px) {
+    .maintitle {
+        font-size: 1.35em;
+    }
+}
+
+/* lg */
+@media screen and (min-width: 960px) {
+    .maintitle {
+        font-size: 1.35em;
+    }
+}
