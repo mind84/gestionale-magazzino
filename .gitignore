@@ -1,4 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
+# Logs
+logs
+*.log
+npm-debug.log*
 
 # compiled output
 /dist
@@ -39,4 +43,73 @@ testem.log
 
 # System Files
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+# =========================
+
+# Windows image file caches
 Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+Thumbs.db
+
+#========Project ignore these files=====
+#javascript from compiled from TS files
+
+
+*.js
+*.js.map
+!Gruntfile.js
+!karma.conf.js
+!protractor.conf.js
+!proxy.conf.js
+
+src/*.js
+src/*.map.js
+server/*.js
+lib/**/
+!lib/empty.track
+public/**/*.js
+public/**/*.js.map
+!public/systemjs.config.js
+
+#cache from TS compiler
+.tscache
+config/config.js
+
+public
