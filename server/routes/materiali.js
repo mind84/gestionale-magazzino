@@ -9,14 +9,14 @@ router.route("/insert").post(function (req, res, next) {
         if (err)
             return res.send(err);
         else if (docs && docs.code)
-            return res.json("articolo già esistente");
+            return res.json({ msg: "Errore", result: "Articolo già esistente" });
         else {
             var newArticle_1 = new materiali_1.Materiali(req.body);
             newArticle_1.save(function (err) {
                 if (err)
-                    return res.json(err);
+                    return res.json({ msg: "Errore", result: err });
                 else
-                    return res.json({ msg: "successo!", result: newArticle_1 });
+                    return res.json({ msg: "OK", result: "Articolo inserito correttamente", cback: newArticle_1 });
             });
         }
     });

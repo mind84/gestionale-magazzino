@@ -1,19 +1,23 @@
 <div class="container-fluid flex-cont fade-in">
   <app-header></app-header>
   <div class="content">
-  <div class="row navigation">
-    <div class="col-1">
+  <div class="row align-items-center justify-content-center navigation">
+    <div class="col-10">
+      <div class="row align-items-center">
+    <div class="col-10">
       <button type="button" class="btn btn-primary costi navig" (click)="navigation('materiali')"> Materiali </button>
-    </div>
-    <div class="col-1">
+
+
         <button type="button" class="btn btn-primary magazzino navig" (click)="navigation('magazzino')"> Magazzino </button>
-    </div>
-    <div class="col-1">
+
+
         <button type="button" class="btn btn-primary ordini navig" (click)="navigation('ordini')"> Ordini </button>
-    </div>
-    <div class="col-1">
+
+
         <button type="button" class="btn btn-primary costi navig" (click)="navigation('costi')"> Costi di gestione </button>
     </div>
+  </div>
+  </div>
   </div>
   <router-outlet></router-outlet>
 

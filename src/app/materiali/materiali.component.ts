@@ -13,6 +13,9 @@ export class MaterialiComponent implements OnInit {
   searchForm: FormGroup;
   insertMode:boolean = false
   searchResults:any = [];
+  notifyInsert:any;
+  hasResponse:boolean = false;
+  hasError:boolean=false;
   constructor(private matService:MaterialiService, private _fb: FormBuilder,) { }
 
   ngOnInit() {
@@ -40,6 +43,13 @@ export class MaterialiComponent implements OnInit {
     console.log('submit')
     if(form.status == "INVALID") return;
     else return this.matService.insert(form).subscribe((res:any)=>{
+        if (res && res.msg=="OK") {
+          this.hasError=false;
+          form.reset();
+        }
+        else this.hasError=true;
+        this.hasResponse=true;
+        this.notifyInsert=res;
       console.log(res)
     })
 

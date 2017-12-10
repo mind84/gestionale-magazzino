@@ -8,12 +8,12 @@ router.route("/insert").post((req: Request, res: Response, next: NFunc) => {
 
     Materiali.findOne({code: req.body.code}, (err: any, docs:any)=>{
       if(err) return res.send(err)
-      else if (docs && docs.code) return res.json("articolo già esistente")
+      else if (docs && docs.code) return res.json({msg:"Errore", result: "Articolo già esistente"})
       else {
         let newArticle = new Materiali(req.body);
           newArticle.save((err: any) => {
-            if (err) return res.json(err);
-            else return res.json({ msg: "successo!", result: newArticle });
+            if (err) return res.json({msg:"Errore", result: err});
+            else return res.json({ msg: "OK", result: "Articolo inserito correttamente",cback: newArticle });
           })
         }
         })
