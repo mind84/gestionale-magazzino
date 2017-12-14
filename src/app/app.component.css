@@ -7,6 +7,34 @@ flex-direction: column;
 .navbar {
       background-color: #544e4e;
 }
+
+.bootstrap-vertical-nav > button, .bootstrap-vertical-nav > .elList {
+  margin-top:0.5em;
+}
+
+.mainEl {
+  color: #fff;
+background-color: #677a8a;
+border-color: #2e6da4;
+display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
 .foot {
     /*background-color: rgba(128, 128, 128, 0.34);*/
     background-color:   rgba(214, 63, 63, 0.85);
@@ -15,14 +43,34 @@ flex-direction: column;
 }
 
 .navigation {
-  min-height: 50px;
   background-color: #a0d3ff;
+  min-height: 100%;
+  align-self:stretch;
 }
 .content {
+  display:flex;
   flex: 1 0 auto;
-
 }
 
+.visual {
+  min-height: 100%;
+  align-self:stretch;
+}
+
+.bootstrap-vertical-nav {
+  display:flex;
+  flex-direction: column;
+  height:100%;
+
+}
+.container-row {
+  flex:1 0 auto;
+}
+.dispcont {
+
+    min-height: 100%;
+    flex:1 0 auto;
+}
 /*animations*/
 
 .fade-in {
