@@ -14,8 +14,8 @@ import { Strategy as LocalStrategy } from "passport-local";
 import * as routes from "./routes/index";
 /*import { Accounts } from "./models/account"*/
 import { router as materiali } from "./routes/materiali"
-/*import { router as shop } from "./routes/shop"
-import { router as getshop } from "./routes/getshop"
+import { router as umisura } from "./routes/umisura"
+/*import { router as getshop } from "./routes/getshop"
 import { router as rated } from "./routes/rated"
 import { router as imgal } from "./routes/imgal"
 import { router as comments } from "./routes/comments"
@@ -85,5 +85,6 @@ app.use("/imgusers", imgUsers);
 app.use("/neartoyou", locations);*/
 
 app.use("/mat", materiali);
+app.use("/um", umisura)
 app.use((req, res) => res.sendFile(path.join(__dirname, '../public', 'index.html')));
 app.listen(9005);

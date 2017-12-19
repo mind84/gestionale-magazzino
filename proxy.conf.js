@@ -4,9 +4,9 @@ const PROXY_CONFIG = [
           "/",
           "/magazzino",
           "/costi",
-          "/materiali",
           "/ordini",
-          "/mat"
+          "/mat",
+          "/um"
         ],
         target: "http://localhost:9005",
         secure: false

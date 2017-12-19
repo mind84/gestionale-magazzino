@@ -35,6 +35,12 @@ display: inline-block;
     border: 1px solid transparent;
     border-radius: 4px;
 }
+.subitem-list{
+  display: flex;
+  flex-direction: column;
+  padding-left: 15px;
+padding-right: 15px;
+}
 .foot {
     /*background-color: rgba(128, 128, 128, 0.34);*/
     background-color:   rgba(214, 63, 63, 0.85);

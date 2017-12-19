@@ -5,6 +5,7 @@ import { HttpClientModule }    from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule }    from '@angular/forms';
 import {AppRoutingModule} from './shared/app-routing.module';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import {UmService} from './services/um.service'
 
 
 
@@ -13,7 +14,11 @@ import { HeaderComponent } from './header/header.component';
 import {MagazzinoComponent} from './magazzino/magazzino.component'
 import {OrdiniComponent} from './ordini/ordini.component'
 import {CostiComponent} from './costi/costi.component';
-import { MaterialiComponent } from './materiali/materiali.component'
+import { MaterialiComponent } from './materiali/materiali.component';
+import { UmisuraComponent } from './umisura/umisura.component';
+import { CategorieArticoliComponent } from './categorie-articoli/categorie-articoli.component';
+import { NumberFormatPipe } from './shared/pipes/number-format.pipe';
+import { FormatNumberDirective } from './shared/directives/format-number.directive'
 
 
 @NgModule({
@@ -23,7 +28,11 @@ import { MaterialiComponent } from './materiali/materiali.component'
     MagazzinoComponent,
     OrdiniComponent,
     CostiComponent,
-    MaterialiComponent
+    MaterialiComponent,
+    UmisuraComponent,
+    CategorieArticoliComponent,
+    NumberFormatPipe,
+    FormatNumberDirective
   ],
   imports: [
     BrowserModule,
@@ -34,7 +43,7 @@ import { MaterialiComponent } from './materiali/materiali.component'
     HttpModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [UmService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

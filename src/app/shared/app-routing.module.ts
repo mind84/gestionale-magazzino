@@ -4,11 +4,16 @@ import {MagazzinoComponent} from '../magazzino/magazzino.component'
 import {OrdiniComponent} from '../ordini/ordini.component'
 import {CostiComponent} from '../costi/costi.component'
 import {MaterialiComponent} from '../materiali/materiali.component'
+import {UmisuraComponent} from '../umisura/umisura.component'
+import {CategorieArticoliComponent} from '../categorie-articoli/categorie-articoli.component'
+
 const appRoutes: Routes = [
   {path: 'magazzino', component: MagazzinoComponent},
-  {path: 'materiali', component: MaterialiComponent},
+  {path: 'articoli', component: MaterialiComponent},
   {path:'ordini', component: OrdiniComponent},
-  {path:'costi', component: CostiComponent}
+  {path:'costi', component: CostiComponent},
+  {path:'umisura', component: UmisuraComponent},
+  {path:'cat-articoli', component: CategorieArticoliComponent}
 
 ]
 

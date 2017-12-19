@@ -1,0 +1,87 @@
+.custom-form-control {
+  width:100px;
+  display:inline-block;
+}
+
+#searchForm {
+  display: inline-block;
+  height:50px;
+}
+
+#searchForm > input  {
+  width:100px;
+  display:inline-block;
+}
+#searchForm > select  {
+  width:100px;
+  display:inline-block;
+  height: auto;
+}
+
+#insertUMForm .ng-invalid:not(.ng-untouched) {
+  background-color:#ff00004f;
+  border-color: red;
+}
+
+#insertUMForm .code {
+  width:100px;
+}
+#insertUMForm > select  {
+  width:150px;
+  display:inline-block;
+  height: auto;
+}
+#insertUMForm .umref, #insertUMForm .umrefsymb {
+  display:inline-block;
+
+}
+#insertUMForm .umref, #insertUMForm .umref {  width: 50px;}
+#insertUMForm .umrefsymb {width: 150px;}
+#insertUMForm .umdesc {width: 150px;}
+#insertUMForm .umsymb {width: 50px;}
+#insertUMForm .conversione {width: 100px;}
+
+#conversione {
+  display: flex;
+align-items: center;
+padding-top:1em;
+padding-bottom:1em;
+}
+#conversione #first {
+  width:50px;
+
+}
+#conversione #second, #conversione #third {
+margin-left:10px;
+
+}
+#conversione .conversione {
+  margin-left:10px;
+
+}
+
+.insert-form-container{
+  margin-top:2em;
+}
+.materiali-int {
+  margin-top:1em;
+}
+.search-control {
+ margin-top:1.5em
+
+}
+.results-container {
+      padding-top: 2em;
+}
+.tab-results {
+  width:100%;
+}
+.insResp{
+  text-align: center;
+  background-color:#46dd46;
+  color:#1a6f00;
+}
+.hasError {
+  background-color: #ff4d4d;
+  color:#c50202;
+}

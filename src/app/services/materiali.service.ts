@@ -12,12 +12,6 @@ export class MaterialiService {
   insert(form:FormGroup) {
     let body:any = {};
     body = form.getRawValue();
-    let code = form.controls.code.value;
-    let name = form.controls.name.value;
-    let price = form.controls.price.value;
-    let fornitore = form.controls.fornitore.value;
-    let collobj = form.controls.collobj.value;
-    let note = form.controls.note.value;
     return this.http.post('/mat/insert', body)
   }
 

@@ -3,12 +3,16 @@
   <div class="row align-items-center container-row">
     <div class="col-2 navigation">
       <div class="bootstrap-vertical-nav">
-        <div class="navig elList mainEl" disabled> BackOffice </div>
-        <ul>
-          <li class="btn btn-primary magazzino navig" (click)="navigation('materiali')">
-            Materiali
+        <div class="navig elList mainEl" disabled> Materie Prime </div>
+        <ul class ="subitem-list">
+          <li class="btn btn-primary articoli navig" (click)="navigation('articoli')">
+            Articoli
           </li>
-          <li>
+          <li class="btn btn-primary um navig" (click)="navigation('umisura')">
+            Unità di misura
+          </li>
+          <li class="btn btn-primary categorie navig" (click)="navigation('cat-articoli')">
+            Categorie
           </li>
         </ul>
         <button type="button" class="btn btn-primary magazzino navig" (click)="navigation('magazzino')"> Magazzino </button>
