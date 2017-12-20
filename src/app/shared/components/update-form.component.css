@@ -1,0 +1,56 @@
+#updateForm .ng-invalid:not(.ng-untouched) {
+  background-color:#ff00004f;
+  border-color: red;
+}
+#updateForm .name, #updateForm .forn {
+  width:300px;
+}
+#updateForm .code {
+  width:100px;
+}
+
+#updateForm .name, #insertMaterialiForm .forn {
+  width:300px;
+}
+
+#updateForm .price {
+  width:100px;
+}
+#updateForm .collobj {
+  width:100px;
+}
+#updateForm .qta {
+  width:100px;
+}
+#updateForm .prod-det {
+  display:inline-flex;
+  padding-top:1em;
+  padding-bottom: 1em;
+  align-items: center;
+}
+#updateForm {
+  padding:0.5em;
+}
+#updateForm .submit-btn {
+background-color: #5383dac9;
+margin-top:1.5em;
+}
+
+.prod-det > select  {
+  width:150px;
+  display:inline-block;
+  height: auto;
+}
+.prod-det > span:not(:first-child) {
+  margin-left:1em;
+}
+
+.insResp{
+  text-align: center;
+  background-color:#46dd46;
+  color:#1a6f00;
+}
+.hasError {
+  background-color: #ff4d4d;
+  color:#c50202;
+}

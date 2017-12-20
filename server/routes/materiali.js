@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var materiali_1 = require("../models/materiali");
+var _ = require("lodash");
 var router = express.Router();
 exports.router = router;
 router.route("/insert").post(function (req, res, next) {
@@ -19,6 +20,15 @@ router.route("/insert").post(function (req, res, next) {
                     return res.json({ msg: "OK", result: "Articolo inserito correttamente", cback: newArticle_1 });
             });
         }
+    });
+});
+router.route("/update").post(function (req, res, next) {
+    var qs = _.omit(req.body, 'realcode');
+    materiali_1.Materiali.findOneAndUpdate({ code: req.body.realcode }, { $set: qs }, { new: true }, function (err, docs) {
+        if (err)
+            return res.send(err);
+        else
+            return res.json({ msg: "OK", result: "Articolo modificato correttamente", cback: docs });
     });
 });
 router.route("").get(function (req, res, next) {
@@ -40,7 +50,6 @@ router.route("").get(function (req, res, next) {
         qs = { code: { $regex: qcode, $options: "i" } };
     }
     materiali_1.Materiali.find(qs, function (err, docs) {
-        console.log(docs);
         res.json(docs);
     });
 });

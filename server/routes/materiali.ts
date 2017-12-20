@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction as NFunc } from "express";
 import * as express from "express";
 import { Materiali } from "../models/materiali";
+import * as _ from 'lodash'
 
 var router = express.Router();
 
@@ -18,6 +19,14 @@ router.route("/insert").post((req: Request, res: Response, next: NFunc) => {
         }
         })
     });
+
+    router.route("/update").post((req: Request, res: Response, next: NFunc) => {
+        let qs = _.omit(req.body, 'realcode')
+        Materiali.findOneAndUpdate({code: req.body.realcode},{$set: qs},{ new: true }, (err: any, docs:any)=>{
+          if(err) return res.send(err)
+          else return res.json({ msg: "OK", result: "Articolo modificato correttamente",cback: docs });
+            })
+        });
 
 router.route("").get((req: Request, res: Response, next: NFunc) => {
   var ObjectId = require('mongoose').Types.ObjectId;
@@ -37,7 +46,6 @@ router.route("").get((req: Request, res: Response, next: NFunc) => {
     qs = {code: {$regex: qcode, $options: "i"}};
   }
   Materiali.find(qs, (err: any, docs:any)=> {
-    console.log(docs);
     res.json(docs)
   })
 })

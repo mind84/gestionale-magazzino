@@ -18,7 +18,8 @@ import { MaterialiComponent } from './materiali/materiali.component';
 import { UmisuraComponent } from './umisura/umisura.component';
 import { CategorieArticoliComponent } from './categorie-articoli/categorie-articoli.component';
 import { NumberFormatPipe } from './shared/pipes/number-format.pipe';
-import { FormatNumberDirective } from './shared/directives/format-number.directive'
+import { FormatNumberDirective } from './shared/directives/format-number.directive';
+import { UpdateFormComponent } from './shared/components/update-form.component'
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { FormatNumberDirective } from './shared/directives/format-number.directi
     UmisuraComponent,
     CategorieArticoliComponent,
     NumberFormatPipe,
-    FormatNumberDirective
+    FormatNumberDirective,
+    UpdateFormComponent
   ],
   imports: [
     BrowserModule,

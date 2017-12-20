@@ -18,4 +18,9 @@ export class MaterialiService {
   search(code:string, name:string){
     return this.http.get(`/mat?code=${code}&name=${name}`)
   }
+
+  update(form:any){
+    console.log(form);
+    return this.http.post("/mat/update", form)
+  }
 }

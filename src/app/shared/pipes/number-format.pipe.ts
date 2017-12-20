@@ -12,7 +12,7 @@ export class NumberFormatPipe implements PipeTransform {
       value = control.join(this.SUBSTCHAR)
     }
     let position = value.split(this.SUBSTCHAR)
-    if (position[0]=="") {
+    if (position[0]=="" && position.length > 1) {
       position[0] = "0";
       value = position.join(".")
     }

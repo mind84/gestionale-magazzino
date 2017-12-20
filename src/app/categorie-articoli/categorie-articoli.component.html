@@ -1,3 +1,82 @@
-<p>
-  categorie-articoli works!
-</p>
+<div class="row maincontent">
+  <div class="col-10 categ-int">
+    <div class="h4"><u>Ricerca o inserisci nuova categoria</u></div>
+    <div class="search-control">
+        <form *ngIf="hasLoaded" id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
+          <span>Categoria:</span> <select [(ngModel)]="selectedSearchValue" class="form-control"
+          formControlName="umsymb"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="off" type="text">
+          <option *ngFor="let c of cat; let i = index;" [ngValue]="u.id">{{u.name}}</option>
+        </select>
+          <button type="submit" class="btn submit-btn">Cerca</button>
+        </form>
+      <span style="margin-left:140px;"><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuova Categoria</button></span>
+    </div>
+  </div>
+  <div class="col-10 insert-form-container" *ngIf="insertMode && hasLoaded">
+    <form id="insertCatForm" [formGroup] = "insertCatForm" (ngSubmit)="insert(insertCatForm)">
+      <span>Nome</span>: <input class = "form-control name"
+      formControlName="name"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="off" type="text"
+      value="">
+      <div>
+      <span>Descrizione</span><input class = "form-control descr"
+      formControlName="descr"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="off" type="text"
+      value="">
+      <button type="submit" class="btn submit-btn">Inserisci</button>
+      </div>
+    </form>
+    <div *ngIf="hasResponse" class="insert-result">
+      <div class="insResp" [ngClass]="{'hasError':hasError}">
+        <div><span><b>{{notifyInsert.msg}}</b></span></div>
+        <div><span>{{notifyInsert.result}}</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="col-10 results-container" *ngIf="!insertMode">
+    <table class="tab-results">
+      <tr>
+        <th>
+          Mod
+        </th>
+        <th>
+          CODICE
+        </th>
+        <th>
+          SIMBOLO
+        </th>
+        <th>
+          NOME UNITA' DI MISURA
+        </th>
+        <th>
+          CONVERSIONE
+        </th>
+      </tr>
+      <tr *ngFor="let searchRes of searchResults">
+        <td class="mod">
+          <span><i class="fa fa-pencil" aria-hidden="true"></i></span>
+        </td>
+        <td class="code">
+          {{searchRes.id}}
+
+        </td>
+        <td class="umsymb">
+          {{searchRes.um}}
+        </td>
+        <td class="umdesc">
+          {{searchRes.umdescr}}
+        </td>
+        <td class="conversione">
+          {{searchRes.conversione}}
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
