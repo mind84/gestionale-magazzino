@@ -80,13 +80,13 @@ export class UpdateFormComponent implements OnInit, AfterViewInit {
           this.hasError=false;
           //emit dell'evento per notificare il parent
         }
-        else this.hasError=true;  
+        else this.hasError=true;
         this.hasResponse=true;
         this.notifyInsert=res;
         setTimeout(()=>{
           if (this.hasError) return;
           else {
-            let event= [this.notifyInsert.cback, this.ind]
+            let event= [this.notifyInsert.cback, this._index]
             this.updateParent.emit(event)
             this.hasResponse=false;
           }
