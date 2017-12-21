@@ -72,8 +72,6 @@ router.route("").get((req: Request, res: Response, next: NFunc) => {
     qs= {$and:[{name: {$regex: qname, $options: "i"}}, {categ:qcat}]}
   }
 
- console.log(qs);
-
   Materiali.aggregate([
     {
       $match: qs
