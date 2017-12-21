@@ -13,8 +13,7 @@ public umreference: object[] = [];
   constructor(private http:HttpClient) { }
 
  getMainReference():Observable<any> {
-   if (this.umreference.length) return Observable.of(this.umreference)
-   else return this.http.get("/um")
+   return this.http.get("/um")
  }
 
  search(code){

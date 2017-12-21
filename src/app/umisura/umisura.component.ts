@@ -54,15 +54,15 @@ export class UmisuraComponent implements OnInit {
   }
   onChange(ev, form){
     if (ev.id)
-      form.controls.umdesc.setValue(ev.umdescr);
+      form.controls.umdesc.setValue(ev.umdesc);
 
   }
 
   onRefChange(ev, form){
     if (ev && ev.id) {
-      form.controls.umref.setValue(ev.umdescr);
-    form.controls.umref.setValue(ev.um);
-    form.controls.umrefsymb.setValue(ev.umdescr);
+      form.controls.umref.setValue(ev.umdesc);
+    form.controls.umref.setValue(ev.umsymb);
+    form.controls.umrefsymb.setValue(ev.umdesc);
   }
   }
   insert(form:FormGroup): any {

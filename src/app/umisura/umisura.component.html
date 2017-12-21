@@ -8,7 +8,7 @@
           autocorrect="off"
           autocapitalize="off"
           spellcheck="off" type="text">
-          <option *ngFor="let u of um; let i = index;" [ngValue]="u">{{u.um}}</option>
+          <option *ngFor="let u of um; let i = index;" [ngValue]="u">{{u.umsymb}}</option>
         </select>
           Nome unità di misura : <input class="form-control"
           formControlName="umdesc"
@@ -100,10 +100,10 @@
 
         </td>
         <td class="umsymb">
-          {{searchRes.um}}
+          {{searchRes.umsymb}}
         </td>
         <td class="umdesc">
-          {{searchRes.umdescr}}
+          {{searchRes.umdesc}}
         </td>
         <td class="conversione">
           {{searchRes.conversione}}
