@@ -2,20 +2,18 @@
   <div class="col-10 categ-int">
     <div class="h4"><u>Ricerca o inserisci nuova categoria</u></div>
     <div class="search-control">
-        <form *ngIf="hasLoaded" id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
-          <span>Categoria:</span> <select [(ngModel)]="selectedSearchValue" class="form-control"
-          formControlName="umsymb"
+        <form id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
+          <span>Categoria:</span> <input class="form-control name"
+          formControlName="name"
           autocorrect="off"
           autocapitalize="off"
           spellcheck="off" type="text">
-          <option *ngFor="let c of cat; let i = index;" [ngValue]="u.id">{{u.name}}</option>
-        </select>
           <button type="submit" class="btn submit-btn">Cerca</button>
         </form>
       <span style="margin-left:140px;"><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuova Categoria</button></span>
     </div>
   </div>
-  <div class="col-10 insert-form-container" *ngIf="insertMode && hasLoaded">
+  <div class="col-10 insert-form-container" *ngIf="insertMode">
     <form id="insertCatForm" [formGroup] = "insertCatForm" (ngSubmit)="insert(insertCatForm)">
       <span>Nome</span>: <input class = "form-control name"
       formControlName="name"
@@ -50,33 +48,35 @@
           CODICE
         </th>
         <th>
-          SIMBOLO
+          NOME
         </th>
         <th>
-          NOME UNITA' DI MISURA
-        </th>
-        <th>
-          CONVERSIONE
+          DESCRIZIONE
         </th>
       </tr>
-      <tr *ngFor="let searchRes of searchResults">
-        <td class="mod">
-          <span><i class="fa fa-pencil" aria-hidden="true"></i></span>
-        </td>
-        <td class="code">
-          {{searchRes.id}}
-
-        </td>
-        <td class="umsymb">
-          {{searchRes.um}}
-        </td>
-        <td class="umdesc">
-          {{searchRes.umdescr}}
-        </td>
-        <td class="conversione">
-          {{searchRes.conversione}}
-        </td>
-      </tr>
+      <ng-template ngFor let-searchRes [ngForOf]="searchResults" let-i="index">
+        <tr [ngClass]="{'even': i % 2 == 0}">
+          <td class="mod">
+            <span><i class="fa fa-pencil" aria-hidden="true" (click)="toggleUpdating(i)"></i></span>
+          </td>
+          <td class="code">
+            {{searchRes.id}}
+          </td>
+          <td class="name">
+            {{searchRes.name}}
+          </td>
+          <td class="descr">
+            {{searchRes.descr}}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="7">
+            <div class="update-div" *ngIf="isUpdating[i]"  [ngClass]="{'even': i % 2 == 0}" >
+              <app-update-cat [inputFields]="searchRes" [ind]="i" (updateParent)='updateSearchResults($event)'></app-update-cat>
+          </div>
+          </td>
+        </tr>
+      </ng-template>
     </table>
   </div>
 </div>

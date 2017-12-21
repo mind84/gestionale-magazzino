@@ -5,21 +5,22 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import { FormGroup} from '@angular/forms';
 
 @Injectable()
-export class MaterialiService {
+export class CategorieArticoliService {
 
   constructor(private http:HttpClient) { }
 
   insert(form:FormGroup) {
     let body:any = {};
     body = form.getRawValue();
-    return this.http.post('/mat/insert', body)
+    return this.http.post('/catart/insert', body)
   }
 
-  search(code:string, name:string, categ:any){
-    return this.http.get(`/mat?code=${code}&name=${name}&categ=${categ}`)
+  search(name:string){
+    return this.http.get(`/catart?name=${name}`)
   }
 
   update(form:any){
-    return this.http.post("/mat/update", form)
+    return this.http.post("/catart/update", form)
   }
+
 }

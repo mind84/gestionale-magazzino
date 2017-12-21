@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule }    from '@angular/forms';
 import {AppRoutingModule} from './shared/app-routing.module';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import {UmService} from './services/um.service'
+import {CategorieArticoliService} from './services/categorie-articoli.service'
 
 
 
@@ -19,7 +20,8 @@ import { UmisuraComponent } from './umisura/umisura.component';
 import { CategorieArticoliComponent } from './categorie-articoli/categorie-articoli.component';
 import { NumberFormatPipe } from './shared/pipes/number-format.pipe';
 import { FormatNumberDirective } from './shared/directives/format-number.directive';
-import { UpdateFormComponent } from './shared/components/update-form.component'
+import { UpdateFormComponent } from './shared/components/update-form.component';
+import { UpdateCatComponent } from './shared/components/update-cat.component'
 
 
 @NgModule({
@@ -34,7 +36,8 @@ import { UpdateFormComponent } from './shared/components/update-form.component'
     CategorieArticoliComponent,
     NumberFormatPipe,
     FormatNumberDirective,
-    UpdateFormComponent
+    UpdateFormComponent,
+    UpdateCatComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,7 @@ import { UpdateFormComponent } from './shared/components/update-form.component'
     HttpModule,
     HttpClientModule
   ],
-  providers: [UmService],
+  providers: [UmService, CategorieArticoliService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

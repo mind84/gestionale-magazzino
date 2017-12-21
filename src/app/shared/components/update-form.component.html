@@ -11,6 +11,28 @@
   autocapitalize="off"
   spellcheck="off" type="text"
   value="">
+  <div class="categories">
+    <span>Categoria:</span> <input class = "form-control categname"
+    [(ngModel)]="catName"
+    #catSel
+    formControlName="categname"
+    autocorrect="off"
+    autocapitalize="off"
+    spellcheck="off" type="text"
+    value="" (keyup)="searchCat$.next(catSel.value)">
+    <input class = "form-control categ"
+    [(ngModel)] = "catcode"
+    formControlName="categ"
+    autocorrect="off"
+    autocapitalize="off"
+    spellcheck="off" type="hidden"
+    value="">
+    <div class="catSearhcRes" *ngIf="isSearchingCat">
+      <div class="singleCatRes" *ngFor="let singleCat of prevCat" (click)="setCurrentCat(singleCat)">
+        {{singleCat.name}}
+      </div>
+    </div>
+  </div>
   <div class="prod-det">
   <span>N articoli/collo: </span> <input class = "form-control collobj"
   formControlName="collobj"

@@ -3,21 +3,50 @@
     <div class="h4"><u>Ricerca o inserisci nuovo articolo</u></div>
     <div class="search-control">
         <form id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
-          Codice articolo : <input class="form-control"
+          <div>
+          <span>Codice articolo :</span> <input class="form-control"
           formControlName="code"
           autocorrect="off"
           autocapitalize="off"
           spellcheck="off" type="text"
           value="">
-          Nome : <input class="form-control"
+          </div>
+          <div>
+          <span id="nmSearch">Nome : </span><input class="form-control"
           formControlName="name"
           autocorrect="off"
           autocapitalize="off"
           spellcheck="off" type="text"
           value="">
+        </div>
+        <div class="categoriesSearch">
+          <span id="catSearch">Categoria:</span>
+
+            <input class = "form-control categname"
+            [(ngModel)]="catNameSearch"
+            #catSelSearch
+            formControlName="categname"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="off" type="text"
+            value="" (keyup)="searchCat$Search.next(catSelSearch.value)">
+            <input class = "form-control categ"
+            [(ngModel)] = "catcodeSearch"
+            formControlName="categ"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="off" type="hidden"
+            value="">
+            <div class="catSearhcResSearch" *ngIf="isSearchingCatSearch">
+              <div class="singleCatRes" *ngFor="let singleCat of prevCatSearch" (click)="setCurrentCatSearch(singleCat)">
+                {{singleCat.name}}
+              </div>
+            </div>
+
+          </div>
           <button type="submit" class="btn submit-btn">Cerca</button>
         </form>
-      <span style="margin-left:140px;"><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuovo articolo</button></span>
+      <span style=""><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuovo articolo</button></span>
     </div>
   </div>
   <div class="col-10 insert-form-container" *ngIf="insertMode">
@@ -34,6 +63,28 @@
       autocapitalize="off"
       spellcheck="off" type="text"
       value="">
+      <div class="categories">
+        <span>Categoria:</span> <input class = "form-control categname"
+        [(ngModel)]="catName"
+        #catSel
+        formControlName="categname"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="off" type="text"
+        value="" (keyup)="searchCat$.next(catSel.value)">
+        <input class = "form-control categ"
+        [(ngModel)] = "catcode"
+        formControlName="categ"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="off" type="hidden"
+        value="">
+        <div class="catSearhcRes" *ngIf="isSearchingCat">
+          <div class="singleCatRes" *ngFor="let singleCat of prevCat" (click)="setCurrentCat(singleCat)">
+            {{singleCat.name}}
+          </div>
+        </div>
+      </div>
       <div class="prod-det">
       <span>N articoli/collo:</span> <input class = "form-control collobj"
       appFormatNumber

@@ -1,0 +1,92 @@
+.custom-form-control {
+  width:100px;
+  display:inline-block;
+}
+
+#searchForm {
+  display: inline;
+}
+
+#searchForm > input {
+  width:100px;
+  display:inline-block;
+}
+
+#insertCatForm .ng-invalid:not(.ng-untouched) {
+  background-color:#ff00004f;
+  border-color: red;
+}
+
+
+#insertCatForm .name {
+  width:300px;
+}
+#insertCatForm .descr {
+  width:500px;
+}
+
+
+#insertCatForm .prod-det {
+  display:inline-flex;
+  padding-top:1em;
+  padding-bottom: 1em;
+  align-items: center;
+}
+#insertCatForm {
+  padding:0.5em;
+  background-color: #e6e3e3;
+}
+#insertCatForm .submit-btn {
+background-color: #5383dac9;
+margin-top:1.5em;
+}
+
+.results-container  th {
+border-bottom: 1px solid #c5bebe;
+}
+
+.prod-det > select  {
+  width:150px;
+  display:inline-block;
+  height: auto;
+}
+.prod-det > span:not(:first-child) {
+  margin-left:1em;
+}
+
+.insert-form-container{
+  margin-top:2em;
+}
+.materiali-int {
+  margin-top:1em;
+}
+.search-control {
+ margin-top:1.5em
+
+}
+.results-container {
+      padding-top: 2em;
+}
+.tab-results {
+  width:100%;
+}
+
+.results-container .mod:hover {
+  cursor: pointer;
+}
+
+.results-container .mod >span {
+  margin-left:5px
+}
+.results-container .even {
+  background-color: #d8d2d2;
+}
+.insResp{
+  text-align: center;
+  background-color:#46dd46;
+  color:#1a6f00;
+}
+.hasError {
+  background-color: #ff4d4d;
+  color:#c50202;
+}

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction as NFunc } from "express";
 import * as express from "express";
 import { Materiali } from "../models/materiali";
+import { Categorie } from "../models/categorie-articoli";
 import * as _ from 'lodash'
 
 var router = express.Router();
@@ -22,9 +23,20 @@ router.route("/insert").post((req: Request, res: Response, next: NFunc) => {
 
     router.route("/update").post((req: Request, res: Response, next: NFunc) => {
         let qs = _.omit(req.body, 'realcode')
-        Materiali.findOneAndUpdate({code: req.body.realcode},{$set: qs},{ new: true }, (err: any, docs:any)=>{
-          if(err) return res.send(err)
-          else return res.json({ msg: "OK", result: "Articolo modificato correttamente",cback: docs });
+        let qm = Materiali.findOneAndUpdate({code: req.body.realcode},{$set: qs},{ new: true }).lean()
+        qm.exec((err: any, docs:any)=>{
+          //ricerca categoria
+          let qCat = Categorie.findOne({id:docs.categ})
+          qCat.exec((err,catres)=>{
+            if (err) return res.send(err)
+              else {
+                docs.catdet = [];
+                docs.catdet.push(catres);
+                return res.json({ msg: "OK", result: "Articolo modificato correttamente",cback: docs });
+            }
+          })
+
+
             })
         });
 
@@ -32,21 +44,58 @@ router.route("").get((req: Request, res: Response, next: NFunc) => {
   var ObjectId = require('mongoose').Types.ObjectId;
   let qname = null;
   let qcode = null;
+  let qcat = null;
   let qs;
   if (req.query.name !== 'null') qname= '.*'+req.query.name+'.*';
   if (req.query.code !== 'null') qcode= '.*'+req.query.code+'.*';
+  if (req.query.categ !=='null') qcat = req.query.categ;
 
-  if (qname && qcode) {
+  if (qname && qcode && !qcat) {
     qs= {$and:[{name: {$regex: qname, $options: "i"}}, {code: {$regex: qcode, $options:"i"}}]}
   }
-  else if(qname && !qcode){
+  if (qname && qcode && qcat) {
+    qs= {$and:[{name: {$regex: qname, $options: "i"}}, {code: {$regex: qcode, $options:"i"}}, {categ:qcat}]}
+  }
+  else if(qname && !qcode && !qcat){
     qs = {name: {$regex: qname, $options: "i"}};
   }
-  else if(!qname && qcode){
+  else if(!qname && qcode && !qcat){
     qs = {code: {$regex: qcode, $options: "i"}};
   }
-  Materiali.find(qs, (err: any, docs:any)=> {
+  else if(!qname && !qcode && qcat){
+    qs = {categ:qcat};
+  }
+  else if(!qname && qcode && qcat){
+    qs= {$and:[{code: {$regex: qcode, $options:"i"}}, {categ:qcat}]}
+  }
+  else if(qname && !qcode && qcat){
+    qs= {$and:[{name: {$regex: qname, $options: "i"}}, {categ:qcat}]}
+  }
+
+ console.log(qs);
+
+  Materiali.aggregate([
+    {
+      $match: qs
+    },
+    {
+      $lookup : {
+        from:"CategorieArticoli",
+        localField: "categ",
+        foreignField: "id",
+        as: "catdet"
+      }
+    }
+  ], (err: any, docs:any)=> {
     res.json(docs)
   })
+
+  /*Materiali.find(qs, (err: any, docs:any)=> {
+    res.json(docs)
+  })*/
 })
+
+
+
+
 export { router };

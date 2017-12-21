@@ -1,21 +1,17 @@
 import { Component, OnInit, Input, AfterViewInit, EventEmitter, Output } from '@angular/core';
-import {UmService} from '../../services/um.service';
-import {MaterialiService} from '../../services/materiali.service'
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {Observable} from 'rxjs/Observable'
 import {CategorieArticoliService} from '../../services/categorie-articoli.service'
 import 'rxjs/add/operator/distinctUntilChanged'
-import {Subject} from 'rxjs/Subject'
-import 'rxjs/add/operator/debounceTime'
-import 'rxjs/add/operator/filter'
 import * as _ from 'lodash'
 
 @Component({
-  selector: 'app-update-form',
-  templateUrl: './update-form.component.html',
-  styleUrls: ['./update-form.component.css']
+  selector: 'app-update-cat',
+  templateUrl: './update-cat.component.html',
+  styleUrls: ['./update-cat.component.css']
 })
-export class UpdateFormComponent implements OnInit, AfterViewInit {
+export class UpdateCatComponent implements OnInit, AfterViewInit {
+
   _inputFields:any;
   _um:any;
   _index:any;
@@ -24,12 +20,6 @@ export class UpdateFormComponent implements OnInit, AfterViewInit {
   notifyInsert:any;
   hasResponse:boolean = false;
   hasError:boolean=false;
-  searchCat$: Subject<string> = new Subject<string>()
-  prevCat:any;
-  isSearchingCat:boolean;
-  catcode:number = null;
-  catName:string = "";
-
   @Output() updateParent = new EventEmitter();
   get inputFields(): any {
     return this._inputFields;
@@ -38,53 +28,22 @@ export class UpdateFormComponent implements OnInit, AfterViewInit {
   set inputFields(v:any){
     this._inputFields=v;
   }
-  @Input('um')
-  set um(v:any){
-    this._um=v;
-  }
+
   @Input('ind')
   set ind(v:any){
     this._index=v;
   }
   updateForm:any;
   isReady:boolean;
-  constructor(private UMServ: UmService, private _fb: FormBuilder, private matSer:MaterialiService, private catArtServ:CategorieArticoliService) {
+  constructor(private _fb: FormBuilder, private carArtServ: CategorieArticoliService) {
 
    }
 
   ngOnInit() {
-      this.updateForm = this._fb.group({
-          code: ['', Validators.required ],
-          name: ['', Validators.required ],
-          categname: ['', Validators.required ],
-          categ:[''],
-          fornitore: ['', Validators.required ],
-          qta: ['', Validators.required],
-          umId: ['', Validators.required],
-          price: ['', Validators.required ],
-          collobj:['', Validators.required ],
-          note:''
-      })
-      this.searchCat$
-        .debounceTime(300)
-        .distinctUntilChanged()
-        .subscribe((term:string)=>{
-          if (term.length <3) this.isSearchingCat = false;
-          else {
-
-            return this.catArtServ.search(term).subscribe((categories:any)=>{
-              if (categories.length) this.isSearchingCat=true;
-              this.prevCat = categories;
-            })
-          }
-        })
-
-  }
-
-  setCurrentCat(cat:any){
-    this.isSearchingCat=false;
-    this.catName = cat.name;
-    this.catcode= cat.id;
+    this.updateForm = this._fb.group({
+        name: ['', Validators.required ],
+        descr: ['', Validators.required ]
+    })
   }
   ngAfterViewInit(){
     setTimeout(()=>{
@@ -104,8 +63,8 @@ export class UpdateFormComponent implements OnInit, AfterViewInit {
     })
     if (_.isEmpty(subjform)) return;
     else {
-      subjform['realcode'] = this._inputFields.code;
-      this.matSer.update(subjform).subscribe((res:any)=>{
+      subjform['id'] = this._inputFields.id;
+      this.carArtServ.update(subjform).subscribe((res:any)=>{
         if (res && res.msg=="OK") {
           this.hasError=false;
           //emit dell'evento per notificare il parent
@@ -126,6 +85,5 @@ export class UpdateFormComponent implements OnInit, AfterViewInit {
     })
     }
   }
-
 
 }

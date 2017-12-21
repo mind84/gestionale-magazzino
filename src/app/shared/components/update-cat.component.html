@@ -1,0 +1,21 @@
+<form id="updateForm" [formGroup] = "updateForm" (ngSubmit)="update(updateForm, _index)">
+  <span>Nome</span> <input class = "form-control name"
+  formControlName="name"
+  autocorrect="off"
+  autocapitalize="off"
+  spellcheck="off" type="text"
+  value="">
+  Descrizione: <input class = "form-control descr"
+  formControlName="descr"
+  autocorrect="off"
+  autocapitalize="off"
+  spellcheck="off" type="text"
+  value="">
+  <button type="submit" class="btn submit-btn">Aggiorna</button>
+</form>
+<div *ngIf="hasResponse" class="insert-result">
+  <div class="insResp" [ngClass]="{'hasError':hasError}">
+    <div><span><b>{{notifyInsert.msg}}</b></span></div>
+    <div><span>{{notifyInsert.result}}</span></div>
+  </div>
+</div>
