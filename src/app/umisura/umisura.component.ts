@@ -76,6 +76,7 @@ export class UmisuraComponent implements OnInit {
         else this.hasError=true;
         this.hasResponse=true;
         this.notifyInsert=res;
+        setTimeout(()=>{this.hasResponse=false},1000)
     })
 
 

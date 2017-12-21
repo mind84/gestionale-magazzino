@@ -108,6 +108,7 @@ export class MaterialiComponent implements OnInit {
     this.catNameSearch = cat.name;
     this.catcodeSearch= cat.id;
   }
+
   toggleInsert():boolean {
     return this.insertMode = !this.insertMode
   }

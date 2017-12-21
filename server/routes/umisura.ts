@@ -23,7 +23,7 @@ router.route("/insert").post((req: Request, res: Response, next: NFunc) => {
         let newUM = new UMisura(req.body);
           newUM.save((err: any) => {
             if (err) return res.json({msg:"Errore", result: err});
-            else return res.json({ msg: "OK", result: "Articolo inserito correttamente",cback: newUM });
+            else return res.json({ msg: "OK", result: "Unità di misura inserita correttamente",cback: newUM });
           })
 
         })
