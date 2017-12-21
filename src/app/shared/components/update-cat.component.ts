@@ -17,9 +17,8 @@ export class UpdateCatComponent implements OnInit, AfterViewInit {
   _index:any;
   dataUPD:any;
   defVal:any;
-  notifyInsert:any;
-  hasResponse:boolean = false;
-  hasError:boolean=false;
+  insertResponse:any;
+
   @Output() updateParent = new EventEmitter();
   get inputFields(): any {
     return this._inputFields;
@@ -65,23 +64,13 @@ export class UpdateCatComponent implements OnInit, AfterViewInit {
     else {
       subjform['id'] = this._inputFields.id;
       this.carArtServ.update(subjform).subscribe((res:any)=>{
+        this.insertResponse=res;
         if (res && res.msg=="OK") {
-          this.hasError=false;
-          //emit dell'evento per notificare il parent
+          setTimeout(()=>{
+              let event= [this.insertResponse.cback, this._index]
+              this.updateParent.emit(event)
+          },2000)
         }
-        else this.hasError=true;
-        this.hasResponse=true;
-        this.notifyInsert=res;
-        setTimeout(()=>{
-          if (this.hasError) return;
-          else {
-            let event= [this.notifyInsert.cback, this._index]
-            this.updateParent.emit(event)
-            this.hasResponse=false;
-          }
-
-        },2000)
-
     })
     }
   }

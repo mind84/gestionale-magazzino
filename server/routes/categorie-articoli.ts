@@ -7,7 +7,6 @@ var router = express.Router();
 
 router.route("/insert").post((req: Request, res: Response, next: NFunc) => {
   let id;
-  console.log(req.body);
   Categorie.findOne({name:req.body.name}, (err,doc)=>{
     if(err) return res.send(err)
     else if (doc && doc.name) return res.json({msg:"Errore", result: "Categoria già esistente"})
@@ -48,7 +47,19 @@ router.route("").get((req: Request, res: Response, next: NFunc) => {
 
 router.route("/update").post((req: Request, res: Response, next: NFunc) => {
     let qs = _.omit(req.body, 'id')
-    Categorie.findOneAndUpdate({id: req.body.id},{$set: qs},{ new: true }, (err: any, docs:any)=>{
+    let updquery = Categorie.findOneAndUpdate({id: req.body.id},{$set: qs},{ new: true })
+    //controllo su campo specifico name
+    if (req.body.name) {
+    //controllo se esiste già la categoria con lo stesso NOME
+      Categorie.find({name: req.body.name}).exec((err:any, find:any)=>{
+        if (find && find.length) return res.json({msg:"Errore", result: "Categoria già esistente"});
+        else updquery.exec((err: any, docs:any)=>{
+              if(err) return res.send(err)
+              else return res.json({ msg: "OK", result: "Categoria modificata correttamente",cback: docs });
+                })
+      })
+    }
+    else updquery.exec((err: any, docs:any)=>{
       if(err) return res.send(err)
       else return res.json({ msg: "OK", result: "Categoria modificata correttamente",cback: docs });
         })

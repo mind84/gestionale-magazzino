@@ -81,12 +81,3 @@ border-bottom: 1px solid #c5bebe;
 .results-container .even {
   background-color: #d8d2d2;
 }
-.insResp{
-  text-align: center;
-  background-color:#46dd46;
-  color:#1a6f00;
-}
-.hasError {
-  background-color: #ff4d4d;
-  color:#c50202;
-}

@@ -21,7 +21,9 @@ import { CategorieArticoliComponent } from './categorie-articoli/categorie-artic
 import { NumberFormatPipe } from './shared/pipes/number-format.pipe';
 import { DirectiveModule } from './shared/modules/directive.module';
 import { UpdateFormComponent } from './shared/components/update-form.component';
-import { UpdateCatComponent } from './shared/components/update-cat.component'
+import { UpdateCatComponent } from './shared/components/update-cat.component';
+import { DisplayResponseComponent } from './shared/components/display-response.component';
+
 
 
 @NgModule({
@@ -36,7 +38,8 @@ import { UpdateCatComponent } from './shared/components/update-cat.component'
     CategorieArticoliComponent,
     NumberFormatPipe,
     UpdateFormComponent,
-    UpdateCatComponent
+    UpdateCatComponent,
+    DisplayResponseComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +52,7 @@ import { UpdateCatComponent } from './shared/components/update-cat.component'
     HttpClientModule,
     DirectiveModule
   ],
+  entryComponents: [DisplayResponseComponent], 
   providers: [UmService, CategorieArticoliService],
   bootstrap: [AppComponent]
 })

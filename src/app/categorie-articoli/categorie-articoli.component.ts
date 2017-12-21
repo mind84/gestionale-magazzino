@@ -12,10 +12,8 @@ export class CategorieArticoliComponent implements OnInit {
   searchForm: FormGroup;
   insertMode:boolean = false
   searchResults:any = [];
-  notifyInsert:any;
-  hasResponse:boolean = false;
   isUpdating:any = {};
-  hasError:boolean=false;
+  insertResponse:any;
   constructor(private catArtService:CategorieArticoliService, private _fb: FormBuilder,) { }
 
   ngOnInit() {
@@ -41,14 +39,8 @@ export class CategorieArticoliComponent implements OnInit {
   insert(form:FormGroup): any {
     if(form.status == "INVALID") return;
     else return this.catArtService.insert(form).subscribe((res:any)=>{
-        if (res && res.msg=="OK") {
-          this.hasError=false;
-          form.reset();
-        }
-        else this.hasError=true;
-        this.hasResponse=true;
-        this.notifyInsert=res;
-        setTimeout(()=>{this.hasResponse=false},1000)
+      this.insertResponse= res;
+        if (res && res.msg=="OK") form.reset();
     })
 
 

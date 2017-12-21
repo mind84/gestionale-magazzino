@@ -1,12 +1,15 @@
 import { NgModule } from '@angular/core';
 import {FormatNumberDirective} from '../directives/format-number.directive'
+import { DisplayResponseDirective } from '../directives/display-response.directive'
 
 @NgModule({
   declarations: [
-    FormatNumberDirective
+    FormatNumberDirective,
+    DisplayResponseDirective
   ],
   exports: [
-    FormatNumberDirective
+    FormatNumberDirective,
+    DisplayResponseDirective 
   ]
 })
 export class DirectiveModule { }

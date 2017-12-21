@@ -1,0 +1,6 @@
+<div *ngIf="response" class="insert-result">
+  <div class="insResp" [ngClass]="{'hasError':hasError}">
+    <div><span><b>{{response.msg}}</b></span></div>
+    <div><span>{{response.result}}</span></div>
+  </div>
+</div>

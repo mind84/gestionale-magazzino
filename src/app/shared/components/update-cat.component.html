@@ -1,4 +1,4 @@
-<form id="updateForm" [formGroup] = "updateForm" (ngSubmit)="update(updateForm, _index)">
+<form id="updateForm" [formGroup] = "updateForm" [displayResponse]="insertResponse" (ngSubmit)="update(updateForm, _index)">
   <span>Nome</span> <input class = "form-control name"
   formControlName="name"
   autocorrect="off"
@@ -13,9 +13,3 @@
   value="">
   <button type="submit" class="btn submit-btn">Aggiorna</button>
 </form>
-<div *ngIf="hasResponse" class="insert-result">
-  <div class="insResp" [ngClass]="{'hasError':hasError}">
-    <div><span><b>{{notifyInsert.msg}}</b></span></div>
-    <div><span>{{notifyInsert.result}}</span></div>
-  </div>
-</div>
