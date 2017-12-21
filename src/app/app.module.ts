@@ -19,7 +19,7 @@ import { MaterialiComponent } from './materiali/materiali.component';
 import { UmisuraComponent } from './umisura/umisura.component';
 import { CategorieArticoliComponent } from './categorie-articoli/categorie-articoli.component';
 import { NumberFormatPipe } from './shared/pipes/number-format.pipe';
-import { FormatNumberDirective } from './shared/directives/format-number.directive';
+import { DirectiveModule } from './shared/modules/directive.module';
 import { UpdateFormComponent } from './shared/components/update-form.component';
 import { UpdateCatComponent } from './shared/components/update-cat.component'
 
@@ -35,18 +35,19 @@ import { UpdateCatComponent } from './shared/components/update-cat.component'
     UmisuraComponent,
     CategorieArticoliComponent,
     NumberFormatPipe,
-    FormatNumberDirective,
     UpdateFormComponent,
     UpdateCatComponent
   ],
   imports: [
     BrowserModule,
+    DirectiveModule,
     AppRoutingModule,
     ButtonsModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    HttpClientModule
+    HttpClientModule,
+    DirectiveModule
   ],
   providers: [UmService, CategorieArticoliService],
   bootstrap: [AppComponent]

@@ -72,7 +72,6 @@ router.route("").get(function (req, res, next) {
     else if (qname && !qcode && qcat) {
         qs = { $and: [{ name: { $regex: qname, $options: "i" } }, { categ: qcat }] };
     }
-    console.log(qs);
     materiali_1.Materiali.aggregate([
         {
             $match: qs
