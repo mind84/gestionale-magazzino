@@ -25,6 +25,7 @@ import { AngularMaterialModule } from './shared/modules/angular-material.module'
 import { UpdateFormComponent } from './shared/components/update-form.component';
 import { UpdateCatComponent } from './shared/components/update-cat.component';
 import { DisplayResponseComponent } from './shared/components/display-response.component';
+import { TextSearchComponent } from './shared/components/text-search.component';
 
 
 
@@ -41,7 +42,8 @@ import { DisplayResponseComponent } from './shared/components/display-response.c
     NumberFormatPipe,
     UpdateFormComponent,
     UpdateCatComponent,
-    DisplayResponseComponent
+    DisplayResponseComponent,
+    TextSearchComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +58,7 @@ import { DisplayResponseComponent } from './shared/components/display-response.c
     HttpClientModule,
     DirectiveModule
   ],
-  entryComponents: [DisplayResponseComponent],
+  entryComponents: [DisplayResponseComponent, TextSearchComponent],
   providers: [UmService, CategorieArticoliService],
   bootstrap: [AppComponent]
 })

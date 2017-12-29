@@ -1,6 +1,12 @@
 <div class="row maincontent">
   <div class="col-10 magazzino-int">
     <div class="h4"><u>Gestione Magazzino</u></div>
+    <div class="navigation-panel">
+      <span><button type="button" class="btn btn-primary variazioni" (click)="toggleState()">Variazioni</button></span>
+      <span><button type="button" class="btn btn-primary storequery" (click)="toggleState()">Interroga Magazzino</button></span>
+    </div>
+  </div>
+  <div class="col-10 insert-form-container" *ngIf="variationMode">
     <div class="search-control">
         <form id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
           <span>Codice articolo :</span> <input class="form-control"
@@ -9,14 +15,16 @@
           autocapitalize="off"
           spellcheck="off" type="text"
           value="">
-
-          <span id="nmSearch">Nome : </span><input class="form-control"
+          <span id="nmSearch">Nome : </span>
+          <div>
+          <input #searchName class="form-control name"
           formControlName="name"
           autocorrect="off"
           autocapitalize="off"
           spellcheck="off" type="text"
-          value="">
-          <span id="nmSearch">Dal : </span>
+          value="" [textSearch]="searchName.value">
+        </div>
+          <!--span id="nmSearch">Dal : </span>
           <mat-form-field>
           <input matInput [matDatepicker]="datfrom" class="form-control"
           formControlName="datfrom">
@@ -29,13 +37,13 @@
           formControlName="datto">
           <mat-datepicker-toggle matSuffix [for]="datto"></mat-datepicker-toggle>
           <mat-datepicker #datto></mat-datepicker>
-          </mat-form-field>
-          <!--input matInput [matDatepicker]="picker" placeholder="Choose a date">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker-->
-
+        </mat-form-field-->
           <button type="submit" class="btn submit-btn">Cerca</button>
         </form>
       <!--span style=""><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuovo articolo</button></span-->
     </div>
   </div>
+  <div class="col-10 insert-form-container" *ngIf="!variationMode">
+    interrogo
+  </div>
+</div>

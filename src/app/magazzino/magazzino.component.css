@@ -5,12 +5,16 @@
 
 #searchForm {
   display: flex;
-  width:100%
+  width:100%;
+  align-items: center;
 }
 
-#searchForm > div > input {
+#searchForm > input {
   width:100px;
   display:inline-block;
+}
+#searchForm .name {
+  width:300px;
 }
 
 #insertMaterialiForm .ng-invalid:not(.ng-untouched) {

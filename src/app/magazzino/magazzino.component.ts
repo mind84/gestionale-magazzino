@@ -10,6 +10,7 @@ import {MaterialiService} from '../services/materiali.service'
 })
 export class MagazzinoComponent implements OnInit {
   searchForm: FormGroup;
+  variationMode:boolean = true;
   constructor(
     private matService:MaterialiService,
     private _fb: FormBuilder,
@@ -22,6 +23,10 @@ export class MagazzinoComponent implements OnInit {
         datfrom: null,
         datto: null
       })
+  }
+
+  toggleState(){
+    return this.variationMode = !this.variationMode
   }
 
 }
