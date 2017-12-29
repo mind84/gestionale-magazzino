@@ -1,0 +1,138 @@
+.custom-form-control {
+  width:100px;
+  display:inline-block;
+}
+
+#searchForm {
+  display: flex;
+  width:100%
+}
+
+#searchForm > div > input {
+  width:100px;
+  display:inline-block;
+}
+
+#insertMaterialiForm .ng-invalid:not(.ng-untouched) {
+  background-color:#ff00004f;
+  border-color: red;
+}
+
+#insertMaterialiForm .code {
+  width:100px;
+}
+
+#insertMaterialiForm .name, #insertMaterialiForm .forn {
+  width:300px;
+}
+
+#insertMaterialiForm .price {
+  width:100px;
+}
+#insertMaterialiForm .collobj {
+  width:100px;
+}
+#insertMaterialiForm .qta {
+  width:100px;
+}
+#insertMaterialiForm .categname {
+  width:200px;
+}
+#insertMaterialiForm .prod-det {
+  display:inline-flex;
+  padding-top:1em;
+  padding-bottom: 1em;
+  align-items: center;
+}
+#insertMaterialiForm {
+  padding:0.5em;
+  background-color: #e6e3e3;
+}
+#insertMaterialiForm .submit-btn {
+background-color: #5383dac9;
+margin-top:1.5em;
+}
+
+.results-container  th {
+border-bottom: 1px solid #c5bebe;
+}
+
+.prod-det > select  {
+  width:150px;
+  display:inline-block;
+  height: auto;
+}
+.prod-det > span:not(:first-child) {
+  margin-left:1em;
+}
+
+.insert-form-container{
+  margin-top:2em;
+}
+.magazzino-int {
+  margin-top:1em;
+}
+.search-control {
+ margin-top:1.5em;
+ display: flex;
+ align-items: center;
+ width:100%;
+
+}
+.results-container {
+      padding-top: 2em;
+}
+.tab-results {
+  width:100%;
+}
+
+.results-container .mod:hover {
+  cursor: pointer;
+}
+
+.results-container .mod >span {
+  margin-left:5px
+}
+.results-container .even {
+  background-color: #d8d2d2;
+}
+.insResp{
+  text-align: center;
+  background-color:#46dd46;
+  color:#1a6f00;
+}
+.hasError {
+  background-color: #ff4d4d;
+  color:#c50202;
+}
+
+.catSearhcRes {
+  position: absolute;
+      width: 100%;
+      background: wheat;
+          padding: 0.5em;
+
+}
+.catSearhcResSearch {
+  position: absolute;
+      background: wheat;
+          padding: 0.5em;
+          z-index:10;
+          margin-left: 68px;
+          width:100%;
+
+}
+.categories {
+  position:relative;
+}
+.categoriesSearch {
+  position:relative;
+}
+.categoriesSearch input.categname {
+  width:200px !important;
+}
+
+
+#catSearch, #nmSearch  {
+  margin-left:1em !important;
+}

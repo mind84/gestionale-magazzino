@@ -1,2 +1,41 @@
-<div class="row maincontent justify-content-center">
-</div>
+<div class="row maincontent">
+  <div class="col-10 magazzino-int">
+    <div class="h4"><u>Gestione Magazzino</u></div>
+    <div class="search-control">
+        <form id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
+          <span>Codice articolo :</span> <input class="form-control"
+          formControlName="code"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="off" type="text"
+          value="">
+
+          <span id="nmSearch">Nome : </span><input class="form-control"
+          formControlName="name"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="off" type="text"
+          value="">
+          <span id="nmSearch">Dal : </span>
+          <mat-form-field>
+          <input matInput [matDatepicker]="datfrom" class="form-control"
+          formControlName="datfrom">
+            <mat-datepicker-toggle matSuffix [for]="datfrom"></mat-datepicker-toggle>
+            <mat-datepicker #datfrom></mat-datepicker>
+          </mat-form-field>
+          <span id="nmSearch">Al : </span>
+          <mat-form-field>
+          <input matInput [matDatepicker]="datto" class="form-control"
+          formControlName="datto">
+          <mat-datepicker-toggle matSuffix [for]="datto"></mat-datepicker-toggle>
+          <mat-datepicker #datto></mat-datepicker>
+          </mat-form-field>
+          <!--input matInput [matDatepicker]="picker" placeholder="Choose a date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker-->
+
+          <button type="submit" class="btn submit-btn">Cerca</button>
+        </form>
+      <!--span style=""><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuovo articolo</button></span-->
+    </div>
+  </div>

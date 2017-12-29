@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpModule }    from '@angular/http';
 import { HttpClientModule }    from '@angular/common/http';
@@ -20,6 +21,7 @@ import { UmisuraComponent } from './umisura/umisura.component';
 import { CategorieArticoliComponent } from './categorie-articoli/categorie-articoli.component';
 import { NumberFormatPipe } from './shared/pipes/number-format.pipe';
 import { DirectiveModule } from './shared/modules/directive.module';
+import { AngularMaterialModule } from './shared/modules/angular-material.module';
 import { UpdateFormComponent } from './shared/components/update-form.component';
 import { UpdateCatComponent } from './shared/components/update-cat.component';
 import { DisplayResponseComponent } from './shared/components/display-response.component';
@@ -43,8 +45,10 @@ import { DisplayResponseComponent } from './shared/components/display-response.c
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     DirectiveModule,
     AppRoutingModule,
+    AngularMaterialModule,
     ButtonsModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
@@ -52,7 +56,7 @@ import { DisplayResponseComponent } from './shared/components/display-response.c
     HttpClientModule,
     DirectiveModule
   ],
-  entryComponents: [DisplayResponseComponent], 
+  entryComponents: [DisplayResponseComponent],
   providers: [UmService, CategorieArticoliService],
   bootstrap: [AppComponent]
 })
