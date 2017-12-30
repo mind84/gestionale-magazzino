@@ -22,7 +22,7 @@
           autocorrect="off"
           autocapitalize="off"
           spellcheck="off" type="text"
-          value="" [textSearch]="searchName.value">
+          value="" [textSearch]="searchName.value" [execFunction]='findFunction' [subsRes]='subsFunction'>
         </div>
           <!--span id="nmSearch">Dal : </span>
           <mat-form-field>
@@ -42,6 +42,16 @@
         </form>
       <!--span style=""><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuovo articolo</button></span-->
     </div>
+    <div class="insert transaction">
+      <div class="trans-code">
+      <span>Codice Articolo: {{currentArticle?.code}}</span>
+      </div>
+      <div class="trans-name">
+      <span>Nome Articolo: {{currentArticle?.name}}</span>
+      </div>
+      <div class="trans-totalNumber">
+      <span>Totale a disposizione in Magazzino: {{currentArticle?.totalInStore?.tot}}  </span><span>Data ultimo aggiornamento: {{currentArticle?.totalInStore?.date}} </span>
+      </div>
   </div>
   <div class="col-10 insert-form-container" *ngIf="!variationMode">
     interrogo

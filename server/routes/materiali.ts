@@ -93,7 +93,19 @@ router.route("").get((req: Request, res: Response, next: NFunc) => {
   })*/
 })
 
+router.route("/byname").get((req: Request, res: Response, next: NFunc) => {
+  let qname = null;
+  let qs;
+  if (req.query.name !== 'null') qname= '^'+req.query.name+'.*';
 
+
+  if(qname){
+    qs = {name: {$regex: qname, $options: "i"}};
+  }
+  Materiali.find(qs, (err: any, docs:any)=> {
+    res.json(docs)
+  })
+})
 
 
 export { router };

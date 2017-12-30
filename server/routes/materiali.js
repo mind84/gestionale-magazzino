@@ -88,4 +88,16 @@ router.route("").get(function (req, res, next) {
         res.json(docs);
     });
 });
+router.route("/byname").get(function (req, res, next) {
+    var qname = null;
+    var qs;
+    if (req.query.name !== 'null')
+        qname = '^' + req.query.name + '.*';
+    if (qname) {
+        qs = { name: { $regex: qname, $options: "i" } };
+    }
+    materiali_1.Materiali.find(qs, function (err, docs) {
+        res.json(docs);
+    });
+});
 //# sourceMappingURL=materiali.js.map

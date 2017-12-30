@@ -1,3 +1,5 @@
 <div class="searchCont">
-{{toSearch}}
+  <div class="list" *ngFor="let item of results" (click)="setSearch(item)">
+    <span>{{item?.name}}</span>
+  </div>
 </div>
