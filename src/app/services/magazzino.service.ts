@@ -12,4 +12,18 @@ export class MagazzinoService {
   getTransaction(code:string){
     return this.http.get(`store/transactions?code=${code}`)
   }
+
+  addTransaction(form:FormGroup, art:any){
+    let body:any={};
+    body.currArt=art;
+    body.trans=form.getRawValue()
+    return this.http.post('/transaz/add', body)
+  }
+
+  remTransaction(form:FormGroup, art:any){
+    let body:any={};
+    body.currArt=art;
+    body.trans=form.getRawValue()
+    return this.http.post('/transaz/remove', body)
+  }
 }

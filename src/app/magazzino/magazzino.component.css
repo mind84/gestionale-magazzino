@@ -17,45 +17,51 @@
   width:300px;
 }
 
-#insertMaterialiForm .ng-invalid:not(.ng-untouched) {
+/*Insert forms*/
+#addForm > select, #remForm > select {
+  width:300px;
+  display:inline-block;
+  height: auto;
+}
+#addForm > input, #remForm > input  {
+  width:300px;
+  display:inline-block;
+  height: auto;
+}
+#addForm .ng-invalid:not(.ng-untouched), #remForm .ng-invalid:not(.ng-untouched) {
   background-color:#ff00004f;
   border-color: red;
 }
 
-#insertMaterialiForm .code {
+#addForm .qtadd, #remForm .qtsub {
   width:100px;
 }
-
-#insertMaterialiForm .name, #insertMaterialiForm .forn {
-  width:300px;
-}
-
-#insertMaterialiForm .price {
+#addForm .numorder, #remForm .numorder {
   width:100px;
 }
-#insertMaterialiForm .collobj {
-  width:100px;
+#addForm .note, #remForm .note {
+  width:400px;
 }
-#insertMaterialiForm .qta {
-  width:100px;
-}
-#insertMaterialiForm .categname {
-  width:200px;
-}
-#insertMaterialiForm .prod-det {
-  display:inline-flex;
-  padding-top:1em;
-  padding-bottom: 1em;
-  align-items: center;
-}
-#insertMaterialiForm {
+#addForm, #remForm {
   padding:0.5em;
   background-color: #e6e3e3;
 }
-#insertMaterialiForm .submit-btn {
-background-color: #5383dac9;
-margin-top:1.5em;
+#addForm > div, #remForm > div  {
+  margin-top:1em !important;
 }
+#addForm .submit-btn {
+  background-color: #67a77a;
+}
+#remForm .submit-btn {
+background-color:#ff5c5c
+}
+.totWarn {
+  position: absolute;
+    display: block;
+    background-color: red;
+    padding: 5px;
+    color: white;
+  }
 
 .results-container  th {
 border-bottom: 1px solid #c5bebe;

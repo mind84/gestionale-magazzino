@@ -4,6 +4,7 @@ import {AddMotivation} from '../shared/sharedClass/AddMotivation';
 import {RemoveMotivation} from '../shared/sharedClass/RemoveMotivation'
 import {MaterialiService} from '../services/materiali.service';
 import {MagazzinoService} from '../services/magazzino.service';
+import {gtZero} from '../shared/functions/validators';
 import {Subject} from 'rxjs/Subject'
 import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 import {Observable} from 'rxjs/Observable'
@@ -20,6 +21,7 @@ import 'rxjs/add/operator/switchMap'
 export class MagazzinoComponent implements OnInit {
   searchForm: FormGroup;
   addForm:FormGroup;
+  remForm:FormGroup;
   variationMode:boolean = true;
   currentArticle:any;
   addMotivation:AddMotivation;
@@ -30,13 +32,20 @@ export class MagazzinoComponent implements OnInit {
   public subsFunction:Function;
   public findFunction:Function;
   private isAddingMode:boolean = true;
+  motivazioniAdd:any;
+  motivazioniRem:any;
+  byorder:boolean;
+  totWarn:boolean=false;
+  insertResponse:any;
   constructor(
     private matService:MaterialiService,
     private _fb: FormBuilder,
     private storeServ: MagazzinoService
   ) {
     this.addMotivation = new AddMotivation().motivArray;
+    this.motivazioniAdd=this.addMotivation[0].motName;
     this.removeMotivation = new RemoveMotivation().motivArray;
+    this.motivazioniRem=this.removeMotivation[0].motName;
    }
 
   ngOnInit() {
@@ -47,8 +56,15 @@ export class MagazzinoComponent implements OnInit {
         datto: null
       })
     this.addForm = this._fb.group({
-      qtadd:[null, Validators.required],
-      motivazioni:[]
+      qtadd:[null, Validators.compose([Validators.required, gtZero])],
+      motivazioni:[],
+      note:""
+    })
+
+    this.remForm = this._fb.group({
+      qtsub:[null, Validators.compose([Validators.required, gtZero])],
+      motivazioni:[],
+      note:""
     })
 
       this.matService.currentSelectedArticle$.subscribe((art)=>{
@@ -62,7 +78,7 @@ export class MagazzinoComponent implements OnInit {
       .filter((p)=>{
         return (p[0] !== p[1])
       }).switchMap((val:any)=>{
-        return this.matService.search(val[1],null,null);
+        return this.matService.searchByCode(val[1]);
       }).subscribe(
         (v:any)=>{
           if (v && v.length) {
@@ -70,6 +86,7 @@ export class MagazzinoComponent implements OnInit {
             this.currentArticle=v[0];
           }
         })
+
       this.subsFunction = this.matService.setCurrentFunc;
       this.findFunction = this.matService.findFunction;
       this.setCodeForSearch.next(this.searchForm.getRawValue().code)
@@ -85,6 +102,60 @@ export class MagazzinoComponent implements OnInit {
   }
   addItem(type:boolean){
     return this.isAddingMode=type;
+  }
+
+  onChangeAdd(ev,form){
+    if (ev=="Da Ordine") {
+      this.byorder=true;
+      this.addForm.addControl('numorder',new FormControl(null,Validators.required))
+    }
+    else {
+      this.byorder=false;
+        if(form.controls.numorder) form.controls.numorder.setValue("");
+        this.addForm.removeControl('numorder');
+
+    }
+  }
+  onChangeRem(ev,form){
+    if (ev=="Storno da Ordine") {
+      this.byorder=true;
+      this.remForm.addControl('numorder',new FormControl(null,Validators.required))
+    }
+    else {
+      this.byorder=false;
+        if(form.controls.numorder) form.controls.numorder.setValue("");
+        this.remForm.removeControl('numorder');
+
+    }
+  }
+
+  addTrans(form){
+      if(form.status =="VALID" && this.currentArticle){
+        this.storeServ.addTransaction(form,this.currentArticle).subscribe((res:any)=>{
+          this.insertResponse= res;
+          setTimeout(()=>{this.insertResponse=null},2000)
+          this.currentArticle=res.cback;
+          this.addForm.reset();
+        })
+      }
+
+    //gestione middleware di salvataggio
+  }
+  remTrans(form){
+    if(form.status =="VALID" && this.currentArticle) {
+    if (form.controls.qtsub.value > this.currentArticle.totalInStore.tot) {
+      this.totWarn = true;
+      return setTimeout(()=>{this.totWarn=false},1900);
+    }
+    else return this.storeServ.remTransaction(form, this.currentArticle).subscribe((res:any)=>{
+      this.insertResponse= res;
+      setTimeout(()=>{this.insertResponse=null},2000)
+      this.currentArticle=res.cback;
+      this.remForm.reset();
+    });
+  }
+
+    //gestione middleware di salvataggio
   }
 
 }

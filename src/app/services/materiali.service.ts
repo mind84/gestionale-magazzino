@@ -33,6 +33,9 @@ export class MaterialiService implements OnInit {
   searchByName(term:string){
     return this.http.get(`/mat/byname?name=${term}`)
   }
+  searchByCode(code:string){
+    return this.http.get(`/mat/bycode?code=${code}`)
+  }
   public setCurrentSelectedArticle(article:any){
     this.currentSelectedArticle.next(article);
   }

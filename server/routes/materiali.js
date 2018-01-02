@@ -100,4 +100,16 @@ router.route("/byname").get(function (req, res, next) {
         res.json(docs);
     });
 });
+router.route("/bycode").get(function (req, res, next) {
+    var qcode = null;
+    var qs;
+    if (req.query.code !== 'null')
+        qcode = '^' + req.query.code + '.*';
+    if (qcode) {
+        qs = { code: { $regex: qcode, $options: "i" } };
+    }
+    materiali_1.Materiali.find(qs, function (err, docs) {
+        res.json(docs);
+    });
+});
 //# sourceMappingURL=materiali.js.map
