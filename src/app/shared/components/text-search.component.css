@@ -1,4 +1,7 @@
 .searchCont{
   position: absolute;
   display: block;
+  background-color: white;
+    border: 1px solid gray;
+    padding: 5px;
 }
