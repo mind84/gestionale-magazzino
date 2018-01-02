@@ -10,9 +10,13 @@ var materiali = new Schema({
     umId: { type: String, required: true },
     fornitore: { type: String, required: true },
     categ: { type: String, required: true },
+    totalInStore: {
+        tot: { type: Number, default: 0 },
+        date: { type: Date, default: Date.now }
+    },
     price: { type: Number, required: true },
     collobj: { type: Number, required: true },
-    note: String
+    note: String,
 }, { timestamps: true, collection: "Materiali" });
 materiali.index({ name: 'text', searchFor: 'text' });
 var Materiali = mongoose.model("materiali", materiali);

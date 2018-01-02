@@ -42,7 +42,7 @@
         </form>
       <!--span style=""><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuovo articolo</button></span-->
     </div>
-    <div class="insert transaction">
+    <div class="insert transaction" *ngIf="currentArticle">
       <div class="trans-code">
       <span>Codice Articolo: {{currentArticle?.code}}</span>
       </div>
@@ -50,8 +50,34 @@
       <span>Nome Articolo: {{currentArticle?.name}}</span>
       </div>
       <div class="trans-totalNumber">
-      <span>Totale a disposizione in Magazzino: {{currentArticle?.totalInStore?.tot}}  </span><span>Data ultimo aggiornamento: {{currentArticle?.totalInStore?.date}} </span>
+      <span>Totale a disposizione in Magazzino: {{currentArticle?.totalInStore?.tot}}  </span><span>    Data ultimo aggiornamento: {{currentArticle?.totalInStore?.date}} </span>
       </div>
+      <div class="addremove">
+        <div>
+          <button type ="button" class="btn add" (click)=addItem(true)>Aggiungi</button>
+          <button type ="button" class="btn remove"(click)=addItem(false)>Sottrai</button>
+        </div>
+        <div *ngIf="isAddingMode">
+          <form id="addForm" [formGroup] = "addForm" class = "addform" (ngSubmit)="addTrans(addForm)">
+            <span>Quantità da aggiungere</span>
+            <input class="form-control"
+              appFormatNumber
+              formControlName="qtadd" autocorrect="off"
+              autocapitalize="off"
+              spellcheck="off" type="text"
+              value="">
+              <span>Motivazioni</span>
+              <select class = "form-control motivazioni" [(ngModel)]="motivazioni"
+              formControlName="motivazioni">
+              <option *ngFor="let addM of addMotivation">{{addM.motName}}</option>
+            </select>
+          </form>
+        </div>
+        <div *ngIf="!isAddingMode">
+          Sottrai
+        </div>
+      </div>
+    </div>
   </div>
   <div class="col-10 insert-form-container" *ngIf="!variationMode">
     interrogo

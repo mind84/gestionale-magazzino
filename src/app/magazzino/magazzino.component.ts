@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import {AddMotivation} from '../shared/sharedClass/AddMotivation';
+import {RemoveMotivation} from '../shared/sharedClass/RemoveMotivation'
 import {MaterialiService} from '../services/materiali.service';
 import {MagazzinoService} from '../services/magazzino.service';
 import {Subject} from 'rxjs/Subject'
@@ -17,18 +19,25 @@ import 'rxjs/add/operator/switchMap'
 })
 export class MagazzinoComponent implements OnInit {
   searchForm: FormGroup;
+  addForm:FormGroup;
   variationMode:boolean = true;
   currentArticle:any;
+  addMotivation:AddMotivation;
+  removeMotivation:any;
   setCodeForSearch:Subject<FormGroup> = new Subject<FormGroup>();
   //setCodeForSearch:BehaviorSubject<FormGroup> = new BehaviorSubject<FormGroup>(null);
   setCodeForSearch$:Observable<any> = this.setCodeForSearch.asObservable()
   public subsFunction:Function;
   public findFunction:Function;
+  private isAddingMode:boolean = true;
   constructor(
     private matService:MaterialiService,
     private _fb: FormBuilder,
     private storeServ: MagazzinoService
-  ) { }
+  ) {
+    this.addMotivation = new AddMotivation().motivArray;
+    this.removeMotivation = new RemoveMotivation().motivArray;
+   }
 
   ngOnInit() {
     this.searchForm = this._fb.group({
@@ -37,6 +46,10 @@ export class MagazzinoComponent implements OnInit {
         datfrom: null,
         datto: null
       })
+    this.addForm = this._fb.group({
+      qtadd:[null, Validators.required],
+      motivazioni:[]
+    })
 
       this.matService.currentSelectedArticle$.subscribe((art)=>{
         this.searchForm.controls.name.setValue(art.name);
@@ -69,6 +82,9 @@ export class MagazzinoComponent implements OnInit {
     if (!form.getRawValue().code) return;
     else this.setCodeForSearch.next(form.getRawValue().code)
 
+  }
+  addItem(type:boolean){
+    return this.isAddingMode=type;
   }
 
 }

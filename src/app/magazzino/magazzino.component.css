@@ -140,3 +140,9 @@ border-bottom: 1px solid #c5bebe;
 #catSearch, #nmSearch  {
   margin-left:1em !important;
 }
+.transaction {
+  margin-top:4em;
+}
+.transaction >div {
+  margin-top:0.5em;
+}
