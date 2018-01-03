@@ -130,6 +130,7 @@
     </div>
   </div>
   <div class="col-10 insert-form-container" *ngIf="!variationMode">
-    interrogo
+    <button type="button" (click)="changeConf()">Cambia configurazione</button>
+    <app-dynamic-form (parentNotification)='log($ev)' [appDynamicControls]='inputConfig'></app-dynamic-form>
   </div>
 </div>

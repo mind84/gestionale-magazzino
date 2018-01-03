@@ -26,6 +26,8 @@ import { UpdateFormComponent } from './shared/components/update-form.component';
 import { UpdateCatComponent } from './shared/components/update-cat.component';
 import { DisplayResponseComponent } from './shared/components/display-response.component';
 import { TextSearchComponent } from './shared/components/text-search.component';
+import { DynamicFormComponent } from './shared/components/dynamic-form.component';
+
 //import {addMotivation} from './shared/classes/addMotivation'
 
 
@@ -44,7 +46,8 @@ import { TextSearchComponent } from './shared/components/text-search.component';
     UpdateFormComponent,
     UpdateCatComponent,
     DisplayResponseComponent,
-    TextSearchComponent
+    TextSearchComponent,
+    DynamicFormComponent
   ],
   imports: [
     BrowserModule,

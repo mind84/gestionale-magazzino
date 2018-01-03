@@ -8,6 +8,7 @@ import {gtZero} from '../shared/functions/validators';
 import {Subject} from 'rxjs/Subject'
 import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 import {Observable} from 'rxjs/Observable'
+import {DynamicFormComponent} from '../shared/components/dynamic-form.component'
 import 'rxjs/add/operator/pairwise'
 import 'rxjs/add/operator/switchMap'
 
@@ -37,6 +38,7 @@ export class MagazzinoComponent implements OnInit {
   byorder:boolean;
   totWarn:boolean=false;
   insertResponse:any;
+  inputConfig:any = {prova:1}
   constructor(
     private matService:MaterialiService,
     private _fb: FormBuilder,
@@ -154,8 +156,14 @@ export class MagazzinoComponent implements OnInit {
       this.remForm.reset();
     });
   }
-
-    //gestione middleware di salvataggio
+  }
+  log(ev){
+    console.log(ev)
+  }
+  changeConf(){
+    this.inputConfig.prova ++;
+    let p = Object.assign({},this.inputConfig);
+    this.inputConfig= p;
   }
 
 }
