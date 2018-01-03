@@ -27,6 +27,7 @@ import { UpdateCatComponent } from './shared/components/update-cat.component';
 import { DisplayResponseComponent } from './shared/components/display-response.component';
 import { TextSearchComponent } from './shared/components/text-search.component';
 import { DynamicFormComponent } from './shared/components/dynamic-form.component';
+import { FormInputComponent } from './shared/components/controls/form-input.component';
 
 //import {addMotivation} from './shared/classes/addMotivation'
 
@@ -47,7 +48,8 @@ import { DynamicFormComponent } from './shared/components/dynamic-form.component
     UpdateCatComponent,
     DisplayResponseComponent,
     TextSearchComponent,
-    DynamicFormComponent
+    DynamicFormComponent,
+    FormInputComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +64,7 @@ import { DynamicFormComponent } from './shared/components/dynamic-form.component
     HttpClientModule,
     DirectiveModule
   ],
-  entryComponents: [DisplayResponseComponent, TextSearchComponent],
+  entryComponents: [DisplayResponseComponent, TextSearchComponent, FormInputComponent],
   providers: [UmService, CategorieArticoliService],
   bootstrap: [AppComponent]
 })

@@ -9,6 +9,8 @@ export interface FieldConfig {
   options?: string[],
   placeholder?: string,
   type: string,
+  customClass?:string;
+  displayInline?:boolean,
   validation?: ValidatorFn[],
   value?: any,
   changeFunction?:any,
@@ -16,7 +18,7 @@ export interface FieldConfig {
   typeSearch?:any
 }
 
-export interface ConfigForm {
-  fieldConfig: FieldConfig[],
+export interface Field {
+  config: FieldConfig,
   group: FormGroup
 }

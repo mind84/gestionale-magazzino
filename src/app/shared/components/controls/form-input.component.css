@@ -1,0 +1,9 @@
+.long {
+  width:300px;
+}
+input {
+  display:inline;
+}
+.inline {
+  display: inline-block;
+}
