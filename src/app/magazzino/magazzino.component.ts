@@ -9,6 +9,7 @@ import {Subject} from 'rxjs/Subject'
 import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 import {Observable} from 'rxjs/Observable'
 import {DynamicFormComponent} from '../shared/components/dynamic-form.component'
+import {SEARCH_FORM_FIELDS} from './magazzino-forms.config';
 import 'rxjs/add/operator/pairwise'
 import 'rxjs/add/operator/switchMap'
 
@@ -38,7 +39,9 @@ export class MagazzinoComponent implements OnInit {
   byorder:boolean;
   totWarn:boolean=false;
   insertResponse:any;
-  inputConfig:any = {prova:1}
+  //inputConfig:any;
+  public SearchFormFields = SEARCH_FORM_FIELDS;
+
   constructor(
     private matService:MaterialiService,
     private _fb: FormBuilder,
@@ -51,6 +54,7 @@ export class MagazzinoComponent implements OnInit {
    }
 
   ngOnInit() {
+    //this.inputConfig= this.SearchFormFields;
     this.searchForm = this._fb.group({
         code: null,
         name: null,
@@ -161,9 +165,9 @@ export class MagazzinoComponent implements OnInit {
     console.log(ev)
   }
   changeConf(){
-    this.inputConfig.prova ++;
-    let p = Object.assign({},this.inputConfig);
-    this.inputConfig= p;
+    this.SearchFormFields[0].disabled= !this.SearchFormFields[0].disabled;
+    let p = Object.assign({},this.SearchFormFields);
+    this.SearchFormFields= p;
   }
 
 }
