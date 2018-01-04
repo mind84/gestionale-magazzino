@@ -1,4 +1,4 @@
-<form id="searchForm" [formGroup] = "dynForm">
+<form [formGroup] = "dynForm" class="">
   <ng-container *ngFor="let field of config" appDynamicControls [config]="field" [form]="dynForm">
   </ng-container>
 </form>

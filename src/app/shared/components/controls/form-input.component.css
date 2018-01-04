@@ -3,7 +3,12 @@
 }
 input {
   display:inline;
+    width:150px;
 }
 .inline {
   display: inline-block;
+}
+:host {
+  margin-left:1em;
+  margin-right:1em;
 }

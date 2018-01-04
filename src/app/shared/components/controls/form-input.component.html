@@ -1,9 +1,12 @@
 <div
-   class="dynamic-field form-input" [ngClass]="{'inline': config.displayInline}" 
+   class="dynamic-field form-group" [ngClass]="{'inline': config.displayInline}"
    [formGroup]="group">
-   <label>{{ config.label }}</label>
+   <label>{{ config.label }}:</label>
    <input
      type="text" class="form-control" [className]="config.customClass + ' form-control'"
+     autocorrect="off"
+     autocapitalize="off"
+     spellcheck="off"
      [attr.placeholder]="config.placeholder"
      [formControlName]="config.formControlName">
  </div>

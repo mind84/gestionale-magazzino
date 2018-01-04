@@ -20,7 +20,7 @@ export class DynamicFormComponent implements OnInit {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
-      this.dynForm = this.createFormGroup()
+      this.dynForm = this.createFormGroup() 
   }
 
   createFormGroup(){
