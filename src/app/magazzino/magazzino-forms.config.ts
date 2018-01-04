@@ -20,5 +20,10 @@ export const SEARCH_FORM_FIELDS:FieldConfig[] = [
     displayInline:true,
     linkedField: ["code"],
     typeSearch: 'textSearch'
+  },
+  {
+    type:'button',
+    label:'Cerca',
+    formControlName:'submit'
   }
 ]

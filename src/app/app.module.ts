@@ -28,6 +28,8 @@ import { DisplayResponseComponent } from './shared/components/display-response.c
 import { TextSearchComponent } from './shared/components/text-search.component';
 import { DynamicFormComponent } from './shared/components/dynamic-form.component';
 import { FormInputComponent } from './shared/components/controls/form-input.component';
+import { FormSelectComponent } from './shared/components/controls/form-select.component';
+import { FormButtonComponent } from './shared/components/controls/form-button.component';
 
 //import {addMotivation} from './shared/classes/addMotivation'
 
@@ -49,7 +51,9 @@ import { FormInputComponent } from './shared/components/controls/form-input.comp
     DisplayResponseComponent,
     TextSearchComponent,
     DynamicFormComponent,
-    FormInputComponent
+    FormInputComponent,
+    FormSelectComponent,
+    FormButtonComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +68,7 @@ import { FormInputComponent } from './shared/components/controls/form-input.comp
     HttpClientModule,
     DirectiveModule
   ],
-  entryComponents: [DisplayResponseComponent, TextSearchComponent, FormInputComponent],
+  entryComponents: [DisplayResponseComponent, TextSearchComponent, FormInputComponent, FormButtonComponent, FormSelectComponent],
   providers: [UmService, CategorieArticoliService],
   bootstrap: [AppComponent]
 })

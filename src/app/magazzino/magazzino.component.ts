@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild, AfterViewInit} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {AddMotivation} from '../shared/sharedClass/AddMotivation';
 import {RemoveMotivation} from '../shared/sharedClass/RemoveMotivation'
@@ -20,7 +20,7 @@ import 'rxjs/add/operator/switchMap'
   styleUrls: ['./magazzino.component.css'],
     providers: [MaterialiService, MagazzinoService]
 })
-export class MagazzinoComponent implements OnInit {
+export class MagazzinoComponent implements OnInit, AfterViewInit {
   searchForm: FormGroup;
   addForm:FormGroup;
   remForm:FormGroup;
@@ -41,7 +41,7 @@ export class MagazzinoComponent implements OnInit {
   insertResponse:any;
   //inputConfig:any;
   public SearchFormFields = SEARCH_FORM_FIELDS;
-
+  @ViewChild(DynamicFormComponent) form: DynamicFormComponent
   constructor(
     private matService:MaterialiService,
     private _fb: FormBuilder,
@@ -96,6 +96,15 @@ export class MagazzinoComponent implements OnInit {
       this.subsFunction = this.matService.setCurrentFunc;
       this.findFunction = this.matService.findFunction;
       this.setCodeForSearch.next(this.searchForm.getRawValue().code)
+  }
+
+  ngAfterViewInit(){ 
+    let previousValid = this.form.valid;
+    this.form.changes.subscribe(()=>{
+      if(this.form.valid!== previousValid) {
+        this.form.setDisabled('submit', true)
+      }
+    })
   }
 
   toggleState(){

@@ -130,7 +130,6 @@
     </div>
   </div>
   <div class="col-10 insert-form-container" *ngIf="!variationMode">
-    <button type="button" (click)="changeConf()">Cambia configurazione</button>
-    <app-dynamic-form (parentNotification)='log($ev)' [config]='SearchFormFields'></app-dynamic-form>
+    <app-dynamic-form (parentNotification)='log($event)' #form='dynamicForm'  [config]='SearchFormFields'></app-dynamic-form>
   </div>
 </div>

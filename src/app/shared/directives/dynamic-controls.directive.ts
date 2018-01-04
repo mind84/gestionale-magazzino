@@ -11,18 +11,20 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/switchMap'
 
 import {FormInputComponent} from '../components/controls/form-input.component'
+import {FormSelectComponent} from '../components/controls/form-select.component'
+import {FormButtonComponent} from '../components/controls/form-button.component'
 
 const components: {[type: string]: Type<Field>} = {
-  //button: FormButtonComponent,
+  button: FormButtonComponent,
   input: FormInputComponent,
-  //select: FormSelectComponent
+  select: FormSelectComponent
 };
 
 @Directive({
   selector: '[appDynamicControls]',
   exportAs:'appDynamicControls'
 })
-export class DynamicControlsDirective implements OnInit {
+export class DynamicControlsDirective implements OnInit, OnChanges {
 
 @Input()
 config:FieldConfig;
@@ -47,6 +49,12 @@ component: ComponentRef<Field>;
       this.component = this.container.createComponent(component);
       this.component.instance.config = this.config;
       this.component.instance.group = this.form;
+    }
+    ngOnChanges(){
+      if(this.component){
+        this.component.instance.config = this.config;
+        this.component.instance.group = this.form;
+      }
     }
   }
 
