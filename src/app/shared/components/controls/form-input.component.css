@@ -1,6 +1,9 @@
 .long {
   width:300px;
 }
+.fullWidth {
+  width:100%;
+}
 input {
   display:inline;
     width:150px;

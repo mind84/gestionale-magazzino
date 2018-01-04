@@ -130,6 +130,6 @@
     </div>
   </div>
   <div class="col-10 insert-form-container" *ngIf="!variationMode">
-    <app-dynamic-form (parentNotification)='log($event)' #form='dynamicForm'  [config]='SearchFormFields'></app-dynamic-form>
+    <app-dynamic-form (parentNotification)='log($event)' [config]='SearchFormFields' #form='dynamicForm'></app-dynamic-form>
   </div>
 </div>

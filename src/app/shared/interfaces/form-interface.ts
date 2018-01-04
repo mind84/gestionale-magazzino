@@ -9,6 +9,7 @@ export interface FieldConfig {
   options?: string[],
   placeholder?: string,
   type: string,
+  fullWidth?: boolean,
   customClass?:string;
   displayInline?:boolean,
   validation?: ValidatorFn[],

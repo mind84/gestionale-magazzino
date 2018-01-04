@@ -16,6 +16,7 @@ export const SEARCH_FORM_FIELDS:FieldConfig[] = [
     disabled:false,
     label: "Nome",
     formControlName: "name",
+    fullWidth:true,
     type: "input",
     displayInline:true,
     linkedField: ["code"],
