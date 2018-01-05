@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener,OnInit, Input, AfterViewInit, SimpleChanges, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges } from '@angular/core';
+import { Directive, ElementRef,ComponentFactory, HostListener,OnInit, Input, AfterViewInit, SimpleChanges, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges } from '@angular/core';
 import {TextSearchComponent} from '../components/text-search.component';
 import {Observable} from 'rxjs/Observable'
 import {CommunicationService} from '../../services/communication.service'
@@ -14,12 +14,12 @@ import 'rxjs/add/operator/switchMap'
   providers:[CommunicationService]
 })
 export class TextSearchDirective implements OnInit {
-  @Input('textSearch') search:any;
+  @Input('textSearch') search:string;
 
   @Input()
     searchConfiguration:TextSearchInterface;
 
-  appendTempl:any;
+  appendTempl:ComponentFactory<TextSearchComponent>;
 
   cmpRef:ComponentRef<TextSearchComponent>;
 
