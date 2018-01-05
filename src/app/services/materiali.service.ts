@@ -9,7 +9,7 @@ export class MaterialiService implements OnInit {
   private currentSelectedArticle: Subject<any> = new Subject<any>();
   public currentSelectedArticle$: Observable<any> = this.currentSelectedArticle.asObservable();
   public setCurrentFunc: Function;
-  public findFunction:Function
+  public findFunction: Function
   constructor(private http:HttpClient) {
     this.setCurrentFunc = this.setCurrentSelectedArticle.bind(this)
     this.findFunction = this.searchByName.bind(this)
@@ -40,7 +40,4 @@ export class MaterialiService implements OnInit {
     this.currentSelectedArticle.next(article);
   }
 
-  tryFunc(){
-    console.log('triggered')
-  }
 }
