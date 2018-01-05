@@ -24,6 +24,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
       this.dynForm = this.createFormGroup()
+      this.onFormChange(this.dynForm)
   }
 
   ngOnChanges(){
@@ -65,5 +66,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     event.preventDefault()
     event.stopPropagation()
     this.parentNotification.emit(this.formValue)
+  }
+  onFormChange(form:FormGroup){
+    form.valueChanges.subscribe(()=>{
+      console.log("changed")
+    })
   }
 }

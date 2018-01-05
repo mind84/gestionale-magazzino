@@ -2,7 +2,7 @@ import { Component, OnInit, HostBinding } from '@angular/core';
 import {Field} from '../../interfaces/form-interface'
 import {FieldConfig} from '../../interfaces/form-interface'
 
-import {FormGroup} from '@angular/forms'
+import {FormGroup, AbstractControl} from '@angular/forms'
 
 
 @Component({
@@ -14,6 +14,7 @@ export class FormInputComponent implements Field, OnInit {
 @HostBinding('class') hostClasses:string;
 elementClasses:string;
 contClasses:string;
+control:AbstractControl;
 get classHost(){ return this.config.hostStyle}
 get classCont(){ return this.config.containerStyle}
 get classElem(){ return this.config.elementStyle}
@@ -24,6 +25,7 @@ get classElem(){ return this.config.elementStyle}
     ngOnInit(){
       this.addHostClasses(this.config)
       this.addElemClasses(this.config)
+      this.control= this.group.get(this.config.formControlName)
 
     }
 

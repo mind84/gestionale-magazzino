@@ -1,5 +1,6 @@
 import { Directive, ElementRef,ComponentFactory, HostListener,OnInit, Input, AfterViewInit, SimpleChanges, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges } from '@angular/core';
 import {TextSearchComponent} from '../components/text-search.component';
+import {FormGroup, AbstractControl} from '@angular/forms'
 import {Observable} from 'rxjs/Observable'
 import {CommunicationService} from '../../services/communication.service'
 import {TextSearchInterface} from '../interfaces/form-interface'
@@ -18,7 +19,8 @@ export class TextSearchDirective implements OnInit {
 
   @Input()
     searchConfiguration:TextSearchInterface;
-
+  @Input()
+    control:AbstractControl;
   appendTempl:ComponentFactory<TextSearchComponent>;
 
   cmpRef:ComponentRef<TextSearchComponent>;

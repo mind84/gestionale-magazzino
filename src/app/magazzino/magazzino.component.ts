@@ -38,7 +38,6 @@ export class MagazzinoComponent implements OnInit {
   addMotivation:AddMotivation;
   removeMotivation:any;
   setCodeForSearch:Subject<FormGroup> = new Subject<FormGroup>();
-  //setCodeForSearch:BehaviorSubject<FormGroup> = new BehaviorSubject<FormGroup>(null);
   setCodeForSearch$:Observable<any> = this.setCodeForSearch.asObservable()
 
   private isAddingMode:boolean = true;
@@ -47,7 +46,6 @@ export class MagazzinoComponent implements OnInit {
   byorder:boolean;
   totWarn:boolean=false;
   insertResponse:any;
-  //inputConfig:any;
   SearchFormFields;
   @ViewChild(DynamicFormComponent) form: DynamicFormComponent;
   constructor(
@@ -60,8 +58,7 @@ export class MagazzinoComponent implements OnInit {
     this.motivazioniAdd=this.addMotivation[0].motName;
     this.removeMotivation = new RemoveMotivation().motivArray;
     this.motivazioniRem=this.removeMotivation[0].motName;
-    /*instance della classe*/
-    //let config = new SearchFormsFieldConf(matService.findFunction,matService.setCurrentFunc);
+
     this.SearchFormFields = this.searchConf.fields
    }
 
@@ -126,6 +123,7 @@ export class MagazzinoComponent implements OnInit {
   toggleState(){
     return this.variationMode = !this.variationMode
   }
+  
   search(form:FormGroup){
     if (!form.getRawValue().code) return;
     else this.setCodeForSearch.next(form.getRawValue().code)

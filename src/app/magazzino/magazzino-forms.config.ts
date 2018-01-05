@@ -25,7 +25,7 @@ export class SearchFormsFieldConf {
      type: "input",
      textSearch: {
        searchFunction: servInstance.findFunction,
-       subsFunction: servInstance.subsFunction
+       subsFunction: servInstance.setCurrentFunc
      },
      elementStyle: ['large'],
      linkedField: ["code"]
