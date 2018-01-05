@@ -9,7 +9,7 @@ export class TextSearchComponent implements OnInit {
   comServ:any
 @Input("results") results:any;
 @Input()
-  public subsScriber:any;
+  public subsScriber:Function;
   @Input()
     public comm:any;
   constructor() {

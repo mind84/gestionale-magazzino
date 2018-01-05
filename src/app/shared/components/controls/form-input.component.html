@@ -1,12 +1,18 @@
 <div
-   class="dynamic-field form-group" [ngClass]="{'fullWidth': config.fullWidth}"
+   class="dynamic-field form-group" [ngClass]='contClasses'
    [formGroup]="group">
-   <label>{{ config.label }}:</label>
-   <input
-     type="text" class="form-control" [className]="config.customClass + ' form-control'"
-     autocorrect="off"
-     autocapitalize="off"
-     spellcheck="off"
-     [attr.placeholder]="config.placeholder"
-     [formControlName]="config.formControlName">
+   <div>
+     <label>{{ config.label }}:</label>
+    </div>
+   <div class="input-container">
+     <input
+      #element
+      type="text" class="form-control" [ngClass]='elementClasses'
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="off"
+      [attr.placeholder]="config.placeholder"
+      [formControlName]="config.formControlName"
+      [textSearch]="element.value" [searchConfiguration]="config.textSearch">
+   </div>
  </div>

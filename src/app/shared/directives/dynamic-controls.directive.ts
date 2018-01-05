@@ -1,7 +1,5 @@
-import { ReflectiveInjector, Injector,Directive, ElementRef,Type, HostListener,OnInit, Input, AfterViewInit, SimpleChanges, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges } from '@angular/core';
+import { Directive,Type, HostListener,OnInit, Input, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges } from '@angular/core';
 import {FormGroup} from '@angular/forms'
-import {TextSearchComponent} from '../components/text-search.component';
-import {Observable} from 'rxjs/Observable'
 import {CommunicationService} from '../../services/communication.service'
 import {FieldConfig} from '../interfaces/form-interface'
 import {Field} from '../interfaces/form-interface';
@@ -34,7 +32,6 @@ form:FormGroup;
 
 component: ComponentRef<Field>;
   constructor(private resolver:ComponentFactoryResolver, private container: ViewContainerRef) {
-  console.log("intercettata configurazione")
  }
   //setFields(conf:any):void{
   ngOnInit() {

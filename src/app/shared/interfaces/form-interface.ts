@@ -2,6 +2,14 @@ import {FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms'
 
 import { ValidatorFn } from '@angular/forms';
 
+export enum HOSTSTYLE {
+  block="block",
+}
+export interface TextSearchInterface {
+        searchFunction:Function,
+        subsFunction:Function
+}
+
 export interface FieldConfig {
   disabled?: boolean,
   label?: string,
@@ -9,9 +17,10 @@ export interface FieldConfig {
   options?: string[],
   placeholder?: string,
   type: string,
-  fullWidth?: boolean,
-  customClass?:string;
-  displayInline?:boolean,
+  textSearch?: TextSearchInterface,
+  hostStyle?: HOSTSTYLE[],
+  containerStyle?: String[],
+  elementStyle?:String[],
   validation?: ValidatorFn[],
   value?: any,
   changeFunction?:any,

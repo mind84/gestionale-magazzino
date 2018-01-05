@@ -1,12 +1,10 @@
-.long {
+.large {
   width:300px;
 }
-.fullWidth {
-  width:100%;
-}
+
 input {
   display:inline;
-    width:150px;
+    width:120px;
 }
 .inline {
   display: inline-block;
@@ -14,4 +12,14 @@ input {
 :host {
   margin-left:1em;
   margin-right:1em;
+}
+:host(.block) {
+  width:100%;
+}
+.dynamic-field {
+  display:flex;
+  align-items: center;
+}
+.input-container{
+  position:relative;
 }

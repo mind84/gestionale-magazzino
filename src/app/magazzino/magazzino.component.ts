@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild, AfterViewInit, AfterViewChecked} from '@angular/core';
+import { Component, OnInit,ViewChild, AfterViewInit, AfterViewChecked, Inject, Injector} from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {AddMotivation} from '../shared/sharedClass/AddMotivation';
 import {RemoveMotivation} from '../shared/sharedClass/RemoveMotivation'
@@ -9,18 +9,27 @@ import {Subject} from 'rxjs/Subject'
 import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 import {Observable} from 'rxjs/Observable'
 import {DynamicFormComponent} from '../shared/components/dynamic-form.component'
-import {SEARCH_FORM_FIELDS} from './magazzino-forms.config';
+import {SearchFormsFieldConf} from './magazzino-forms.config';
+
 import 'rxjs/add/operator/pairwise'
 import 'rxjs/add/operator/switchMap'
 
+let searchFactory = (matServ:MaterialiService)=>{
+  return new SearchFormsFieldConf(matServ)
+}
 
 @Component({
   selector: 'app-magazzino',
   templateUrl: './magazzino.component.html',
   styleUrls: ['./magazzino.component.css'],
-    providers: [MaterialiService, MagazzinoService]
+    providers: [
+      MaterialiService,
+       MagazzinoService,
+       {provide: SearchFormsFieldConf, useFactory:searchFactory, deps:[MaterialiService]}
+     ]
 })
 export class MagazzinoComponent implements OnInit {
+
   searchForm: FormGroup;
   addForm:FormGroup;
   remForm:FormGroup;
@@ -31,8 +40,7 @@ export class MagazzinoComponent implements OnInit {
   setCodeForSearch:Subject<FormGroup> = new Subject<FormGroup>();
   //setCodeForSearch:BehaviorSubject<FormGroup> = new BehaviorSubject<FormGroup>(null);
   setCodeForSearch$:Observable<any> = this.setCodeForSearch.asObservable()
-  public subsFunction:Function;
-  public findFunction:Function;
+
   private isAddingMode:boolean = true;
   motivazioniAdd:any;
   motivazioniRem:any;
@@ -40,17 +48,21 @@ export class MagazzinoComponent implements OnInit {
   totWarn:boolean=false;
   insertResponse:any;
   //inputConfig:any;
-  public SearchFormFields = SEARCH_FORM_FIELDS;
+  SearchFormFields;
   @ViewChild(DynamicFormComponent) form: DynamicFormComponent;
   constructor(
     private matService:MaterialiService,
     private _fb: FormBuilder,
-    private storeServ: MagazzinoService
+    private storeServ: MagazzinoService,
+    private searchConf:SearchFormsFieldConf
   ) {
     this.addMotivation = new AddMotivation().motivArray;
     this.motivazioniAdd=this.addMotivation[0].motName;
     this.removeMotivation = new RemoveMotivation().motivArray;
     this.motivazioniRem=this.removeMotivation[0].motName;
+    /*instance della classe*/
+    //let config = new SearchFormsFieldConf(matService.findFunction,matService.setCurrentFunc);
+    this.SearchFormFields = this.searchConf.fields
    }
 
   ngOnInit() {
@@ -93,8 +105,8 @@ export class MagazzinoComponent implements OnInit {
           }
         })
 
-      this.subsFunction = this.matService.setCurrentFunc;
-      this.findFunction = this.matService.findFunction;
+      //this.subsFunction = this.matService.setCurrentFunc;
+      //this.findFunction = this.matService.findFunction;
       this.setCodeForSearch.next(this.searchForm.getRawValue().code)
   }
 
