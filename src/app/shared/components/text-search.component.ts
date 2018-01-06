@@ -1,4 +1,4 @@
-import { Injector, Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
 import {CommunicationService} from '../../services/communication.service'
 @Component({
   selector: 'app-text-search',
@@ -6,21 +6,23 @@ import {CommunicationService} from '../../services/communication.service'
   styleUrls: ['./text-search.component.css']
 })
 export class TextSearchComponent implements OnInit {
-  comServ:any
+
 @Input("results") results:any;
 @Input()
   public subsScriber:Function;
   @Input()
     public comm:any;
-  constructor() {
-}
+  constructor(private comServ:CommunicationService) {
+  }
 
   ngOnInit() {
+
   }
 
 setSearch(selectedArt:any){
   this.subsScriber(selectedArt);
-  this.comm();
+  //this.comm();
+  this.comServ.communicate()
 }
 
 }

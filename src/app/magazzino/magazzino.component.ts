@@ -105,6 +105,9 @@ export class MagazzinoComponent implements OnInit {
       //this.subsFunction = this.matService.setCurrentFunc;
       //this.findFunction = this.matService.findFunction;
       this.setCodeForSearch.next(this.searchForm.getRawValue().code)
+      this.storeServ.currentSelectedSearchArticle$.subscribe(()=>{
+        console.log('subs')
+      })
   }
 
   // ngAfterViewChecked(){
@@ -123,7 +126,7 @@ export class MagazzinoComponent implements OnInit {
   toggleState(){
     return this.variationMode = !this.variationMode
   }
-  
+
   search(form:FormGroup){
     if (!form.getRawValue().code) return;
     else this.setCodeForSearch.next(form.getRawValue().code)

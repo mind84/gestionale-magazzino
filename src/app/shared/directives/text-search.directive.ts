@@ -1,4 +1,4 @@
-import { Directive, ElementRef,ComponentFactory, HostListener,OnInit, Input, AfterViewInit, SimpleChanges, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges } from '@angular/core';
+import {Injector,Directive, ElementRef,ComponentFactory, HostListener,OnInit, Input, AfterViewInit, SimpleChanges, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges } from '@angular/core';
 import {TextSearchComponent} from '../components/text-search.component';
 import {FormGroup, AbstractControl} from '@angular/forms'
 import {Observable} from 'rxjs/Observable'
@@ -8,6 +8,7 @@ import 'rxjs/add/observable/fromEvent'
 import 'rxjs/add/operator/debounceTime'
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/switchMap'
+
 
 @Directive({
   selector: '[textSearch]',
@@ -21,6 +22,7 @@ export class TextSearchDirective implements OnInit {
     searchConfiguration:TextSearchInterface;
   @Input()
     control:AbstractControl;
+
   appendTempl:ComponentFactory<TextSearchComponent>;
 
   cmpRef:ComponentRef<TextSearchComponent>;
@@ -32,12 +34,14 @@ export class TextSearchDirective implements OnInit {
     private el:ViewContainerRef,
     private elem:ElementRef,
     private comServ:CommunicationService,
+    private inj:Injector
   ) {
     this.appendTempl = this.resolver.resolveComponentFactory(TextSearchComponent);
    }
 
    ngOnInit(){
      if(!this.searchConfiguration) return;
+
 
      this.keyUpEvent.debounceTime(200).switchMap((ev)=>{
        if (ev.target.value) return this.searchConfiguration.searchFunction(ev.target.value);
@@ -54,8 +58,10 @@ export class TextSearchDirective implements OnInit {
    }
 
    render(res:any):void {
+
+
      if(!this.cmpRef || this.cmpRef.hostView.destroyed){
-     this.cmpRef = this.el.createComponent(this.appendTempl);
+     this.cmpRef = this.el.createComponent(this.appendTempl,0,this.inj);
      this.cmpRef.instance.subsScriber = this.searchConfiguration.subsFunction;
      this.cmpRef.instance.comm = this.comServ.doCom;
      }
