@@ -8,7 +8,7 @@ import {Injectable} from '@angular/core'
 @Injectable()
 export class SearchFormsFieldConf {
   public fields:FieldConfig[];
-  constructor(servInstance?:any){
+  constructor(searchServiceInstance?:any, parentSubscriptionInstance?:any){
      this.fields=
      [
        {
@@ -24,11 +24,12 @@ export class SearchFormsFieldConf {
      formControlName: "name",
      type: "input",
      textSearch: {
-       searchFunction: servInstance.findFunction,
-       subsFunction: servInstance.setCurrentFunc
+       searchFunction: searchServiceInstance.findFunction,
+       manageByParent:true
      },
      elementStyle: ['large'],
-     linkedField: ["code"]
+     linkedField: ["code"],
+     ancestorNotification:parentSubscriptionInstance.setCurrArt
    },
    {
      type:'button',

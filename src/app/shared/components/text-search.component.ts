@@ -7,11 +7,10 @@ import {CommunicationService} from '../../services/communication.service'
 })
 export class TextSearchComponent implements OnInit {
 
-@Input("results") results:any;
-@Input()
-  public subsScriber:Function;
-  @Input()
-    public comm:any;
+@Input("results")
+  results:any;
+
+
   constructor(private comServ:CommunicationService) {
   }
 
@@ -20,9 +19,7 @@ export class TextSearchComponent implements OnInit {
   }
 
 setSearch(selectedArt:any){
-  this.subsScriber(selectedArt);
-  //this.comm();
-  this.comServ.communicate()
+  this.comServ.communicate(selectedArt)
 }
 
 }

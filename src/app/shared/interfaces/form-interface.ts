@@ -6,8 +6,8 @@ export enum HOSTSTYLE {
   block="block",
 }
 export interface TextSearchInterface {
-        searchFunction:Function,
-        subsFunction:Function
+        searchFunction:Function
+        manageByParent:boolean
 }
 
 export interface FieldConfig {
@@ -25,7 +25,8 @@ export interface FieldConfig {
   value?: any,
   changeFunction?:any,
   linkedField?:string[]
-  typeSearch?:any
+  typeSearch?:any,
+  ancestorNotification?:Function
 }
 
 export interface Field {

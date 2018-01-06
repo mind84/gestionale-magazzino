@@ -33,7 +33,7 @@ form:FormGroup;
 component: ComponentRef<Field>;
   constructor(private resolver:ComponentFactoryResolver, private container: ViewContainerRef) {
  }
-  //setFields(conf:any):void{
+
   ngOnInit() {
       if (!components[this.config.type]) {
         const supportedTypes = Object.keys(components).join(', ');

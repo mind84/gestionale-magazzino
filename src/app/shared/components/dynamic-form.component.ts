@@ -62,6 +62,13 @@ export class DynamicFormComponent implements OnInit, OnChanges {
       this.dynForm.controls[name][method]();
     }
   }
+  setValue(controlName:string,value:any){
+    this.controls
+      .filter((control)=>control.formControlName === controlName)
+        .forEach((control)=>{
+          this.dynForm.controls[control.formControlName].setValue(value);
+        })
+  }
   submit(event:Event){
     event.preventDefault()
     event.stopPropagation()

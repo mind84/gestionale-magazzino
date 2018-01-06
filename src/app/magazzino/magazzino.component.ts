@@ -4,6 +4,7 @@ import {AddMotivation} from '../shared/sharedClass/AddMotivation';
 import {RemoveMotivation} from '../shared/sharedClass/RemoveMotivation'
 import {MaterialiService} from '../services/materiali.service';
 import {MagazzinoService} from '../services/magazzino.service';
+import {MaterialiItem} from '../shared/interfaces/item-materiali.interface'
 import {gtZero} from '../shared/functions/validators';
 import {Subject} from 'rxjs/Subject'
 import {BehaviorSubject} from 'rxjs/BehaviorSubject'
@@ -14,8 +15,8 @@ import {SearchFormsFieldConf} from './magazzino-forms.config';
 import 'rxjs/add/operator/pairwise'
 import 'rxjs/add/operator/switchMap'
 
-let searchFactory = (matServ:MaterialiService)=>{
-  return new SearchFormsFieldConf(matServ)
+let searchFactory = (matServ:MaterialiService, storeServ:MagazzinoService)=>{
+  return new SearchFormsFieldConf(matServ, storeServ)
 }
 
 @Component({
@@ -25,7 +26,7 @@ let searchFactory = (matServ:MaterialiService)=>{
     providers: [
       MaterialiService,
        MagazzinoService,
-       {provide: SearchFormsFieldConf, useFactory:searchFactory, deps:[MaterialiService]}
+       {provide: SearchFormsFieldConf, useFactory:searchFactory, deps:[MaterialiService, MagazzinoService]}
      ]
 })
 export class MagazzinoComponent implements OnInit {
@@ -102,11 +103,17 @@ export class MagazzinoComponent implements OnInit {
           }
         })
 
-      //this.subsFunction = this.matService.setCurrentFunc;
-      //this.findFunction = this.matService.findFunction;
+
       this.setCodeForSearch.next(this.searchForm.getRawValue().code)
-      this.storeServ.currentSelectedSearchArticle$.subscribe(()=>{
-        console.log('subs')
+
+      this.storeServ.currentSelectedSearchArticle$.subscribe((article:MaterialiItem)=>{
+        if (article) {
+        let key = Object.keys(article).forEach(key=>{
+          console.log("called")
+          this.form.setValue(key, article[key])
+        })
+          console.log()
+        }
       })
   }
 

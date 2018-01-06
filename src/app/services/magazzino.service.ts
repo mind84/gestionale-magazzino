@@ -9,10 +9,13 @@ import {MaterialiItem} from '../shared/interfaces/item-materiali.interface'
 export class MagazzinoService {
   private currentSelectedSearchArticle: Subject<MaterialiItem> = new Subject<MaterialiItem>();
   public currentSelectedSearchArticle$: Observable<any> = this.currentSelectedSearchArticle.asObservable();
+  public setCurrArt = this.setCurrentSelectedSearchArticle.bind(this)
+  constructor(private http: HttpClient) {
 
-  constructor(private http: HttpClient) { }
 
-  setCurrentSelectedSearchArticle(article:MaterialiItem):void{
+   }
+
+  public setCurrentSelectedSearchArticle(article:MaterialiItem):void{
     this.currentSelectedSearchArticle.next(article);
   }
   getTransaction(code:string){

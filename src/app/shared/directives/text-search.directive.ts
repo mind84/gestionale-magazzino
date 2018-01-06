@@ -20,8 +20,12 @@ export class TextSearchDirective implements OnInit {
 
   @Input()
     searchConfiguration:TextSearchInterface;
+
   @Input()
     control:AbstractControl;
+
+  @Input()
+      parentNotification:Function
 
   appendTempl:ComponentFactory<TextSearchComponent>;
 
@@ -41,8 +45,6 @@ export class TextSearchDirective implements OnInit {
 
    ngOnInit(){
      if(!this.searchConfiguration) return;
-
-
      this.keyUpEvent.debounceTime(200).switchMap((ev)=>{
        if (ev.target.value) return this.searchConfiguration.searchFunction(ev.target.value);
        else return Observable.of(null);
@@ -52,9 +54,10 @@ export class TextSearchDirective implements OnInit {
        }
        else this.destroy()
      })
-     this.comServ.getCom$.subscribe((val=>{
+     this.comServ.getCom$.subscribe((val:any)=>{
+       if(val) this.parentNotification(val)
        this.cmpRef.destroy()
-     }))
+     })
    }
 
    render(res:any):void {
@@ -62,8 +65,6 @@ export class TextSearchDirective implements OnInit {
 
      if(!this.cmpRef || this.cmpRef.hostView.destroyed){
      this.cmpRef = this.el.createComponent(this.appendTempl,0,this.inj);
-     this.cmpRef.instance.subsScriber = this.searchConfiguration.subsFunction;
-     this.cmpRef.instance.comm = this.comServ.doCom;
      }
      if(res && res.length) this.cmpRef.instance.results= res;
    }
