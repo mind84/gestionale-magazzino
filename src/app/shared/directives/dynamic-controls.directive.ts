@@ -1,8 +1,9 @@
-import { Directive,Type, HostListener,OnInit, Input, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges } from '@angular/core';
+import {Injector, Directive,Type, HostListener,OnInit, Input, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges } from '@angular/core';
 import {FormGroup} from '@angular/forms'
 import {CommunicationService} from '../../services/communication.service'
 import {FieldConfig} from '../interfaces/form-interface'
 import {Field} from '../interfaces/form-interface';
+import {FormService} from '../../services/form-service'
 import 'rxjs/add/observable/fromEvent'
 import 'rxjs/add/operator/debounceTime'
 import 'rxjs/add/operator/map'
@@ -31,7 +32,7 @@ config:FieldConfig;
 form:FormGroup;
 
 component: ComponentRef<Field>;
-  constructor(private resolver:ComponentFactoryResolver, private container: ViewContainerRef) {
+  constructor(private resolver:ComponentFactoryResolver, private container: ViewContainerRef, private inj:Injector) {
  }
 
   ngOnInit() {
@@ -43,7 +44,7 @@ component: ComponentRef<Field>;
         );
       }
       const component = this.resolver.resolveComponentFactory<Field>(components[this.config.type]);
-      this.component = this.container.createComponent(component);
+      this.component = this.container.createComponent(component,0,this.inj);
       this.component.instance.config = this.config;
       this.component.instance.group = this.form;
     }

@@ -1,7 +1,7 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import {Field} from '../../interfaces/form-interface'
 import {FieldConfig} from '../../interfaces/form-interface'
-
+import {FormService} from '../../../services/form-service'
 import {FormGroup, AbstractControl} from '@angular/forms'
 
 
@@ -18,7 +18,10 @@ control:AbstractControl;
 get classHost(){ return this.config.hostStyle}
 get classCont(){ return this.config.containerStyle}
 get classElem(){ return this.config.elementStyle}
-  constructor() { }
+updateControl:Function;
+  constructor(private fs:FormService) {
+    this.updateControl =  this.onChangesControl.bind(this)
+  }
     config: FieldConfig;
     group:FormGroup
 
@@ -46,5 +49,8 @@ get classElem(){ return this.config.elementStyle}
       }
     }
 
+    onChangesControl(changes:any){
+      return this.fs.pushChanges(changes);
+    }
 
 }

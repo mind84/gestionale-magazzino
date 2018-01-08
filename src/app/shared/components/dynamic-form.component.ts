@@ -1,11 +1,13 @@
 import { Component, OnInit, ElementRef, HostListener, Input, AfterViewInit, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges, Output,EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import {FieldConfig} from '../interfaces/form-interface'
+import {FieldConfig} from '../interfaces/form-interface';
+import {FormService} from '../../services/form-service'
 @Component({
   exportAs:'dynamicForm',
   selector: 'app-dynamic-form',
   templateUrl: './dynamic-form.component.html',
-  styleUrls: ['./dynamic-form.component.css']
+  styleUrls: ['./dynamic-form.component.css'],
+  providers:[FormService]
 })
 export class DynamicFormComponent implements OnInit, OnChanges {
 
@@ -20,11 +22,14 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   get formValue(){return this.dynForm.value}
   get changes(){return this.dynForm.valueChanges}
   get valid() {return this.dynForm.valid}
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private fs:FormService) { }
 
   ngOnInit() {
       this.dynForm = this.createFormGroup()
       this.onFormChange(this.dynForm)
+      this.fs.pushChange$.subscribe((changes:any)=>{
+        console.log('changed');
+      })
   }
 
   ngOnChanges(){

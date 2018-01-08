@@ -26,7 +26,8 @@ export class TextSearchDirective implements OnInit {
 
   @Input()
       parentNotification:Function
-
+  @Input()
+    changeSubs:Function
   appendTempl:ComponentFactory<TextSearchComponent>;
 
   cmpRef:ComponentRef<TextSearchComponent>;
@@ -55,7 +56,8 @@ export class TextSearchDirective implements OnInit {
        else this.destroy()
      })
      this.comServ.getCom$.subscribe((val:any)=>{
-       if(val) this.parentNotification(val)
+       if(val) //this.parentNotification(val)
+       this.changeSubs(val);
        this.cmpRef.destroy()
      })
    }
