@@ -1,38 +1,44 @@
 import {Field} from '../shared/interfaces/form-interface'
 import {FieldConfig} from '../shared/interfaces/form-interface'
 import {Validators} from '@angular/forms'
-import {HOSTSTYLE} from '../shared/interfaces/form-interface'
+import {HOSTSTYLE, TYPEINPUT} from '../shared/interfaces/form-interface'
 import {MaterialiService} from '../services/materiali.service'
 import {Injectable} from '@angular/core'
 
 @Injectable()
 export class SearchFormsFieldConf {
   public fields:FieldConfig[];
-  constructor(searchServiceInstance?:any, parentSubscriptionInstance?:any){
+  constructor(searchServiceInstance?:any){
      this.fields=
      [
        {
      disabled:false,
      label: "Codice Articolo",
      formControlName: "code",
-     type: "input",
-     linkedField: ["name"]
+     type: TYPEINPUT.input,
+     afterChanges: {
+       isAlreadySubmitted:true
+     },
+     typeConfig:{
+       linkedFields:'allFields'
+     },
    },
    {
      disabled:false,
      label: "Nome",
      formControlName: "name",
-     type: "input",
-     textSearch: {
-       searchFunction: searchServiceInstance.findFunction,
-       manageByParent:true
+     type: TYPEINPUT.input,
+     typeConfig:{
+       searchFunction:searchServiceInstance.findFunction,
+       linkedFields:'allFields'
      },
      elementStyle: ['large'],
-     linkedField: ["code"],
-     ancestorNotification:parentSubscriptionInstance.setCurrArt
+     afterChanges: {
+       isAlreadySubmitted:true
+     }
    },
    {
-     type:'button',
+     type:TYPEINPUT.button,
      label:'Cerca',
      formControlName:'submit'
    }

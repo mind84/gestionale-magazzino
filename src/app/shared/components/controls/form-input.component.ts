@@ -1,6 +1,6 @@
 import { Component, OnInit, HostBinding } from '@angular/core';
 import {Field} from '../../interfaces/form-interface'
-import {FieldConfig} from '../../interfaces/form-interface'
+import {FieldConfig, FormChanges} from '../../interfaces/form-interface'
 import {FormService} from '../../../services/form-service'
 import {FormGroup, AbstractControl} from '@angular/forms'
 
@@ -48,8 +48,8 @@ updateControl:Function;
         this.elementClasses=this.classElem.join(" ");
       }
     }
-
-    onChangesControl(changes:any){
+    
+    onChangesControl(changes:FormChanges){
       return this.fs.pushChanges(changes);
     }
 

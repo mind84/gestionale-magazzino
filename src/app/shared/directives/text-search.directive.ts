@@ -3,7 +3,7 @@ import {TextSearchComponent} from '../components/text-search.component';
 import {FormGroup, AbstractControl} from '@angular/forms'
 import {Observable} from 'rxjs/Observable'
 import {CommunicationService} from '../../services/communication.service'
-import {TextSearchInterface} from '../interfaces/form-interface'
+import {TextSearchInterface, FormChanges} from '../interfaces/form-interface'
 import 'rxjs/add/observable/fromEvent'
 import 'rxjs/add/operator/debounceTime'
 import 'rxjs/add/operator/map'
@@ -19,13 +19,11 @@ export class TextSearchDirective implements OnInit {
   @Input('textSearch') search:string;
 
   @Input()
-    searchConfiguration:TextSearchInterface;
+    searchFunction:Function;
 
   @Input()
-    control:AbstractControl;
+    formControlName:string;
 
-  @Input()
-      parentNotification:Function
   @Input()
     changeSubs:Function
   appendTempl:ComponentFactory<TextSearchComponent>;
@@ -45,9 +43,9 @@ export class TextSearchDirective implements OnInit {
    }
 
    ngOnInit(){
-     if(!this.searchConfiguration) return;
+     if(!this.searchFunction) return;
      this.keyUpEvent.debounceTime(200).switchMap((ev)=>{
-       if (ev.target.value) return this.searchConfiguration.searchFunction(ev.target.value);
+       if (ev.target.value) return this.searchFunction(ev.target.value);
        else return Observable.of(null);
      }).subscribe((val)=>{
        if (val) {
@@ -56,15 +54,19 @@ export class TextSearchDirective implements OnInit {
        else this.destroy()
      })
      this.comServ.getCom$.subscribe((val:any)=>{
-       if(val) //this.parentNotification(val)
-       this.changeSubs(val);
-       this.cmpRef.destroy()
+       if(val) {
+         let changes:FormChanges={
+           formControlName:this.formControlName,
+           valueToUpdate:val[this.formControlName],
+           fromService:val
+         }
+         this.changeSubs(changes);
+         this.cmpRef.destroy()
+       }
      })
    }
 
    render(res:any):void {
-
-
      if(!this.cmpRef || this.cmpRef.hostView.destroyed){
      this.cmpRef = this.el.createComponent(this.appendTempl,0,this.inj);
      }

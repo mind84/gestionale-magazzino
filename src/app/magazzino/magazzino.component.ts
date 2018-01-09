@@ -11,12 +11,13 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 import {Observable} from 'rxjs/Observable'
 import {DynamicFormComponent} from '../shared/components/dynamic-form.component'
 import {SearchFormsFieldConf} from './magazzino-forms.config';
+import {FormChanges, EventChanges} from '../shared/interfaces/form-interface'
 
 import 'rxjs/add/operator/pairwise'
 import 'rxjs/add/operator/switchMap'
 
 let searchFactory = (matServ:MaterialiService, storeServ:MagazzinoService)=>{
-  return new SearchFormsFieldConf(matServ, storeServ)
+  return new SearchFormsFieldConf(matServ)
 }
 
 @Component({
@@ -26,12 +27,12 @@ let searchFactory = (matServ:MaterialiService, storeServ:MagazzinoService)=>{
     providers: [
       MaterialiService,
        MagazzinoService,
-       {provide: SearchFormsFieldConf, useFactory:searchFactory, deps:[MaterialiService, MagazzinoService]}
+       {provide: SearchFormsFieldConf, useFactory:searchFactory, deps:[MaterialiService]}
      ]
 })
 export class MagazzinoComponent implements OnInit {
 
-  searchForm: FormGroup;
+  //searchForm: FormGroup;
   addForm:FormGroup;
   remForm:FormGroup;
   variationMode:boolean = true;
@@ -47,8 +48,12 @@ export class MagazzinoComponent implements OnInit {
   byorder:boolean;
   totWarn:boolean=false;
   insertResponse:any;
+  searchFormName:string;
   SearchFormFields;
-  @ViewChild(DynamicFormComponent) form: DynamicFormComponent;
+  FORMS:any
+  @ViewChild(DynamicFormComponent) searchForm: DynamicFormComponent;
+  @ViewChild(DynamicFormComponent) addTransForm: DynamicFormComponent;
+  @ViewChild(DynamicFormComponent) remTransForm: DynamicFormComponent;
   constructor(
     private matService:MaterialiService,
     private _fb: FormBuilder,
@@ -61,16 +66,22 @@ export class MagazzinoComponent implements OnInit {
     this.motivazioniRem=this.removeMotivation[0].motName;
 
     this.SearchFormFields = this.searchConf.fields
+    this.searchFormName = 'searchForm'
+
    }
 
   ngOnInit() {
-    //this.inputConfig= this.SearchFormFields;
-    this.searchForm = this._fb.group({
-        code: null,
-        name: null,
-        datfrom: null,
-        datto: null
-      })
+    this.FORMS = {
+      searchForm: {
+        name:"searchForm"
+      },
+      addTransForm: {
+          name:'addTransForm'
+      },
+      remTransForm: {
+        name:this.remForm
+      }
+    }
     this.addForm = this._fb.group({
       qtadd:[null, Validators.compose([Validators.required, gtZero])],
       motivazioni:[],
@@ -83,62 +94,27 @@ export class MagazzinoComponent implements OnInit {
       note:""
     })
 
-      this.matService.currentSelectedArticle$.subscribe((art)=>{
-        this.searchForm.controls.name.setValue(art.name);
-        this.searchForm.controls.code.setValue(art.code);
-        this.currentArticle = art;
-      })
-
-      this.setCodeForSearch$
-      .pairwise()
-      .filter((p)=>{
-        return (p[0] !== p[1])
-      }).switchMap((val:any)=>{
-        return this.matService.searchByCode(val[1]);
+    this.setCodeForSearch$
+      .switchMap((val:any)=>{
+        return this.matService.searchByCode(val);
       }).subscribe(
         (v:any)=>{
           if (v && v.length) {
-            this.searchForm.controls.name.setValue(v[0].name);
-            this.currentArticle=v[0];
+            let config:FormChanges = {
+              valueToUpdate:v[0].code,
+              formControlName:"code",
+              fromService:v[0]
+            }
+            this.manageFormChange({changes:config, formName: this.FORMS.searchForm.name});
           }
         })
-
-
-      this.setCodeForSearch.next(this.searchForm.getRawValue().code)
-
-      this.storeServ.currentSelectedSearchArticle$.subscribe((article:MaterialiItem)=>{
-        if (article) {
-        let key = Object.keys(article).forEach(key=>{
-          console.log("called")
-          this.form.setValue(key, article[key])
-        })
-          console.log()
-        }
-      })
   }
-
-  // ngAfterViewChecked(){
-  //   console.log("check")
-  //   if(this.form) {
-  //   let previousValid = this.form.valid;
-  //   this.form.changes.subscribe(()=>{
-  //     if(this.form.valid!== previousValid) {
-  //       this.form.setDisabled('submit', true)
-  //     }
-  //
-  //   })
-  // }
-  // }
 
   toggleState(){
     return this.variationMode = !this.variationMode
   }
 
-  search(form:FormGroup){
-    if (!form.getRawValue().code) return;
-    else this.setCodeForSearch.next(form.getRawValue().code)
 
-  }
   addItem(type:boolean){
     return this.isAddingMode=type;
   }
@@ -194,13 +170,26 @@ export class MagazzinoComponent implements OnInit {
     });
   }
   }
-  log(ev){
-    console.log(ev)
+
+
+  manageFormChange(change:EventChanges){
+    let form= this[change.formName];
+    if(!form) return;
+    let conf = this.searchConf.fields.filter(controlConfig=> controlConfig.formControlName===change.changes.formControlName)[0]
+    if (!change.changes.formControlName) return form.dynForm.reset()
+    form.setValues(conf,change.changes)
+
+    if (conf.afterChanges.isAlreadySubmitted) {
+      this.currentArticle=change.changes.fromService
+    }
   }
-  changeConf(){
-    this.SearchFormFields[0].disabled= !this.SearchFormFields[0].disabled;
-    let p = Object.assign({},this.SearchFormFields);
-    this.SearchFormFields= p;
+
+  onFormSubmit(formName:string) {
+    if (formName=="searchForm") {
+      let currentcode = this[formName].dynForm.getRawValue().code
+      if (!currentcode || (this.currentArticle && this.currentArticle.code == currentcode)) return
+      else this.setCodeForSearch.next(this.searchForm.dynForm.getRawValue().code)
+    }
   }
 
 }

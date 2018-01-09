@@ -7,7 +7,26 @@ export enum HOSTSTYLE {
 }
 export interface TextSearchInterface {
         searchFunction:Function
-        manageByParent:boolean
+}
+export enum TYPEINPUT {
+  input='input',
+  select='select',
+  checkbox='checkbox',
+  radiobutton='radiobutton',
+  button='button'
+}
+
+interface InputConfig {
+  searchFunction?:Function,
+  linkedFields?:string[] | string
+  onBlurFunction?: Function,
+  onKeyUpFunction?: Function
+}
+interface SelectConfig {
+  textSearch?:Function,
+  linkedFields?:string[] | string
+  onBlurFunction?: Function,
+  onKeyUpFunction?: Function
 }
 
 export interface FieldConfig {
@@ -16,20 +35,30 @@ export interface FieldConfig {
   formControlName: string,
   options?: string[],
   placeholder?: string,
-  type: string,
-  textSearch?: TextSearchInterface,
+  type: TYPEINPUT,
+  typeConfig?:InputConfig | SelectConfig,
   hostStyle?: HOSTSTYLE[],
   containerStyle?: String[],
   elementStyle?:String[],
   validation?: ValidatorFn[],
   value?: any,
-  changeFunction?:any,
-  linkedField?:string[]
-  typeSearch?:any,
-  ancestorNotification?:Function
+  afterChanges?:{
+    isAlreadySubmitted?: boolean
+  }
 }
 
 export interface Field {
   config: FieldConfig,
   group: FormGroup
+}
+
+export interface FormChanges {
+  valueToUpdate:any,
+  formControlName:string,
+  fromService?:any
+}
+
+export interface EventChanges {
+  changes:FormChanges,
+  formName:string
 }

@@ -8,7 +8,8 @@
   </div>
   <div class="col-10 insert-form-container" *ngIf="variationMode">
     <div class="search-control">
-        <form id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
+      <app-dynamic-form [config]='SearchFormFields' [formName]='FORMS.searchForm.name' #searchForm='dynamicForm' (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
+        <!--m id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
           <span>Codice articolo :</span> <input class="form-control" (blur)="search(searchForm)"
           formControlName="code"
           autocorrect="off"
@@ -24,7 +25,7 @@
           spellcheck="off" type="text"
           value="" [textSearch]="searchName.value">
         </div>
-          <!--span id="nmSearch">Dal : </span>
+          <span id="nmSearch">Dal : </span>
           <mat-form-field>
           <input matInput [matDatepicker]="datfrom" class="form-control"
           formControlName="datfrom">
@@ -37,9 +38,9 @@
           formControlName="datto">
           <mat-datepicker-toggle matSuffix [for]="datto"></mat-datepicker-toggle>
           <mat-datepicker #datto></mat-datepicker>
-        </mat-form-field-->
+        </mat-form-field>
           <button type="submit" class="btn submit-btn">Cerca</button>
-        </form>
+        </form-->
       <!--span style=""><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuovo articolo</button></span-->
     </div>
     <div class="insert transaction" *ngIf="currentArticle">
@@ -130,6 +131,6 @@
     </div>
   </div>
   <div class="col-10 insert-form-container" *ngIf="!variationMode">
-    <app-dynamic-form (parentNotification)='log($event)' [config]='SearchFormFields' #form='dynamicForm'></app-dynamic-form>
+    Interrogo
   </div>
 </div>

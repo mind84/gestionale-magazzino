@@ -1,7 +1,10 @@
 import { Component, OnInit, ElementRef, HostListener, Input, AfterViewInit, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges, Output,EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import {FieldConfig} from '../interfaces/form-interface';
-import {FormService} from '../../services/form-service'
+import {FieldConfig, FormChanges, EventChanges} from '../interfaces/form-interface';
+import {FormService} from '../../services/form-service';
+
+
+
 @Component({
   exportAs:'dynamicForm',
   selector: 'app-dynamic-form',
@@ -15,8 +18,13 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   @Input()
   config: FieldConfig[];
+  @Input()
+    formName:string;
   @Output()
-  parentNotification: EventEmitter<any> = new EventEmitter<any>();
+  notifyChanges: EventEmitter<FormChanges> = new EventEmitter<FormChanges>();
+  @Output()
+  formSubmit: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
+
 
   get controls() { return this.config.filter(({type}) => type !== 'button'); }
   get formValue(){return this.dynForm.value}
@@ -26,9 +34,12 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
       this.dynForm = this.createFormGroup()
-      this.onFormChange(this.dynForm)
-      this.fs.pushChange$.subscribe((changes:any)=>{
-        console.log('changed');
+      this.fs.pushChange$.subscribe((changes:FormChanges)=>{
+        let valueToEmit:any= {
+          changes:changes,
+          formName:this.formName
+        }
+        this.notifyChanges.emit(valueToEmit);
       })
   }
 
@@ -67,21 +78,42 @@ export class DynamicFormComponent implements OnInit, OnChanges {
       this.dynForm.controls[name][method]();
     }
   }
-  setValue(controlName:string,value:any){
-    this.controls
-      .filter((control)=>control.formControlName === controlName)
-        .forEach((control)=>{
-          this.dynForm.controls[control.formControlName].setValue(value);
-        })
-  }
-  submit(event:Event){
-    event.preventDefault()
-    event.stopPropagation()
-    this.parentNotification.emit(this.formValue)
-  }
-  onFormChange(form:FormGroup){
-    form.valueChanges.subscribe(()=>{
-      console.log("changed")
+
+setFormValues(fields:string | object, whole:any){
+ if (typeof fields == "object") {
+  Object.keys(fields).forEach((key)=>{
+    if (this.dynForm.controls[key] && (typeof whole == "boolean" ? whole : (whole.includes(key)? true : false))) this.dynForm.controls[key].setValue(fields[key])
     })
   }
+  else {
+    if (this.dynForm.controls[fields]) this.dynForm.controls[fields].setValue(whole)
+  }
+
+}
+
+setValues(config:FieldConfig,change:FormChanges, wholeForm?:boolean){
+
+    if(change.fromService){
+      if(config.typeConfig && config.typeConfig.linkedFields) {
+        if(typeof config.typeConfig.linkedFields ==='string' && config.typeConfig.linkedFields=="allFields" || wholeForm ) {
+          this.setFormValues(change.fromService, true)
+          }
+          else {
+            this.setFormValues(change.formControlName, change.valueToUpdate)
+            this.setFormValues(change.fromService, config.typeConfig.linkedFields)
+          }
+        }
+        else {
+          this.setFormValues(change.formControlName, change.valueToUpdate)
+         }
+      }
+    }
+
+
+  submit(el:any){
+    event.preventDefault()
+    event.stopPropagation()
+    this.formSubmit.emit(el.getAttribute("form-name"))
+  }
+
 }

@@ -13,9 +13,7 @@
       spellcheck="off"
       [attr.placeholder]="config.placeholder"
       [formControlName]="config.formControlName"
-      [textSearch]="element.value" [searchConfiguration]="config.textSearch"
-      [parentNotification]='config.ancestorNotification'
-      [control]="control"
+      [textSearch]="element.value" [searchFunction]="config?.typeConfig?.searchFunction"
       [changeSubs] ='updateControl'>
    </div>
  </div>
