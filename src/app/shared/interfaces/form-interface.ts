@@ -53,12 +53,8 @@ export interface Field {
 }
 
 export interface FormChanges {
+  targetForm?:string,
   valueToUpdate:any,
   formControlName:string,
   fromService?:any
-}
-
-export interface EventChanges {
-  changes:FormChanges,
-  formName:string
 }

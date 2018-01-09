@@ -11,7 +11,7 @@ import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 import {Observable} from 'rxjs/Observable'
 import {DynamicFormComponent} from '../shared/components/dynamic-form.component'
 import {SearchFormsFieldConf} from './magazzino-forms.config';
-import {FormChanges, EventChanges} from '../shared/interfaces/form-interface'
+import {FormChanges} from '../shared/interfaces/form-interface'
 
 import 'rxjs/add/operator/pairwise'
 import 'rxjs/add/operator/switchMap'
@@ -66,7 +66,6 @@ export class MagazzinoComponent implements OnInit {
     this.motivazioniRem=this.removeMotivation[0].motName;
 
     this.SearchFormFields = this.searchConf.fields
-    this.searchFormName = 'searchForm'
 
    }
 
@@ -101,11 +100,12 @@ export class MagazzinoComponent implements OnInit {
         (v:any)=>{
           if (v && v.length) {
             let config:FormChanges = {
+              targetForm:'searchForm',
               valueToUpdate:v[0].code,
               formControlName:"code",
               fromService:v[0]
             }
-            this.manageFormChange({changes:config, formName: this.FORMS.searchForm.name});
+            this.manageFormChange(config);
           }
         })
   }
@@ -172,15 +172,15 @@ export class MagazzinoComponent implements OnInit {
   }
 
 
-  manageFormChange(change:EventChanges){
-    let form= this[change.formName];
-    if(!form) return;
-    let conf = this.searchConf.fields.filter(controlConfig=> controlConfig.formControlName===change.changes.formControlName)[0]
-    if (!change.changes.formControlName) return form.dynForm.reset()
-    form.setValues(conf,change.changes)
+  manageFormChange(change:FormChanges){
+    let currentForm = this[change.targetForm];
+    if(!currentForm) return;
+    let conf = this.searchConf.fields.filter(controlConfig=> controlConfig.formControlName===change.formControlName)[0]
+    if (!change.formControlName) return currentForm.dynForm.reset()
+    currentForm.setValues(conf,change)
 
     if (conf.afterChanges.isAlreadySubmitted) {
-      this.currentArticle=change.changes.fromService
+      this.currentArticle=change.fromService
     }
   }
 

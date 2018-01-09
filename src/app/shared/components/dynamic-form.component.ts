@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, HostListener, Input, AfterViewInit, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges, Output,EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import {FieldConfig, FormChanges, EventChanges} from '../interfaces/form-interface';
+import {FieldConfig, FormChanges} from '../interfaces/form-interface';
 import {FormService} from '../../services/form-service';
 
 
@@ -35,11 +35,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   ngOnInit() {
       this.dynForm = this.createFormGroup()
       this.fs.pushChange$.subscribe((changes:FormChanges)=>{
-        let valueToEmit:any= {
-          changes:changes,
-          formName:this.formName
-        }
-        this.notifyChanges.emit(valueToEmit);
+        if(!changes.targetForm) changes.targetForm=this.formName;
+        this.notifyChanges.emit(changes);
       })
   }
 
