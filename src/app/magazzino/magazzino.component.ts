@@ -10,8 +10,8 @@ import {Subject} from 'rxjs/Subject'
 import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 import {Observable} from 'rxjs/Observable'
 import {DynamicFormComponent} from '../shared/components/dynamic-form.component'
-import {SearchFormsFieldConf} from './magazzino-forms.config';
-import {FormChanges} from '../shared/interfaces/form-interface'
+import {SearchFormsFieldConf, AddFormsFieldConf} from './magazzino-forms.config';
+import {FormChanges, FormConfig} from '../shared/interfaces/form-interface'
 
 import 'rxjs/add/operator/pairwise'
 import 'rxjs/add/operator/switchMap'
@@ -27,7 +27,8 @@ let searchFactory = (matServ:MaterialiService, storeServ:MagazzinoService)=>{
     providers: [
       MaterialiService,
        MagazzinoService,
-       {provide: SearchFormsFieldConf, useFactory:searchFactory, deps:[MaterialiService]}
+       {provide: SearchFormsFieldConf, useFactory:searchFactory, deps:[MaterialiService]},
+       AddFormsFieldConf
      ]
 })
 export class MagazzinoComponent implements OnInit {
@@ -36,7 +37,7 @@ export class MagazzinoComponent implements OnInit {
   addForm:FormGroup;
   remForm:FormGroup;
   variationMode:boolean = true;
-  currentArticle:any;
+  currentArticle:MaterialiItem;
   addMotivation:AddMotivation;
   removeMotivation:any;
   setCodeForSearch:Subject<FormGroup> = new Subject<FormGroup>();
@@ -48,9 +49,11 @@ export class MagazzinoComponent implements OnInit {
   byorder:boolean;
   totWarn:boolean=false;
   insertResponse:any;
-  searchFormName:string;
-  SearchFormFields;
-  FORMS:any
+
+  searchFormFields;
+  addFormFields;
+  formConfig:FormConfig
+
   @ViewChild(DynamicFormComponent) searchForm: DynamicFormComponent;
   @ViewChild(DynamicFormComponent) addTransForm: DynamicFormComponent;
   @ViewChild(DynamicFormComponent) remTransForm: DynamicFormComponent;
@@ -58,29 +61,27 @@ export class MagazzinoComponent implements OnInit {
     private matService:MaterialiService,
     private _fb: FormBuilder,
     private storeServ: MagazzinoService,
-    private searchConf:SearchFormsFieldConf
+    private searchConf:SearchFormsFieldConf,
+    private addConf: AddFormsFieldConf
   ) {
     this.addMotivation = new AddMotivation().motivArray;
     this.motivazioniAdd=this.addMotivation[0].motName;
     this.removeMotivation = new RemoveMotivation().motivArray;
     this.motivazioniRem=this.removeMotivation[0].motName;
-
-    this.SearchFormFields = this.searchConf.fields
-
+    this.addFormFields = this.addConf.fields;
+    this.searchFormFields = this.searchConf.fields
+    this.formConfig = {
+      searchForm: {
+        formName: 'searchForm'
+      },
+      addForm: {
+        formName:'addForm'
+      }
+    }
    }
 
   ngOnInit() {
-    this.FORMS = {
-      searchForm: {
-        name:"searchForm"
-      },
-      addTransForm: {
-          name:'addTransForm'
-      },
-      remTransForm: {
-        name:this.remForm
-      }
-    }
+
     this.addForm = this._fb.group({
       qtadd:[null, Validators.compose([Validators.required, gtZero])],
       motivazioni:[],
@@ -180,7 +181,7 @@ export class MagazzinoComponent implements OnInit {
     currentForm.setValues(conf,change)
 
     if (conf.afterChanges.isAlreadySubmitted) {
-      this.currentArticle=change.fromService
+        this.setCurrentArticle(<MaterialiItem>change.fromService)
     }
   }
 
@@ -190,6 +191,9 @@ export class MagazzinoComponent implements OnInit {
       if (!currentcode || (this.currentArticle && this.currentArticle.code == currentcode)) return
       else this.setCodeForSearch.next(this.searchForm.dynForm.getRawValue().code)
     }
+  }
+  setCurrentArticle(article:MaterialiItem) {
+    return this.currentArticle = article;
   }
 
 }

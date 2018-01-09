@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, HostListener, Input, AfterViewInit, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges, Output,EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import {FieldConfig, FormChanges} from '../interfaces/form-interface';
+import {FieldConfig, FormChanges, FormConfig, SingleFormConf} from '../interfaces/form-interface';
 import {FormService} from '../../services/form-service';
 
 
@@ -12,20 +12,20 @@ import {FormService} from '../../services/form-service';
   styleUrls: ['./dynamic-form.component.css'],
   providers:[FormService]
 })
-export class DynamicFormComponent implements OnInit, OnChanges {
+export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
 
   dynForm:FormGroup;
 
   @Input()
   config: FieldConfig[];
   @Input()
-    formName:string;
+    formConfig:SingleFormConf;
   @Output()
   notifyChanges: EventEmitter<FormChanges> = new EventEmitter<FormChanges>();
   @Output()
   formSubmit: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
 
-
+  formName:string;
   get controls() { return this.config.filter(({type}) => type !== 'button'); }
   get formValue(){return this.dynForm.value}
   get changes(){return this.dynForm.valueChanges}
@@ -33,6 +33,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   constructor(private fb: FormBuilder, private fs:FormService) { }
 
   ngOnInit() {
+    this.formName = this.formConfig.formName;
       this.dynForm = this.createFormGroup()
       this.fs.pushChange$.subscribe((changes:FormChanges)=>{
         if(!changes.targetForm) changes.targetForm=this.formName;

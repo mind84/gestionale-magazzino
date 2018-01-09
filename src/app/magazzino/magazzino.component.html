@@ -8,7 +8,7 @@
   </div>
   <div class="col-10 insert-form-container" *ngIf="variationMode">
     <div class="search-control">
-      <app-dynamic-form [config]='SearchFormFields' [formName]='FORMS.searchForm.name' #searchForm='dynamicForm' (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
+      <app-dynamic-form [config]='searchFormFields' [formConfig]='formConfig.searchForm' #searchForm='dynamicForm' (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
         <!--m id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
           <span>Codice articolo :</span> <input class="form-control" (blur)="search(searchForm)"
           formControlName="code"
@@ -59,7 +59,9 @@
           <button type ="button" class="btn remove"(click)=addItem(false)>Sottrai</button>
         </div>
         <div *ngIf="isAddingMode">
-          <form id="addForm" [formGroup] = "addForm" [displayResponse]="insertResponse" class = "addform" (ngSubmit)="addTrans(addForm)">
+            <app-dynamic-form [config]='addFormFields' [formConfig]='formConfig.addForm' #addForm='dynamicForm' (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
+
+          <!--form id="addForm" [formGroup] = "addForm" [displayResponse]="insertResponse" class = "addform" (ngSubmit)="addTrans(addForm)">
             <span>Quantità da aggiungere:</span>
             <input class="form-control qtadd"
               appFormatNumber
@@ -89,7 +91,7 @@
                 value="">
             </div>
               <button type="submit" class="btn submit-btn">Aggiungi</button>
-          </form>
+          </form-->
         </div>
         <div *ngIf="!isAddingMode">
           <form id="remForm" [formGroup] = "remForm" [displayResponse]="insertResponse" class = "remform" (ngSubmit)="remTrans(remForm)">

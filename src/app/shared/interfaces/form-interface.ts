@@ -58,3 +58,9 @@ export interface FormChanges {
   formControlName:string,
   fromService?:any
 }
+export interface SingleFormConf {
+  formName:string
+}
+export interface FormConfig  {
+  [type:string]: SingleFormConf
+}
