@@ -4,7 +4,6 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import {MaterialiService} from '../services/materiali.service';
 import {MagazzinoService} from '../services/magazzino.service';
 import {MaterialiItem} from '../shared/interfaces/item-materiali.interface'
-import {gtZero} from '../shared/functions/validators';
 import {Subject} from 'rxjs/Subject'
 import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 import {Observable} from 'rxjs/Observable'
@@ -35,9 +34,8 @@ export class MagazzinoComponent implements OnInit {
   variationMode:boolean = true;
   currentArticle:MaterialiItem;
 
-
-  setCodeForSearch:Subject<FormGroup> = new Subject<FormGroup>();
-  setCodeForSearch$:Observable<any> = this.setCodeForSearch.asObservable()
+  private setCodeForSearch:Subject<FormGroup> = new Subject<FormGroup>();
+  public setCodeForSearch$:Observable<any> = this.setCodeForSearch.asObservable()
 
   private isAddingMode:boolean = true;
 
@@ -49,7 +47,6 @@ export class MagazzinoComponent implements OnInit {
   @ViewChild('searchForm')
     searchForm: DynamicFormComponent;
 
-
   @ViewChild('addTransForm') set addTransForm(val:DynamicFormComponent) {
     this._addTransForm = val
   }
@@ -58,8 +55,6 @@ export class MagazzinoComponent implements OnInit {
       this._remTransForm=val;
     }
 
-
-
   constructor(
     private matService:MaterialiService,
     private _fb: FormBuilder,
@@ -67,7 +62,6 @@ export class MagazzinoComponent implements OnInit {
     private dynFieldsConf:DynFormsFieldConf,
     private cdRef:ChangeDetectorRef
   ) {
-
     //forms configuration
     this.searchFormFields = this.dynFieldsConf.getFormFields(SEARCHFIELDS)
     this.addFormFields = this.dynFieldsConf.getFormFields(ADDTRANSFIELDS)
@@ -88,7 +82,6 @@ export class MagazzinoComponent implements OnInit {
    }
 
   ngOnInit() {
-
     this.setCodeForSearch$
       .switchMap((val:any)=>{
         return this.matService.searchByCode(val);
@@ -108,19 +101,16 @@ export class MagazzinoComponent implements OnInit {
 
   toggleState(){
     this.variationMode = !this.variationMode
-
   }
 
 
   addItem(type:boolean){
     this.isAddingMode=type;
-    this.cdRef.detectChanges()
   }
 
 
   manageFormChange(change:FormChanges){
     if(change.targetForm =='searchForm'){
-
       //in questo caso, qualsiasi cambiamento comporta un update globale della form
       if(!change.fromService) throw 'Oggetto per update non ricevuto'
         this.searchForm.updateWholeForm(change)
@@ -156,12 +146,9 @@ export class MagazzinoComponent implements OnInit {
         }
       }
       else return
-
     }
 
-
   onFormSubmit(formName:string) {
-
     switch(formName){
       case "searchForm":
         let currentcode = this.searchForm.dynForm.getRawValue().code
