@@ -34,7 +34,7 @@ let searchFactory = (matServ:MaterialiService, storeServ:MagazzinoService)=>{
 export class MagazzinoComponent implements OnInit {
 
   //searchForm: FormGroup;
-  addForm:FormGroup;
+  //addForm:FormGroup;
   remForm:FormGroup;
   variationMode:boolean = true;
   currentArticle:MaterialiItem;
@@ -68,8 +68,10 @@ export class MagazzinoComponent implements OnInit {
     this.motivazioniAdd=this.addMotivation[0].motName;
     this.removeMotivation = new RemoveMotivation().motivArray;
     this.motivazioniRem=this.removeMotivation[0].motName;
+    //forms configuration
     this.addFormFields = this.addConf.fields;
     this.searchFormFields = this.searchConf.fields
+
     this.formConfig = {
       searchForm: {
         formName: 'searchForm'
@@ -82,11 +84,11 @@ export class MagazzinoComponent implements OnInit {
 
   ngOnInit() {
 
-    this.addForm = this._fb.group({
+    /*this.addForm = this._fb.group({
       qtadd:[null, Validators.compose([Validators.required, gtZero])],
       motivazioni:[],
       note:""
-    })
+    })*/
 
     this.remForm = this._fb.group({
       qtsub:[null, Validators.compose([Validators.required, gtZero])],
@@ -123,12 +125,12 @@ export class MagazzinoComponent implements OnInit {
   onChangeAdd(ev,form){
     if (ev=="Da Ordine") {
       this.byorder=true;
-      this.addForm.addControl('numorder',new FormControl(null,Validators.required))
+    //  this.addForm.addControl('numorder',new FormControl(null,Validators.required))
     }
     else {
       this.byorder=false;
         if(form.controls.numorder) form.controls.numorder.setValue("");
-        this.addForm.removeControl('numorder');
+      //  this.addForm.removeControl('numorder');
 
     }
   }
@@ -151,7 +153,7 @@ export class MagazzinoComponent implements OnInit {
           this.insertResponse= res;
           setTimeout(()=>{this.insertResponse=null},2000)
           this.currentArticle=res.cback;
-          this.addForm.reset();
+          //this.addForm.reset();
         })
       }
 
@@ -174,23 +176,34 @@ export class MagazzinoComponent implements OnInit {
 
 
   manageFormChange(change:FormChanges){
-    let currentForm = this[change.targetForm];
-    if(!currentForm) return;
-    let conf = this.searchConf.fields.filter(controlConfig=> controlConfig.formControlName===change.formControlName)[0]
-    if (!change.formControlName) return currentForm.dynForm.reset()
-    currentForm.setValues(conf,change)
+    let currentForm:DynamicFormComponent =this[change.targetForm]
 
-    if (conf.afterChanges.isAlreadySubmitted) {
+    switch(change.targetForm){
+      case "searchForm":
+      //in questo caso, qualsiasi cambiamento comporta un update globale della form
+      if(!change.fromService) throw 'Oggetto per update non ricevuto'
+        currentForm.updateWholeForm(change)
         this.setCurrentArticle(<MaterialiItem>change.fromService)
+      break;
+      case "addForm":
+      break;
+      default:
+       return
+
     }
   }
 
   onFormSubmit(formName:string) {
-    if (formName=="searchForm") {
-      let currentcode = this[formName].dynForm.getRawValue().code
-      if (!currentcode || (this.currentArticle && this.currentArticle.code == currentcode)) return
-      else this.setCodeForSearch.next(this.searchForm.dynForm.getRawValue().code)
-    }
+    let currentForm:DynamicFormComponent =this[formName];
+    switch(formName){
+      case "searchForm":
+        let currentcode = currentForm.dynForm.getRawValue().code
+        if (!currentcode || (this.currentArticle && this.currentArticle.code == currentcode)) return
+        else this.setCodeForSearch.next(currentForm.dynForm.getRawValue().code)
+      break;
+      default:
+       return
+     }
   }
   setCurrentArticle(article:MaterialiItem) {
     return this.currentArticle = article;

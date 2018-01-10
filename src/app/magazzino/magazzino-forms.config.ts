@@ -17,26 +17,14 @@ export class SearchFormsFieldConf {
      label: "Codice Articolo",
      formControlName: "code",
      type: TYPEINPUT.input,
-     afterChanges: {
-       isAlreadySubmitted:true
-     },
-     typeConfig:{
-       linkedFields:'allFields'
-     },
    },
    {
      disabled:false,
      label: "Nome",
      formControlName: "name",
      type: TYPEINPUT.input,
-     typeConfig:{
-       searchFunction:searchServiceInstance.findFunction,
-       linkedFields:'allFields'
-     },
+     textSearchFunction:searchServiceInstance.findFunction,
      elementStyle: ['large'],
-     afterChanges: {
-       isAlreadySubmitted:true
-     }
    },
    {
      type:TYPEINPUT.button,

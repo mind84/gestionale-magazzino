@@ -76,7 +76,12 @@ export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
       this.dynForm.controls[name][method]();
     }
   }
+updateWholeForm(changes:FormChanges){
+  Object.keys(changes.fromService).forEach((key)=>{
+    if (this.dynForm.controls[key]) this.dynForm.controls[key].setValue(changes.fromService[key])
+  })
 
+}
 setFormValues(fields:string | object, whole:any){
  if (typeof fields == "object") {
   Object.keys(fields).forEach((key)=>{
@@ -91,20 +96,20 @@ setFormValues(fields:string | object, whole:any){
 
 setValues(config:FieldConfig,change:FormChanges, wholeForm?:boolean){
 
-    if(change.fromService){
-      if(config.typeConfig && config.typeConfig.linkedFields) {
-        if(typeof config.typeConfig.linkedFields ==='string' && config.typeConfig.linkedFields=="allFields" || wholeForm ) {
-          this.setFormValues(change.fromService, true)
-          }
-          else {
-            this.setFormValues(change.formControlName, change.valueToUpdate)
-            this.setFormValues(change.fromService, config.typeConfig.linkedFields)
-          }
-        }
-        else {
-          this.setFormValues(change.formControlName, change.valueToUpdate)
-         }
-      }
+    // if(change.fromService){
+    //   if(config.typeConfig && config.typeConfig.linkedFields) {
+    //     if(typeof config.typeConfig.linkedFields ==='string' && config.typeConfig.linkedFields=="allFields" || wholeForm ) {
+    //       this.setFormValues(change.fromService, true)
+    //       }
+    //       else {
+    //         this.setFormValues(change.formControlName, change.valueToUpdate)
+    //         this.setFormValues(change.fromService, config.typeConfig.linkedFields)
+    //       }
+    //     }
+    //     else {
+    //       this.setFormValues(change.formControlName, change.valueToUpdate)
+    //      }
+    //   }
     }
 
 

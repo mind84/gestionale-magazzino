@@ -36,15 +36,12 @@ export interface FieldConfig {
   options?: string[],
   placeholder?: string,
   type: TYPEINPUT,
-  typeConfig?:InputConfig | SelectConfig,
+  textSearchFunction?:Function,
   hostStyle?: HOSTSTYLE[],
   containerStyle?: String[],
   elementStyle?:String[],
   validation?: ValidatorFn[],
   value?: any,
-  afterChanges?:{
-    isAlreadySubmitted?: boolean
-  }
 }
 
 export interface Field {

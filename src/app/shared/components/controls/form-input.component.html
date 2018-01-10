@@ -1,19 +1,21 @@
-<div
-   class="dynamic-field form-group" [ngClass]='contClasses'
-   [formGroup]="group">
-   <div>
-     <label>{{ config.label }}:</label>
-    </div>
-   <div class="input-container">
-     <input
-      #element
-      type="text" class="form-control" [ngClass]='elementClasses'
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="off"
-      [attr.placeholder]="config.placeholder"
-      [formControlName]="config.formControlName"
-      [textSearch]="element.value" [searchFunction]="config?.typeConfig?.searchFunction"
-      [changeSubs] ='updateControl'>
+<ng-container>
+  <div
+     class="dynamic-field form-group" [ngClass]='contClasses'
+     [formGroup]="group">
+     <div>
+       <label>{{ config.label }}:</label>
+      </div>
+     <div class="input-container">
+       <input
+        #element
+        type="text" class="form-control" [ngClass]='elementClasses'
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="off"
+        [attr.placeholder]="config.placeholder"
+        [formControlName]="config.formControlName"
+        [textSearch]="element.value" [searchFunction]="config.textSearchFunction"
+        [changeSubs] ='updateControl'>
+     </div>
    </div>
- </div>
+</ng-container>
