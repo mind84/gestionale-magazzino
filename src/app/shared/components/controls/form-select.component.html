@@ -13,8 +13,8 @@
       <option *ngFor="let opt of config.options" [ngValue]="opt.name">{{opt.name}}</option>
 
       </select>
-      <ng-container *ngIf="totWarn">
-      <span class="totWarn">{{totWarn}}</span>
+      <ng-container *ngIf="config.warns">
+      <span class="totWarn">{{warns}}</span>
       </ng-container>
     </div>
   </div>

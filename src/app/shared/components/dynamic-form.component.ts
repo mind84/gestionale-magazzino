@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef,HostBinding, Input, AfterViewInit, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges, Output,EventEmitter } from '@angular/core';
+import { Component, ViewChildren, OnInit, ElementRef,HostBinding, Input, AfterViewInit, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges, Output,EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {FieldConfig, FormChanges, FormConfig, SingleFormConf} from '../interfaces/form-interface';
 import {FormService} from '../../services/form-service';
@@ -32,6 +32,8 @@ export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
   @Input()
   insertResponse:any
   formName:string;
+
+
   get controls() { return this.config.filter(({type}) => type !== 'button'); }
   get formValue(){return this.dynForm.value}
   get changes(){return this.dynForm.valueChanges}
@@ -89,10 +91,20 @@ export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
     const { disabled, validation, value } = config;
     return this.fb.control({ disabled, value }, validation);
   }
+  addControl(config:FieldConfig){
+    this.dynForm.addControl(config.formControlName,this.createControl(config))
+  }
   removeControl(config:FieldConfig){
     this.dynForm.removeControl(config.formControlName);
   }
+  setWarning(controlName:string,warn:string){
+    let control = this.controls.filter((control)=> control.formControlName==controlName)[0]
+    control.warns = warn;
+    setTimeout(()=>{
+      control.warns=null;
+    },1900)
 
+  }
   setDisabled(name:string, disabled:boolean){
     if(this.dynForm.controls[name]){
       const method = disabled ? 'disable' : 'enable'
@@ -117,25 +129,6 @@ setFormValues(fields:string | object, whole:any){
   }
 
 }
-
-setValues(config:FieldConfig,change:FormChanges, wholeForm?:boolean){
-
-    // if(change.fromService){
-    //   if(config.typeConfig && config.typeConfig.linkedFields) {
-    //     if(typeof config.typeConfig.linkedFields ==='string' && config.typeConfig.linkedFields=="allFields" || wholeForm ) {
-    //       this.setFormValues(change.fromService, true)
-    //       }
-    //       else {
-    //         this.setFormValues(change.formControlName, change.valueToUpdate)
-    //         this.setFormValues(change.fromService, config.typeConfig.linkedFields)
-    //       }
-    //     }
-    //     else {
-    //       this.setFormValues(change.formControlName, change.valueToUpdate)
-    //      }
-    //   }
-    }
-
 
   submit(el:any){
     event.preventDefault()

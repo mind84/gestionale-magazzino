@@ -18,8 +18,8 @@
         [textSearch]="element.value" [searchFunction]="config.textSearchFunction"
         [changeSubs] ='updateControl'>
      </div>
-     <ng-container *ngIf="totWarn">
-       <span class="totWarn">{{totWarn}}</span>
+     <ng-container *ngIf="config.warns">
+       <span class="totWarn">{{config.warns}}</span>
      </ng-container>
    </div>
 </ng-container>

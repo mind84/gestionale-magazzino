@@ -130,8 +130,9 @@ export class MagazzinoComponent implements OnInit {
         if (!this._addTransForm) this.cdRef.detectChanges()
         if(change.formControlName=="motivazioni") {
           if (change.selectedOption =='Da Ordine'){
-            this.addFormFields.filter(field=> field.formControlName=='numorder')[0].visible=true;
-            this._addTransForm.createControl(this.addFormFields.filter(field=> field.formControlName=='numorder')[0])
+            var localFieldConf = this.addFormFields.filter(field=> field.formControlName=='numorder')[0]
+            localFieldConf.visible=true;
+            if (! this._addTransForm.dynForm.controls[localFieldConf.formControlName]) this._addTransForm.addControl(localFieldConf)
           }
           else {
             this.addFormFields.filter(field=> field.formControlName=='numorder')[0].visible=false;
@@ -142,13 +143,15 @@ export class MagazzinoComponent implements OnInit {
       else if(change.targetForm == "remTransForm") {
         if (!this._remTransForm) this.cdRef.detectChanges()
         if(change.formControlName =="motivazioni") {
-          if (change.selectedOption && change.selectedOption =='Storno da Ordine'){
-            this.remFormFields.filter(field=> field.formControlName=='numorder')[0].visible=true;
-            this._remTransForm.createControl(this.remFormFields.filter(field=> field.formControlName=='numorder')[0])
+          var localFieldConf = this.remFormFields.filter(field=> field.formControlName=='numorder')[0]
+          if (change.selectedOption =='Storno da Ordine'){
+            localFieldConf.visible=true;
+            if (! this._remTransForm.dynForm.controls[localFieldConf.formControlName]) this._remTransForm.addControl(localFieldConf)
           }
           else {
-            this.remFormFields.filter(field=> field.formControlName=='numorder')[0].visible=false;
+
             this._remTransForm.removeControl(this.remFormFields.filter(field=> field.formControlName=='numorder')[0])
+            this.remFormFields.filter(field=> field.formControlName=='numorder')[0].visible=false;
           }
         }
       }
@@ -178,6 +181,7 @@ export class MagazzinoComponent implements OnInit {
       case "remTransForm":
         if(this._remTransForm.dynForm.status =="VALID" && this.currentArticle) {
           if (this._remTransForm.dynForm.controls.quantity.value > this.currentArticle.totalInStore.tot) {
+            this._remTransForm.setWarning('quantity','Impossibile sottrarre più elementi di quelli presenti in magazzino')
             this.remFormFields.filter(conf=> conf.formControlName=='quantity')[0].warns = 'Impossibile sottrarre più elementi di quelli presenti in magazzino';
           }
           else return this.storeServ.remTransaction(this._remTransForm.dynForm, this.currentArticle).subscribe((res:any)=>{

@@ -29,3 +29,10 @@ input.ng-invalid:not(.ng-untouched) {
   background-color:#ff00004f;
   border-color: red;
 }
+.totWarn {
+  position: absolute;
+    display: block;
+    background-color: red;
+    padding: 5px;
+    color: white;
+  }
