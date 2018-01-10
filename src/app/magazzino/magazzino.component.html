@@ -8,40 +8,7 @@
   </div>
   <div class="col-10 insert-form-container" *ngIf="variationMode">
     <div class="search-control">
-      <app-dynamic-form [config]='searchFormFields' [formConfig]='formConfig.searchForm' #searchForm='dynamicForm' (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
-        <!--m id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
-          <span>Codice articolo :</span> <input class="form-control" (blur)="search(searchForm)"
-          formControlName="code"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="off" type="text"
-          value="">
-          <span id="nmSearch">Nome : </span>
-          <div>
-          <input #searchName class="form-control name"
-          formControlName="name"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="off" type="text"
-          value="" [textSearch]="searchName.value">
-        </div>
-          <span id="nmSearch">Dal : </span>
-          <mat-form-field>
-          <input matInput [matDatepicker]="datfrom" class="form-control"
-          formControlName="datfrom">
-            <mat-datepicker-toggle matSuffix [for]="datfrom"></mat-datepicker-toggle>
-            <mat-datepicker #datfrom></mat-datepicker>
-          </mat-form-field>
-          <span id="nmSearch">Al : </span>
-          <mat-form-field>
-          <input matInput [matDatepicker]="datto" class="form-control"
-          formControlName="datto">
-          <mat-datepicker-toggle matSuffix [for]="datto"></mat-datepicker-toggle>
-          <mat-datepicker #datto></mat-datepicker>
-        </mat-form-field>
-          <button type="submit" class="btn submit-btn">Cerca</button>
-        </form-->
-      <!--span style=""><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuovo articolo</button></span-->
+      <app-dynamic-form [config]='searchFormFields' [formConfig]='formConfig.searchForm' #searchForm  (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
     </div>
     <div class="insert transaction" *ngIf="currentArticle">
       <div class="trans-code">
@@ -59,75 +26,10 @@
           <button type ="button" class="btn remove"(click)=addItem(false)>Sottrai</button>
         </div>
         <div *ngIf="isAddingMode">
-            <app-dynamic-form [config]='addFormFields' [formConfig]='formConfig.addForm' #addForm='dynamicForm' (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
-
-          <!--form id="addForm" [formGroup] = "addForm" [displayResponse]="insertResponse" class = "addform" (ngSubmit)="addTrans(addForm)">
-            <span>Quantità da aggiungere:</span>
-            <input class="form-control qtadd"
-              appFormatNumber
-              formControlName="qtadd" autocorrect="off"
-              autocapitalize="off"
-              spellcheck="off" type="text"
-              value="">
-              <span>Motivazioni:</span>
-              <select class = "form-control motivazioni" [(ngModel)]="motivazioniAdd" (ngModelChange)="onChangeAdd($event,addForm)"
-              formControlName="motivazioni">
-              <option *ngFor="let addM of addMotivation" [ngValue]="addM.motName">{{addM.motName}}</option>
-            </select>
-            <ng-container *ngIf="byorder">
-              <span>Numero Ordine:</span>
-              <input class="form-control numorder"
-                formControlName="numorder" autocorrect="off"
-                autocapitalize="off"
-                spellcheck="off" type="text"
-                value="">
-            </ng-container>
-            <div>
-              <span>Note:</span>
-              <input class="form-control note"
-                formControlName="note" autocorrect="off"
-                autocapitalize="off"
-                spellcheck="off" type="text"
-                value="">
-            </div>
-              <button type="submit" class="btn submit-btn">Aggiungi</button>
-          </form-->
+            <app-dynamic-form [config]='addFormFields' [formConfig]='formConfig.addTransForm' #addTransForm (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
         </div>
         <div *ngIf="!isAddingMode">
-          <form id="remForm" [formGroup] = "remForm" [displayResponse]="insertResponse" class = "remform" (ngSubmit)="remTrans(remForm)">
-            <span>Quantità da aggiungere:</span>
-            <input class="form-control qtsub"
-              appFormatNumber
-              formControlName="qtsub" autocorrect="off"
-              autocapitalize="off"
-              spellcheck="off" type="text"
-              value="">
-              <ng-container *ngIf="totWarn">
-              <span class="totWarn">Impossibile sottrarre più elementi di quelli presenti in magazzino</span>
-              </ng-container>
-              <span>Motivazioni:</span>
-              <select class = "form-control motivazioni" [(ngModel)]="motivazioniRem" (ngModelChange)="onChangeRem($event,remForm)"
-              formControlName="motivazioni">
-              <option *ngFor="let remM of removeMotivation" [ngValue]="remM.motName">{{remM.motName}}</option>
-            </select>
-            <ng-container *ngIf="byorder">
-              <span>Numero Ordine:</span>
-              <input class="form-control numorder"
-                formControlName="numorder" autocorrect="off"
-                autocapitalize="off"
-                spellcheck="off" type="text"
-                value="">
-            </ng-container>
-            <div>
-              <span>Note:</span>
-              <input class="form-control note"
-                formControlName="note" autocorrect="off"
-                autocapitalize="off"
-                spellcheck="off" type="text"
-                value="">
-            </div>
-              <button type="submit" class="btn submit-btn">Sottrai</button>
-          </form>
+          <app-dynamic-form [config]='remFormFields' [formConfig]='formConfig.remTransForm' #remTransForm (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
         </div>
       </div>
     </div>

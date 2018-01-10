@@ -1,7 +1,9 @@
 .large {
   width:300px;
 }
-
+.xl {
+  width:500px;
+}
 input {
   display:inline;
     width:120px;
@@ -22,4 +24,8 @@ input {
 }
 .input-container{
   position:relative;
+}
+input.ng-invalid:not(.ng-untouched) {
+  background-color:#ff00004f;
+  border-color: red;
 }

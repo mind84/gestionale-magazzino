@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, HostListener, Input, AfterViewInit, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges, Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, ElementRef,HostBinding, Input, AfterViewInit, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges, Output,EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {FieldConfig, FormChanges, FormConfig, SingleFormConf} from '../interfaces/form-interface';
 import {FormService} from '../../services/form-service';
@@ -13,7 +13,12 @@ import {FormService} from '../../services/form-service';
   providers:[FormService]
 })
 export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
-
+  @HostBinding('class') hostClasses:string;
+  elementClasses:string;
+  contClasses:string;
+  get classHost(){ return this.formConfig.hostStyle}
+  get classCont(){ return this.formConfig.containerStyle}
+  get classElem(){ return this.formConfig.elementStyle}
   dynForm:FormGroup;
 
   @Input()
@@ -24,7 +29,8 @@ export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
   notifyChanges: EventEmitter<FormChanges> = new EventEmitter<FormChanges>();
   @Output()
   formSubmit: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
-
+  @Input()
+  insertResponse:any
   formName:string;
   get controls() { return this.config.filter(({type}) => type !== 'button'); }
   get formValue(){return this.dynForm.value}
@@ -34,13 +40,23 @@ export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
 
   ngOnInit() {
     this.formName = this.formConfig.formName;
+    this.addHostClasses(this.formConfig)
+    this.addElemClasses(this.formConfig)
       this.dynForm = this.createFormGroup()
       this.fs.pushChange$.subscribe((changes:FormChanges)=>{
         if(!changes.targetForm) changes.targetForm=this.formName;
         this.notifyChanges.emit(changes);
       })
   }
+  addHostClasses(config:SingleFormConf){
+    if(this.classHost)
+      this.hostClasses=this.classHost.join(" ");
+  }
 
+  addElemClasses(config:SingleFormConf){
+    if(this.classElem)
+      this.elementClasses=this.classElem.join(" ");
+  }
   ngOnChanges(){
     if(this.dynForm){
       const controls = Object.keys(this.dynForm.controls)
@@ -58,7 +74,10 @@ export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
       })
     }
   }
-
+  displaySubmitResponse(response:any){
+    this.insertResponse=response;
+    setTimeout(()=>{this.insertResponse=null},2000)
+  }
   createFormGroup(){
       const group = this.fb.group({})
       //creazione dinamica dei controlli in init
@@ -70,12 +89,17 @@ export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
     const { disabled, validation, value } = config;
     return this.fb.control({ disabled, value }, validation);
   }
+  removeControl(config:FieldConfig){
+    this.dynForm.removeControl(config.formControlName);
+  }
+
   setDisabled(name:string, disabled:boolean){
     if(this.dynForm.controls[name]){
       const method = disabled ? 'disable' : 'enable'
       this.dynForm.controls[name][method]();
     }
   }
+
 updateWholeForm(changes:FormChanges){
   Object.keys(changes.fromService).forEach((key)=>{
     if (this.dynForm.controls[key]) this.dynForm.controls[key].setValue(changes.fromService[key])

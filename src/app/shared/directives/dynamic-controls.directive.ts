@@ -31,7 +31,7 @@ config:FieldConfig;
 @Input()
 form:FormGroup;
 
-component: ComponentRef<Field>;
+component: ComponentRef<any>;
   constructor(private resolver:ComponentFactoryResolver, private container: ViewContainerRef, private inj:Injector) {
  }
 

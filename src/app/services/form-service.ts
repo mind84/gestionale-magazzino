@@ -6,13 +6,19 @@ import {FormGroup} from '@angular/forms';
 import {MaterialiItem} from '../shared/interfaces/item-materiali.interface'
 import {FormChanges} from '../shared/interfaces/form-interface'
 
+
+import {MaterialiService} from './materiali.service'
+
 @Injectable()
 export class FormService {
   private pushChange: Subject<FormChanges> = new Subject<FormChanges>()
   public pushChange$:Observable<FormChanges> = this.pushChange.asObservable();
-  constructor() { }
+  constructor(private matServ:MaterialiService) { }
 
   public pushChanges(changes:FormChanges){
     this.pushChange.next(changes)
+  }
+  public materialiSearch(par:string):Observable<MaterialiItem>{
+    return this.matServ.searchByName(par)
   }
 }

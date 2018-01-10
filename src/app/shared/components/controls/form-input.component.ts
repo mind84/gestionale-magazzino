@@ -15,9 +15,17 @@ export class FormInputComponent implements Field, OnInit {
 elementClasses:string;
 contClasses:string;
 control:AbstractControl;
+controlDirectivesObject:any;
 get classHost(){ return this.config.hostStyle}
 get classCont(){ return this.config.containerStyle}
 get classElem(){ return this.config.elementStyle}
+get controlDirectives() {
+  let arrayObj:any={};
+  this.config.controlDirectives.forEach(dirname =>{
+    arrayObj[dirname] = true
+  })
+  return arrayObj;
+}
 updateControl:Function;
   constructor(private fs:FormService) {
     this.updateControl =  this.onChangesControl.bind(this)
@@ -29,7 +37,7 @@ updateControl:Function;
       this.addHostClasses(this.config)
       this.addElemClasses(this.config)
       this.control= this.group.get(this.config.formControlName)
-
+      this.controlDirectivesObject= this.controlDirectives;
     }
 
     addHostClasses(config:FieldConfig):void{
@@ -48,7 +56,7 @@ updateControl:Function;
         this.elementClasses=this.classElem.join(" ");
       }
     }
-    
+
     onChangesControl(changes:FormChanges){
       return this.fs.pushChanges(changes);
     }

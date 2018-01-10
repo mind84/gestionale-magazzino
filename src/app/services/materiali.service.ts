@@ -3,6 +3,7 @@ import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { FormGroup} from '@angular/forms';
+import {MaterialiItem} from '../shared/interfaces/item-materiali.interface'
 
 @Injectable()
 export class MaterialiService implements OnInit {
@@ -30,7 +31,7 @@ export class MaterialiService implements OnInit {
   update(form:any){
     return this.http.post("/mat/update", form)
   }
-  searchByName(term:string){
+  searchByName(term:string):Observable<any>{
     return this.http.get(`/mat/byname?name=${term}`)
   }
   searchByCode(code:string){

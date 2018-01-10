@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostBinding } from '@angular/core';
 import {Field} from '../../interfaces/form-interface'
-import {FieldConfig} from '../../interfaces/form-interface'
-
-import {FormGroup} from '@angular/forms'
+import {FieldConfig, FormChanges} from '../../interfaces/form-interface'
+import {FormService} from '../../../services/form-service'
+import {FormGroup, AbstractControl} from '@angular/forms'
 
 
 @Component({
@@ -11,9 +11,62 @@ import {FormGroup} from '@angular/forms'
   styleUrls: ['./form-select.component.css']
 })
 export class FormSelectComponent implements Field {
+  @HostBinding('class') hostClasses:string;
+  elementClasses:string;
+  contClasses:string;
+  control:AbstractControl;
+  controlDirectivesObject:any;
+  get classHost(){ return this.config.hostStyle}
+  get classCont(){ return this.config.containerStyle}
+  get classElem(){ return this.config.elementStyle}
+  get controlDirectives() {
+    let arrayObj:any={};
+    this.config.controlDirectives.forEach(dirname =>{
+      arrayObj[dirname] = true
+    })
+    return arrayObj;
+  }
+  get options(){return this.config.options}
+  selectOptions:any;
+  updateControl:Function;
+    constructor(private fs:FormService) {
+      this.updateControl =  this.onChangesControl.bind(this)
+    }
+      config: FieldConfig;
+      group:FormGroup
 
-  constructor() { }
+      ngOnInit(){
+        this.addHostClasses(this.config)
+        this.addElemClasses(this.config)
+        this.control= this.group.get(this.config.formControlName)
+        this.controlDirectivesObject= this.controlDirectives;
+        this.selectOptions= this.options[0].name
+      }
 
-  config: FieldConfig;
-  group:FormGroup
+      addHostClasses(config:FieldConfig):void{
+        if(this.classHost) {
+          this.hostClasses=this.classHost.join(" ");
+        }
+      }
+      addContClasses(config:FieldConfig):void{
+            if(this.classCont) {
+              this.contClasses=this.classCont.join(" ");
+            }
+          }
+
+      addElemClasses(config:FieldConfig):void{
+        if(this.classElem) {
+          this.elementClasses=this.classElem.join(" ");
+        }
+      }
+
+      onChangesControl(changes:any){
+        let change:FormChanges = {
+          formControlName:this.config.formControlName,
+          valueToUpdate:'',
+          selectedOption:changes
+        };
+        return this.fs.pushChanges(change);
+      }
+
 }

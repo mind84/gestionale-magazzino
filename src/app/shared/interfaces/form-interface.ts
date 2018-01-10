@@ -30,18 +30,21 @@ interface SelectConfig {
 }
 
 export interface FieldConfig {
+  visible?:boolean
   disabled?: boolean,
   label?: string,
   formControlName: string,
-  options?: string[],
+  options?: OptionsInterface[],
   placeholder?: string,
   type: TYPEINPUT,
-  textSearchFunction?:Function,
+  textSearchFunction?:string | boolean,
   hostStyle?: HOSTSTYLE[],
-  containerStyle?: String[],
-  elementStyle?:String[],
+  containerStyle?: string[],
+  elementStyle?:string[],
   validation?: ValidatorFn[],
   value?: any,
+  controlDirectives?:string[],
+  warns?:string
 }
 
 export interface Field {
@@ -53,11 +56,19 @@ export interface FormChanges {
   targetForm?:string,
   valueToUpdate:any,
   formControlName:string,
-  fromService?:any
+  fromService?:any,
+  selectedOption?:any
 }
 export interface SingleFormConf {
-  formName:string
+  formName:string,
+  hostStyle?:string[],
+  containerStyle?: string[],
+  elementStyle?:string[],
 }
 export interface FormConfig  {
   [type:string]: SingleFormConf
+}
+export interface OptionsInterface {
+  id:any,
+  name:string
 }

@@ -1,4 +1,4 @@
-<ng-container>
+<ng-container *ngIf="config.visible">
   <div
      class="dynamic-field form-group" [ngClass]='contClasses'
      [formGroup]="group">
@@ -8,6 +8,7 @@
      <div class="input-container">
        <input
         #element
+        [appFormatNumber]='controlDirectivesObject.appFormatNumber'
         type="text" class="form-control" [ngClass]='elementClasses'
         autocorrect="off"
         autocapitalize="off"
@@ -17,5 +18,8 @@
         [textSearch]="element.value" [searchFunction]="config.textSearchFunction"
         [changeSubs] ='updateControl'>
      </div>
+     <ng-container *ngIf="totWarn">
+       <span class="totWarn">{{totWarn}}</span>
+     </ng-container>
    </div>
 </ng-container>
