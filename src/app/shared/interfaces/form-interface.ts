@@ -37,6 +37,8 @@ export interface FieldConfig {
   options?: OptionsInterface[],
   placeholder?: string,
   type: TYPEINPUT,
+  inputType?:string,
+  showLabel?:boolean,
   textSearchFunction?:string | boolean,
   hostStyle?: HOSTSTYLE[],
   containerStyle?: string[],

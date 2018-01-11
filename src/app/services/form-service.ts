@@ -8,12 +8,13 @@ import {FormChanges} from '../shared/interfaces/form-interface'
 
 
 import {MaterialiService} from './materiali.service'
+import {CategorieArticoliService} from './categorie-articoli.service'
 
 @Injectable()
 export class FormService {
   private pushChange: Subject<FormChanges> = new Subject<FormChanges>()
   public pushChange$:Observable<FormChanges> = this.pushChange.asObservable();
-  constructor(private matServ:MaterialiService) { }
+  constructor(private matServ:MaterialiService, private catServ: CategorieArticoliService) { }
 
   public pushChanges(changes:FormChanges){
     this.pushChange.next(changes)
@@ -21,4 +22,9 @@ export class FormService {
   public materialiSearch(par:string):Observable<MaterialiItem>{
     return this.matServ.searchByName(par)
   }
+
+  public categorieSearch(par:string){
+    return this.catServ.search(par)
+  }
+
 }

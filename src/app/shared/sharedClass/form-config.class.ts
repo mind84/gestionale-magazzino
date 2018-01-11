@@ -17,6 +17,8 @@ export class DynFormsFieldConf {
      type: null,
      options: [],
      placeholder: "",
+     inputType:'text',
+     showLabel:true,
      textSearchFunction:false,
      hostStyle: [],
      containerStyle: [],
@@ -28,9 +30,12 @@ export class DynFormsFieldConf {
    }
   }
   getFormFields(opts:FieldConfig[]):FieldConfig[] {
-    const returnConfig =  opts.map(singleConf=>
-      Object.assign(Object.assign({},this.field), singleConf)
+    const returnConfig =  opts.map(singleConf=>{
+      if (singleConf.inputType==='hidden') singleConf.showLabel=false
+      return Object.assign(Object.assign({},this.field), singleConf)
+    }
     )
+
     return returnConfig;
   }
 /*

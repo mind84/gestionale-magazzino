@@ -1,7 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {MaterialiService} from '../services/materiali.service'
 import {CategorieArticoliService} from '../services/categorie-articoli.service'
+import {DynamicFormComponent} from '../shared/components/dynamic-form.component'
+import {FormChanges, FormConfig, FieldConfig} from '../shared/interfaces/form-interface'
+import {DynFormsFieldConf} from '../shared/sharedClass/form-config.class'
+
+import {SEARCHFIELDS} from './configuration/materiali-forms.conf'
+
 
 import {UmService} from '../services/um.service'
 import {Subject} from 'rxjs/Subject'
@@ -14,7 +20,7 @@ import * as _ from 'lodash';
   selector: 'app-materiali',
   templateUrl: './materiali.component.html',
   styleUrls: ['./materiali.component.css'],
-  providers: [MaterialiService]
+  providers: [MaterialiService, DynFormsFieldConf]
 })
 export class MaterialiComponent implements OnInit {
   insertMaterialiForm: FormGroup;
@@ -38,18 +44,45 @@ export class MaterialiComponent implements OnInit {
   catcodeSearch:number = null;
   catNameSearch:string = "";
 
+
+  _inserMaterialiForm:DynamicFormComponent
+  searchFormFields:FieldConfig[]
+  formConfig:FormConfig
+  @ViewChild('searchForm')
+    searchFormy: DynamicFormComponent;
+
+  @ViewChild('insertMaterialiForm') set addTransForm(val:DynamicFormComponent) {
+    this._inserMaterialiForm = val
+  }
+
+
+
   constructor(
     private matService:MaterialiService,
     private _fb: FormBuilder,
     private UMService:UmService,
-    private catArtServ:CategorieArticoliService
-   ) { }
+    private catArtServ:CategorieArticoliService,
+    private dynFieldsConf:DynFormsFieldConf,
+    private cdRef:ChangeDetectorRef
+   ) {
+     this.searchFormFields = this.dynFieldsConf.getFormFields(SEARCHFIELDS)
+     this.formConfig = {
+       searchFormy: {
+         formName: 'searchFormy'
+       }
+     }
 
+    }
+  manageFormChange(change:FormChanges){
+    if(change.targetForm =='searchFormy'){
+    }
+  }
   ngOnInit() {
     this.UMService.getMainReference().subscribe((um) =>{
       this.um=um;
       this.UMService.umreference=um;
       this.selectedSearchValue=um[0]
+
       this.insertMaterialiForm = this._fb.group({
           code: ['', Validators.required ],
           name: ['', Validators.required ],
@@ -63,6 +96,7 @@ export class MaterialiComponent implements OnInit {
           note:''
         })
     })
+
       this.searchForm = this._fb.group({
           code: null,
           name: null,

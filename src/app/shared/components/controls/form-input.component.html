@@ -2,14 +2,14 @@
   <div
      class="dynamic-field form-group" [ngClass]='contClasses'
      [formGroup]="group">
-     <div>
+     <div *ngIf="config.showLabel">
        <label>{{ config.label }}:</label>
       </div>
      <div class="input-container">
        <input
         #element
         [appFormatNumber]='controlDirectivesObject.appFormatNumber'
-        type="text" class="form-control" [ngClass]='elementClasses'
+        [type]="config.inputType" class="form-control" [ngClass]='elementClasses'
         autocorrect="off"
         autocapitalize="off"
         spellcheck="off"

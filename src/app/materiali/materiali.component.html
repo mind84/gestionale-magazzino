@@ -2,6 +2,8 @@
   <div class="col-10 materiali-int">
     <div class="h4"><u>Ricerca o inserisci nuovo articolo</u></div>
     <div class="search-control">
+      <app-dynamic-form [config]='searchFormFields' [formConfig]='formConfig.searchFormy' #searchFormy  (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
+
         <form id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
           <div>
           <span>Codice articolo :</span> <input class="form-control"

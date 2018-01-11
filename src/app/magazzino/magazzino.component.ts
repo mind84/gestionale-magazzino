@@ -1,5 +1,4 @@
-import { Component,ChangeDetectorRef, OnInit,ViewChild, AfterViewInit, AfterViewChecked, Inject, Injector} from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { Component,ChangeDetectorRef, OnInit,ViewChild, AfterViewInit, AfterViewChecked, Injector} from '@angular/core';
 
 import {MaterialiService} from '../services/materiali.service';
 import {MagazzinoService} from '../services/magazzino.service';
@@ -34,7 +33,7 @@ export class MagazzinoComponent implements OnInit {
   variationMode:boolean = true;
   currentArticle:MaterialiItem;
 
-  private setCodeForSearch:Subject<FormGroup> = new Subject<FormGroup>();
+  private setCodeForSearch:Subject<any> = new Subject<any>();
   public setCodeForSearch$:Observable<any> = this.setCodeForSearch.asObservable()
 
   private isAddingMode:boolean = true;
@@ -57,7 +56,6 @@ export class MagazzinoComponent implements OnInit {
 
   constructor(
     private matService:MaterialiService,
-    private _fb: FormBuilder,
     private storeServ: MagazzinoService,
     private dynFieldsConf:DynFormsFieldConf,
     private cdRef:ChangeDetectorRef
