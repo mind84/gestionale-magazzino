@@ -48,7 +48,7 @@ export class MaterialiComponent implements OnInit {
   _inserMaterialiForm:DynamicFormComponent
   searchFormFields:FieldConfig[]
   formConfig:FormConfig
-  @ViewChild('searchForm')
+  @ViewChild('searchFormy')
     searchFormy: DynamicFormComponent;
 
   @ViewChild('insertMaterialiForm') set addTransForm(val:DynamicFormComponent) {
@@ -75,6 +75,7 @@ export class MaterialiComponent implements OnInit {
     }
   manageFormChange(change:FormChanges){
     if(change.targetForm =='searchFormy'){
+      this.searchFormy.updateFormValues(change);
     }
   }
   ngOnInit() {

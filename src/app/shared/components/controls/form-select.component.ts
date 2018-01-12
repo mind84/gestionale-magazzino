@@ -61,12 +61,7 @@ export class FormSelectComponent implements Field {
       }
 
       onChangesControl(changes:any){
-        let change:FormChanges = {
-          formControlName:this.config.formControlName,
-          valueToUpdate:'',
-          selectedOption:changes
-        };
-        return this.fs.pushChanges(change);
+        return this.fs.pushChanges(this.config,changes);
       }
 
 }

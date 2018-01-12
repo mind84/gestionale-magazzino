@@ -3,7 +3,10 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import {FieldConfig, FormChanges, FormConfig, SingleFormConf} from '../interfaces/form-interface';
 import {FormService} from '../../services/form-service';
 
-
+interface Update {
+  control:string
+  value:any
+}
 
 @Component({
   exportAs:'dynamicForm',
@@ -118,6 +121,40 @@ updateWholeForm(changes:FormChanges){
   })
 
 }
+
+getControl(name:string):FieldConfig{
+  return this.controls.filter((control)=> control.formControlName==name)[0]
+}
+
+setValue(update:Update){
+    return this.dynForm.controls[update.control].setValue(update.value)
+}
+ getUpdateObject(fieldConf:FieldConfig,serviceObject:any):Update{
+   let value = fieldConf.dbAlias? serviceObject[fieldConf.dbAlias] : serviceObject[fieldConf.formControlName]
+    return {
+      control: fieldConf.formControlName,
+      value: value
+    }
+
+ }
+
+updateFormValues(changes:FormChanges){
+  //prendo la configurazione del campo in base al fomr name
+  if(!changes.formControlName) throw 'nome controllo non specificato'
+  let fieldConf = this.getControl(changes.formControlName);
+  if(changes.fromService) {
+    //recuperiamo gli alias da db per il singolo campo
+    let updateArray:Update[] = []
+    updateArray.push(this.getUpdateObject(fieldConf,changes.fromService))
+    fieldConf.linkedFields.forEach(linkedField=>{
+      updateArray.push(this.getUpdateObject(this.getControl(linkedField),changes.fromService))
+    })
+    updateArray.forEach((update)=>{
+      this.setValue(update)
+    })
+  }
+}
+
 setFormValues(fields:string | object, whole:any){
  if (typeof fields == "object") {
   Object.keys(fields).forEach((key)=>{

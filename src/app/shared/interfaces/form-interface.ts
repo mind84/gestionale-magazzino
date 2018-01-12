@@ -34,6 +34,8 @@ export interface FieldConfig {
   disabled?: boolean,
   label?: string,
   formControlName: string,
+  dbAlias?:string,
+  linkedFields?:string[],
   options?: OptionsInterface[],
   placeholder?: string,
   type: TYPEINPUT,

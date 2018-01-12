@@ -22,13 +22,16 @@ export const SEARCHFIELDS:FieldConfig[]= [
     type:TYPEINPUT.input,
     label:'Categoria',
     textSearchFunction:'categorieSearch',
+    dbAlias:'name',
+    linkedFields:['categ'],
     formControlName:'categname'
   },
   {
     type:TYPEINPUT.input,
     label:'Categoria',
     inputType:'hidden',
-    formControlName:'categ'
+    formControlName:'categ',
+    dbAlias:'id'
   },
   {
     type:TYPEINPUT.button,

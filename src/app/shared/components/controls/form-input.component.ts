@@ -57,8 +57,8 @@ updateControl:Function;
       }
     }
 
-    onChangesControl(changes:FormChanges){
-      return this.fs.pushChanges(changes);
+    onChangesControl(changes:any){
+      return this.fs.pushChanges(this.config,changes);
     }
 
 }
