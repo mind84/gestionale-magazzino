@@ -48,10 +48,21 @@ export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
     this.addHostClasses(this.formConfig)
     this.addElemClasses(this.formConfig)
       this.dynForm = this.createFormGroup()
+      this.formChanges()
       this.fs.pushChange$.subscribe((changes:FormChanges)=>{
         if(!changes.targetForm) changes.targetForm=this.formName;
         this.notifyChanges.emit(changes);
       })
+  }
+  formChanges(){
+    this.controls.forEach(control=>{
+      if(control.needUpdateAndValidity){
+        this.dynForm.get(control.formControlName).valueChanges.subscribe((val)=>{
+          console.log(val)
+          //this.dynForm.get(control.formControlName).updateValueAndValidity()
+        })
+      }
+    })
   }
   addHostClasses(config:SingleFormConf){
     if(this.classHost)

@@ -28,7 +28,7 @@ export const SEARCHFIELDS:FieldConfig[]= [
   },
   {
     type:TYPEINPUT.input,
-    label:'Categoria',
+    label:'',
     inputType:'hidden',
     formControlName:'categ',
     dbAlias:'id'
@@ -40,38 +40,77 @@ export const SEARCHFIELDS:FieldConfig[]= [
   }
 ]
 
-export const ADDTRANSFIELDS:FieldConfig[]= [
+export const INSERTMATERIALIFORMFIELDS:FieldConfig[]= [
   {
-    disabled:false,
-    label: "Quantità da aggiungere",
-    formControlName: "quantity",
+    label: "Codice articolo",
+    formControlName: "code",
     type: TYPEINPUT.input,
-    validation:[Validators.required,Vf.gtZero],
-    controlDirectives: ['appFormatNumber']
+    validation:[Validators.required],
+    hostStyle:[HOSTSTYLE.block]
   },
   {
-    disabled:false,
-    label: "Motivazioni",
-    formControlName: "motivazioni",
-    type: TYPEINPUT.select,
+    label: "Nome",
+    formControlName: "name",
+    type: TYPEINPUT.input,
     validation:[Validators.required],
     elementStyle: ['large'],
-    options: [
-      {id:1, name:"Da Ordine"},
-      {id:2, name:"Da Inventario"},
-      {id:3, name: "Variazione Manuale"}
-    ]
+    hostStyle:[HOSTSTYLE.block]
   },
   {
-    visible:false,
-    disabled:false,
-    label: "Numero Ordine",
-    formControlName: "numorder",
+    label: "Categoria",
+    formControlName: "categname",
+    dbAlias:'name',
+    type: TYPEINPUT.input,
+    validation:[Validators.required],
+    textSearchFunction:'categorieSearch',
+    linkedFields:['categ'],
+    elementStyle: ['large'],
+    hostStyle:[HOSTSTYLE.block]
+  },
+  {
+    type:TYPEINPUT.input,
+    label:'',
+    inputType:'hidden',
+    formControlName:'categ',
+    dbAlias:'id'
+  },
+  {
+    label: "N articoli/collo",
+    formControlName: "collobj",
     validation:[Validators.required],
     type: TYPEINPUT.input,
+    controlDirectives:['appFormatNumber']
   },
   {
-    disabled:false,
+    label: "Quantità singolo articolo",
+    formControlName: "qta",
+    validation:[Validators.required],
+    type: TYPEINPUT.input,
+    controlDirectives:['appFormatNumber']
+  },
+  {
+    label: "Unità di misura",
+    formControlName: "umId",
+    validation:[Validators.required],
+    type: TYPEINPUT.select,
+    controlDirectives:['appFormatNumber']
+  },
+  {
+    label: "Prezzo per collo",
+    formControlName: "price",
+    validation:[Validators.required],
+    type: TYPEINPUT.input,
+    controlDirectives:['appFormatNumber'],
+    hostStyle:[HOSTSTYLE.block]
+  },
+  {
+    label: "Fornitore",
+    formControlName: "fornitore",
+    validation:[Validators.required],
+    type: TYPEINPUT.input,
+    hostStyle:[HOSTSTYLE.block]
+  },
+  {
     label: "Note",
     formControlName: "note",
     type: TYPEINPUT.input,
@@ -80,55 +119,8 @@ export const ADDTRANSFIELDS:FieldConfig[]= [
   },
   {
     type:TYPEINPUT.button,
-    label:'Aggiungi',
+    label:'Inserisci',
     formControlName:'submit',
-    elementStyle:['insertButton']
-  }
-]
-
-
-export const REMTRANSFIELDS:FieldConfig[]= [
-  {
-    disabled:false,
-    label: "Quantità da sottrarre",
-    formControlName: "quantity",
-    type: TYPEINPUT.input,
-    validation:[Validators.required,Vf.gtZero],
-    controlDirectives: ['appFormatNumber']
-  },
-  {
-    disabled:false,
-    label: "Motivazioni",
-    formControlName: "motivazioni",
-    type: TYPEINPUT.select,
-    validation:[Validators.required],
-    elementStyle: ['large'],
-    options: [
-      {id:1, name:"Storno da Ordine"},
-      {id:2, name:"Da Inventario"},
-      {id:3, name: "Storno Manuale"}
-    ]
-  },
-  {
-    visible:false,
-    disabled:false,
-    label: "Numero Ordine",
-    formControlName: "numorder",
-    validation:[Validators.required],
-    type: TYPEINPUT.input,
-  },
-  {
-    disabled:false,
-    label: "Note",
-    formControlName: "note",
-    type: TYPEINPUT.input,
-    elementStyle: ['xl'],
-    hostStyle:[HOSTSTYLE.block]
-  },
-  {
-    type:TYPEINPUT.button,
-    label:'Sottrai',
-    formControlName:'submit',
-    elementStyle:['removeButton']
+    elementStyle:['insertButtonStandard']
   }
 ]

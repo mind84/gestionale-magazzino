@@ -6,7 +6,7 @@ import {DynamicFormComponent} from '../shared/components/dynamic-form.component'
 import {FormChanges, FormConfig, FieldConfig} from '../shared/interfaces/form-interface'
 import {DynFormsFieldConf} from '../shared/sharedClass/form-config.class'
 
-import {SEARCHFIELDS} from './configuration/materiali-forms.conf'
+import {SEARCHFIELDS, INSERTMATERIALIFORMFIELDS} from './configuration/materiali-forms.conf'
 
 
 import {UmService} from '../services/um.service'
@@ -24,7 +24,6 @@ import * as _ from 'lodash';
 })
 export class MaterialiComponent implements OnInit {
   insertMaterialiForm: FormGroup;
-  searchForm: FormGroup;
   insertMode:boolean = false
   searchResults:any = [];
   notifyInsert:any;
@@ -47,9 +46,10 @@ export class MaterialiComponent implements OnInit {
 
   _inserMaterialiForm:DynamicFormComponent
   searchFormFields:FieldConfig[]
+  insertMaterialiFormFields:FieldConfig[]
   formConfig:FormConfig
-  @ViewChild('searchFormy')
-    searchFormy: DynamicFormComponent;
+  @ViewChild('searchForm')
+    searchForm: DynamicFormComponent;
 
   @ViewChild('insertMaterialiForm') set addTransForm(val:DynamicFormComponent) {
     this._inserMaterialiForm = val
@@ -66,16 +66,24 @@ export class MaterialiComponent implements OnInit {
     private cdRef:ChangeDetectorRef
    ) {
      this.searchFormFields = this.dynFieldsConf.getFormFields(SEARCHFIELDS)
+     this.insertMaterialiFormFields = this.dynFieldsConf.getFormFields(INSERTMATERIALIFORMFIELDS)
      this.formConfig = {
-       searchFormy: {
-         formName: 'searchFormy'
+       searchForm: {
+         formName: 'searchForm'
+       },
+       insertMaterialiForm: {
+         formName: 'insertMaterialiForm',
+         elementStyle:['insertForm']
        }
      }
 
     }
   manageFormChange(change:FormChanges){
-    if(change.targetForm =='searchFormy'){
-      this.searchFormy.updateFormValues(change);
+    if(change.targetForm =='searchForm'){
+      this.searchForm.updateFormValues(change);
+    }
+    else if (change.targetForm=='insertMaterialiForm') {
+      this._inserMaterialiForm.updateFormValues(change)
     }
   }
   ngOnInit() {
@@ -84,68 +92,24 @@ export class MaterialiComponent implements OnInit {
       this.UMService.umreference=um;
       this.selectedSearchValue=um[0]
 
-      this.insertMaterialiForm = this._fb.group({
-          code: ['', Validators.required ],
-          name: ['', Validators.required ],
-          categname: ['', Validators.required ],
-          categ:[''],
-          fornitore: ['', Validators.required ],
-          qta: ['', Validators.required],
-          umId: ['', Validators.required],
-          price: ['', Validators.required ],
-          collobj:['', Validators.required ],
-          note:''
-        })
+      // this.insertMaterialiForm = this._fb.group({
+      //     code: ['', Validators.required ],
+      //     name: ['', Validators.required ],
+      //     categname: ['', Validators.required ],
+      //     categ:[''],
+      //     fornitore: ['', Validators.required ],
+      //     qta: ['', Validators.required],
+      //     umId: ['', Validators.required],
+      //     price: ['', Validators.required ],
+      //     collobj:['', Validators.required ],
+      //     note:''
+      //   })
     })
-
-      this.searchForm = this._fb.group({
-          code: null,
-          name: null,
-          categ: null,
-          categname: null
-        })
-
-    this.searchCat$
-      .debounceTime(100)
-      .distinctUntilChanged()
-      .subscribe((term:string)=>{
-        if (term.length <3) this.isSearchingCat = false;
-        else {
-          return this.catArtServ.search(term).subscribe((categories:any)=>{
-            if (categories.length) this.isSearchingCat=true;
-            this.prevCat = categories;
-          })
-        }
-      })
-      this.searchCat$Search
-        .debounceTime(100)
-        .distinctUntilChanged()
-        .subscribe((term:string)=>{
-          if (term.length <3) {
-            this.isSearchingCatSearch = false;
-            this.catcodeSearch=null;
-          }
-          else {
-            return this.catArtServ.search(term).subscribe((categories:any)=>{
-              if (categories.length) this.isSearchingCatSearch=true;
-              this.prevCatSearch = categories;
-            })
-          }
-        })
-  }
-  setCurrentCat(cat:any){
-    this.isSearchingCat=false;
-    this.catName = cat.name;
-    this.catcode= cat.id;
-  }
-  setCurrentCatSearch(cat:any){
-    this.isSearchingCatSearch=false;
-    this.catNameSearch = cat.name;
-    this.catcodeSearch= cat.id;
   }
 
-  toggleInsert():boolean {
-    return this.insertMode = !this.insertMode
+  toggleInsert() {
+    this.insertMode = !this.insertMode
+    //this.cdRef.detectChanges()
   }
   toggleUpdating(index):any {
     if(!(index in this.isUpdating)) this.isUpdating[index]=false
@@ -167,20 +131,6 @@ export class MaterialiComponent implements OnInit {
 
 
   }
-  search(form:FormGroup):any{
-    this.insertMode = false;
-    let code = form.controls.code.value;
-    let name = form.controls.name.value;
-    let categ = form.controls.categ.value;
-      if (!code && !name && !categ) return;
-      else return this.matService.search(code, name, categ).subscribe((res:any)=>{
-        //elaborare la risposta con lodash
-        _.forEach(res, (v,k)=>{
-          if (v.catdet.length) v.categname = v.catdet[0].name
-      })
-        this.searchResults=res
-      })
-    }
 
   updateSearchResults(ev:any){
     let index = _.findIndex(this.searchResults, {_id: ev[0]._id})
@@ -191,5 +141,27 @@ export class MaterialiComponent implements OnInit {
       this.isUpdating[ev[1]]=false;
     }
     else return;
+  }
+
+  onFormSubmit(formName:string){
+    switch(formName){
+      case 'searchForm':
+      this.insertMode = false;
+      let code = this[formName].dynForm.controls.code.value;
+      let name = this[formName].dynForm.controls.name.value;
+      let categ = this[formName].dynForm.controls.categ.value;
+        if (!code && !name && !categ) return;
+        else this.matService.search(code, name, categ).subscribe((res:any)=>{
+          //elaborare la risposta con lodash
+          _.forEach(res, (v,k)=>{
+            if (v.catdet.length) v.categname = v.catdet[0].name
+        })
+          this.searchResults=res
+        })
+      break;
+      default:
+      break
+    }
+
   }
 }

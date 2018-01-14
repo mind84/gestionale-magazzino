@@ -40,7 +40,7 @@ export class FormSelectComponent implements Field {
         this.addElemClasses(this.config)
         this.control= this.group.get(this.config.formControlName)
         this.controlDirectivesObject= this.controlDirectives;
-        this.selectOptions= this.options[0].name
+        if (this.options.length) this.selectOptions= this.options[0].name
       }
 
       addHostClasses(config:FieldConfig):void{
@@ -61,7 +61,8 @@ export class FormSelectComponent implements Field {
       }
 
       onChangesControl(changes:any){
-        return this.fs.pushChanges(this.config,changes);
+        if(changes)
+          return this.fs.pushChanges(this.config,changes);
       }
 
 }

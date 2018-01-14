@@ -14,6 +14,7 @@ export class DynFormsFieldConf {
      disabled:false,
      label: "",
      formControlName: "",
+     needUpdateAndValidity: false,
      dbAlias:'',
      type: null,
      options: [],
@@ -34,62 +35,12 @@ export class DynFormsFieldConf {
   getFormFields(opts:FieldConfig[]):FieldConfig[] {
     const returnConfig =  opts.map(singleConf=>{
       if (singleConf.inputType==='hidden') singleConf.showLabel=false
+      if (singleConf.controlDirectives && singleConf.controlDirectives.length) singleConf.needUpdateAndValidity=true;
       return Object.assign(Object.assign({},this.field), singleConf)
     }
     )
 
     return returnConfig;
   }
-/*
-[
-  {
-disabled:false,
-label: "Codice Articolo",
-formControlName: "code",
-type: TYPEINPUT.input,
-},
-{
-disabled:false,
-label: "Nome",
-formControlName: "name",
-type: TYPEINPUT.input,
-textSearchFunction:'materialiSearch',//searchServiceInstance.findFunction,
-elementStyle: ['large'],
-},
-{
-type:TYPEINPUT.button,
-label:'Cerca',
-formControlName:'submit'
-}
-]*/
 
 }
-/*
-@Injectable()
-export class AddFormsFieldConf {
-  public fields:FieldConfig[];
-  constructor(){
-     this.fields=
-     [
-       {
-     disabled:false,
-     label: "Quantità da aggiungere",
-     formControlName: "quantity",
-     type: TYPEINPUT.input,
-     validation:[Validators.required,gtZero]
-   },
-   {
-     disabled:false,
-     label: "Nome",
-     formControlName: "motivazioni",
-     type: TYPEINPUT.select,
-     elementStyle: ['large']
-   },
-   {
-     type:TYPEINPUT.button,
-     label:'Aggiungi',
-     formControlName:'submit'
-   }
- ]
-  }
-}*/

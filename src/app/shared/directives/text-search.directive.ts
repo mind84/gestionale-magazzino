@@ -57,11 +57,6 @@ export class TextSearchDirective implements OnInit {
      })
      this.comServ.getCom$.subscribe((val:any)=>{
        if(val) {
-         /*let changes:FormChanges={
-           formControlName:this.formControlName,
-           valueToUpdate:val[this.formControlName],
-           fromService:val
-         }*/
          this.changeSubs(val);
          this.cmpRef.destroy()
        }

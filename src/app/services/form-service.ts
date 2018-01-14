@@ -18,7 +18,6 @@ export class FormService {
 
   public pushChanges(config: FieldConfig,change:any){
     let changes = this.createChangeItem(config,change);
-    
     this.pushChange.next(changes)
   }
   public materialiSearch(par:string):Observable<MaterialiItem>{
