@@ -36,7 +36,7 @@ export class DynFormsFieldConf {
   getFormFields(opts:FieldConfig[]):FieldConfig[] {
     const returnConfig =  opts.map(singleConf=>{
       if (singleConf.inputType==='hidden') singleConf.showLabel=false
-      if (singleConf.controlDirectives && singleConf.controlDirectives.length) singleConf.updateOn='submit';
+      if (singleConf.controlDirectives && singleConf.controlDirectives.length) singleConf.updateOn='blur';
       return Object.assign(Object.assign({},this.field), singleConf)
     }
     )
