@@ -37,6 +37,7 @@ export interface FieldConfig {
   dbAlias?:string,
   linkedFields?:string[],
   needUpdateAndValidity?:boolean,
+  updateOn?:any,
   options?: OptionsInterface[],
   placeholder?: string,
   type: TYPEINPUT,

@@ -1,5 +1,5 @@
-import { Component, ViewChildren, OnInit, ElementRef,HostBinding, Input, AfterViewInit, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges, Output,EventEmitter } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import {Component, ViewChildren, OnInit, ElementRef,HostBinding, Input, AfterViewInit, ComponentRef, OnDestroy, ViewContainerRef, ComponentFactoryResolver, OnChanges, Output,EventEmitter } from '@angular/core';
+import { AbstractControl,FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {FieldConfig, FormChanges, FormConfig, SingleFormConf} from '../interfaces/form-interface';
 import {FormService} from '../../services/form-service';
 
@@ -48,22 +48,22 @@ export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
     this.addHostClasses(this.formConfig)
     this.addElemClasses(this.formConfig)
       this.dynForm = this.createFormGroup()
-      this.formChanges()
+      // this.formChanges()
       this.fs.pushChange$.subscribe((changes:FormChanges)=>{
         if(!changes.targetForm) changes.targetForm=this.formName;
         this.notifyChanges.emit(changes);
       })
   }
-  formChanges(){
-    this.controls.forEach(control=>{
-      if(control.needUpdateAndValidity){
-        this.dynForm.get(control.formControlName).valueChanges.subscribe((val)=>{
-          console.log(val)
-          //this.dynForm.get(control.formControlName).updateValueAndValidity()
-        })
-      }
-    })
-  }
+  // formChanges(){
+  //   this.controls.forEach(control=>{
+  //     if(control.needUpdateAndValidity){
+  //       this.dynForm.get(control.formControlName).valueChanges.subscribe((val)=>{
+  //         console.log(val)
+  //         this.dynForm.get(control.formControlName).updateValueAndValidity({onlySelf:true, emitEvent:false})
+  //       })
+  //     }
+  //   })
+  // }
   addHostClasses(config:SingleFormConf){
     if(this.classHost)
       this.hostClasses=this.classHost.join(" ");
@@ -97,16 +97,25 @@ export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
   createFormGroup(){
       const group = this.fb.group({})
       //creazione dinamica dei controlli in init
-      this.controls.forEach(control=> group.addControl(control.formControlName,this.createControl(control)))
+      this.controls.forEach(control=>
+        group.addControl(control.formControlName,new FormControl(this.getState(control),{validators:control.validation, updateOn:control.updateOn})//this.createControl(control)
+      )
+      )
       return group;
 
   }
+  getState(config:FieldConfig){
+    const { disabled, value } = config;
+    return {disabled,value}
+  }
   createControl(config: FieldConfig) {
     const { disabled, validation, value } = config;
-    return this.fb.control({ disabled, value }, validation);
+    let ctrl = this.fb.control({ disabled, value }, validation);
+    return ctrl;//this.fb.control({ disabled, value }, validation,
+
   }
   addControl(config:FieldConfig){
-    this.dynForm.addControl(config.formControlName,this.createControl(config))
+    this.dynForm.addControl(config.formControlName,new FormControl(this.getState(config),{validators:config.validation, updateOn:config.updateOn}))//this.createControl(config))
   }
   removeControl(config:FieldConfig){
     this.dynForm.removeControl(config.formControlName);
