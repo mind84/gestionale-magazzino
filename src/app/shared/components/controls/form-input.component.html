@@ -17,6 +17,12 @@
         [formControlName]="config.formControlName"
         [textSearch]="element.value" [searchFunction]="config.textSearchFunction"
         [changeSubs] ='updateControl'>
+        <app-form-field-error-display
+        [formCntr]='control'
+        [isPristine]='control.pristine'
+        [isInvalid]='control.invalid'
+        [isTouched]='control.touched'
+        [conf]='config'></app-form-field-error-display>
      </div>
      <ng-container *ngIf="config.warns">
        <span class="totWarn">{{config.warns}}</span>

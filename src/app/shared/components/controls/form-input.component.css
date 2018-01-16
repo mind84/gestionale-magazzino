@@ -25,9 +25,10 @@ input {
 .input-container{
   position:relative;
 }
-input.ng-invalid:not(.ng-untouched) {
+input.ng-invalid:not(.ng-untouched):not(.ng-pristine) {
   background-color:#ff00004f;
   border-color: red;
+  border-left: 4px solid red;
 }
 .totWarn {
   position: absolute;

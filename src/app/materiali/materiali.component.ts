@@ -146,18 +146,25 @@ export class MaterialiComponent implements OnInit {
   onFormSubmit(formName:string){
     switch(formName){
       case 'searchForm':
-      this.insertMode = false;
-      let code = this[formName].dynForm.controls.code.value;
-      let name = this[formName].dynForm.controls.name.value;
-      let categ = this[formName].dynForm.controls.categ.value;
-        if (!code && !name && !categ) return;
-        else this.matService.search(code, name, categ).subscribe((res:any)=>{
-          //elaborare la risposta con lodash
-          _.forEach(res, (v,k)=>{
-            if (v.catdet.length) v.categname = v.catdet[0].name
-        })
-          this.searchResults=res
-        })
+      if(this.searchForm.runPreSubmitValidation()) {
+        this.insertMode = false;
+        let code = this[formName].dynForm.controls.code.value;
+        let name = this[formName].dynForm.controls.name.value;
+        let categ = this[formName].dynForm.controls.categ.value;
+          if (!code && !name && !categ) return;
+          else this.matService.search(code, name, categ).subscribe((res:any)=>{
+            //elaborare la risposta con lodash
+            _.forEach(res, (v,k)=>{
+              if (v.catdet.length) v.categname = v.catdet[0].name
+          })
+            this.searchResults=res
+          })
+      }
+      break;
+      case 'insertMaterialiForm':
+        if(this._inserMaterialiForm.runPreSubmitValidation()) {
+          console.log('valid');
+        }
       break;
       default:
       break

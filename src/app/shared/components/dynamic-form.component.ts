@@ -114,6 +114,15 @@ export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
     return ctrl;//this.fb.control({ disabled, value }, validation,
 
   }
+
+  runPreSubmitValidation():boolean{
+    Object.keys(this.dynForm.controls).forEach(name =>{
+      const control = this.dynForm.get(name)
+      control.markAsTouched();
+      control.markAsDirty();
+    })
+    return this.dynForm.valid
+  }
   addControl(config:FieldConfig){
     this.dynForm.addControl(config.formControlName,new FormControl(this.getState(config),{validators:config.validation, updateOn:config.updateOn}))//this.createControl(config))
   }

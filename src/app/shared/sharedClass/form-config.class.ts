@@ -15,7 +15,7 @@ export class DynFormsFieldConf {
      label: "",
      formControlName: "",
      needUpdateAndValidity: false,
-     updateOn:'change',
+     updateOn:'blur',
      dbAlias:'',
      type: null,
      options: [],
@@ -36,7 +36,7 @@ export class DynFormsFieldConf {
   getFormFields(opts:FieldConfig[]):FieldConfig[] {
     const returnConfig =  opts.map(singleConf=>{
       if (singleConf.inputType==='hidden') singleConf.showLabel=false
-      if (singleConf.controlDirectives && singleConf.controlDirectives.length) singleConf.updateOn='blur';
+      if (singleConf.type === 'select') singleConf.updateOn='change';
       return Object.assign(Object.assign({},this.field), singleConf)
     }
     )

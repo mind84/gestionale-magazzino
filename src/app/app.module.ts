@@ -30,6 +30,7 @@ import { DynamicFormComponent } from './shared/components/dynamic-form.component
 import { FormInputComponent } from './shared/components/controls/form-input.component';
 import { FormSelectComponent } from './shared/components/controls/form-select.component';
 import { FormButtonComponent } from './shared/components/controls/form-button.component';
+import { FormFieldErrorDisplayComponent } from './shared/components/form-field-error-display.component';
 
 //import {addMotivation} from './shared/classes/addMotivation'
 
@@ -44,7 +45,7 @@ import { FormButtonComponent } from './shared/components/controls/form-button.co
     CostiComponent,
     MaterialiComponent,
     UmisuraComponent,
-    CategorieArticoliComponent,
+    CategorieArticoliComponent, 
     NumberFormatPipe,
     UpdateFormComponent,
     UpdateCatComponent,
@@ -53,7 +54,9 @@ import { FormButtonComponent } from './shared/components/controls/form-button.co
     DynamicFormComponent,
     FormInputComponent,
     FormSelectComponent,
-    FormButtonComponent
+    FormButtonComponent,
+    FormFieldErrorDisplayComponent,
+
   ],
   imports: [
     BrowserModule,

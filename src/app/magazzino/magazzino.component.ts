@@ -117,8 +117,8 @@ export class MagazzinoComponent implements OnInit {
       else if (change.targetForm == "addTransForm"){
         if (!this._addTransForm) this.cdRef.detectChanges()
         if(change.formControlName=="motivazioni") {
-          if (change.selectedOption =='Da Ordine'){
-            var localFieldConf = this.addFormFields.filter(field=> field.formControlName=='numorder')[0]
+          if (change.fromService.selectedOption =='Da Ordine'){
+            const localFieldConf = this.addFormFields.filter(field=> field.formControlName=='numorder')[0]
             localFieldConf.visible=true;
             if (! this._addTransForm.dynForm.controls[localFieldConf.formControlName]) this._addTransForm.addControl(localFieldConf)
           }

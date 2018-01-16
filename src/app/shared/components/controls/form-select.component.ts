@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, HostBinding, ChangeDetectorRef, ApplicationRef } from '@angular/core';
 import {Field} from '../../interfaces/form-interface'
 import {FieldConfig, FormChanges} from '../../interfaces/form-interface'
 import {FormService} from '../../../services/form-service'
@@ -10,7 +10,7 @@ import {FormGroup, AbstractControl} from '@angular/forms'
   templateUrl: './form-select.component.html',
   styleUrls: ['./form-select.component.css']
 })
-export class FormSelectComponent implements Field {
+export class FormSelectComponent implements Field, OnInit {
   @HostBinding('class') hostClasses:string;
   elementClasses:string;
   contClasses:string;
@@ -29,7 +29,7 @@ export class FormSelectComponent implements Field {
   get options(){return this.config.options}
   selectOptions:any;
   updateControl:Function;
-    constructor(private fs:FormService) {
+    constructor(private fs:FormService, private cdr:ChangeDetectorRef, private appRef:ApplicationRef) {
       this.updateControl =  this.onChangesControl.bind(this)
     }
       config: FieldConfig;
@@ -40,6 +40,7 @@ export class FormSelectComponent implements Field {
         this.addElemClasses(this.config)
         this.control= this.group.get(this.config.formControlName)
         this.controlDirectivesObject= this.controlDirectives;
+
         if (this.options.length) this.selectOptions= this.options[0].name
       }
 
@@ -61,8 +62,14 @@ export class FormSelectComponent implements Field {
       }
 
       onChangesControl(changes:any){
-        if(changes)
-          return this.fs.pushChanges(this.config,changes);
+        if(changes) {
+          setTimeout(()=>{this.fs.pushChanges(this.config,{selectedOption:changes})
+        },0);
+        }
+      }
+      setModel(val:any){
+        return this.selectOptions = val.target.value.split(':')[1].trim()
+        //return this.selectOptions=val.name
       }
 
 }

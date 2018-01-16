@@ -5,14 +5,19 @@
      <label>{{ config.label }}:</label>
     </div>
     <div class="select-container">
-      <select  class="form-control" [ngClass]='elementClasses'
-       [(ngModel)]="selectOptions"
-       (ngModelChange)="onChangesControl($event)"
+      <select  class="form-control" 
+      (ngModelChange)="onChangesControl($event)" [ngModel]="selectOptions"
       [formControlName]="config.formControlName"
+      [ngClass]='elementClasses'
       >
       <option *ngFor="let opt of config.options" [ngValue]="opt.name">{{opt.name}}</option>
-
       </select>
+      <app-form-field-error-display
+      [formCntr]='control'
+      [isPristine]='control.pristine'
+      [isInvalid]='control.invalid'
+      [isTouched]='control.touched'
+      [conf]='config'></app-form-field-error-display>
       <ng-container *ngIf="config.warns">
       <span class="totWarn">{{warns}}</span>
       </ng-container>
