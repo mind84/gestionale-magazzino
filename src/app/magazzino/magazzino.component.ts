@@ -160,8 +160,10 @@ export class MagazzinoComponent implements OnInit {
           if(this._addTransForm.dynForm.status =="VALID" && this.currentArticle){
             this.storeServ.addTransaction(this._addTransForm.dynForm,this.currentArticle).subscribe((res:any)=>{
               this._addTransForm.displaySubmitResponse(res)
-              this._addTransForm.dynForm.reset()
-              if(res.cback) this.currentArticle=res.cback;
+              if(res.msg==='OK') {
+                this._addTransForm.dynForm.reset()
+                if(res.cback) this.currentArticle=res.cback;
+              }
             })
           }
       break;
@@ -173,8 +175,11 @@ export class MagazzinoComponent implements OnInit {
           }
           else return this.storeServ.remTransaction(this._remTransForm.dynForm, this.currentArticle).subscribe((res:any)=>{
             this._remTransForm.displaySubmitResponse(res)
-            this._remTransForm.dynForm.reset()
-            this.currentArticle=res.cback;
+            if(res.msg==='OK') {
+              this._remTransForm.dynForm.reset()
+              this.currentArticle=res.cback;
+            }
+
           });
         }
       break;

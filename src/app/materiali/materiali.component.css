@@ -1,44 +1,4 @@
 
-#insertMaterialiForm .ng-invalid:not(.ng-untouched) {
-  background-color:#ff00004f;
-  border-color: red;
-}
-
-#insertMaterialiForm .code {
-  width:100px;
-}
-
-#insertMaterialiForm .name, #insertMaterialiForm .forn {
-  width:300px;
-}
-
-#insertMaterialiForm .price {
-  width:100px;
-}
-#insertMaterialiForm .collobj {
-  width:100px;
-}
-#insertMaterialiForm .qta {
-  width:100px;
-}
-#insertMaterialiForm .categname {
-  width:200px;
-}
-#insertMaterialiForm .prod-det {
-  display:inline-flex;
-  padding-top:1em;
-  padding-bottom: 1em;
-  align-items: center;
-}
-#insertMaterialiForm {
-  padding:0.5em;
-  background-color: #e6e3e3;
-}
-#insertMaterialiForm .submit-btn {
-background-color: #5383dac9;
-margin-top:1.5em;
-}
-
 .results-container  th {
 border-bottom: 1px solid #c5bebe;
 }

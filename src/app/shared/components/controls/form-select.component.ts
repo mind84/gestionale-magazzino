@@ -49,6 +49,7 @@ export class FormSelectComponent implements Field, OnInit {
         else if(this.config.populateOptions){
           this.fs.getUM().subscribe((results:any) => {
             this.settedOption=this.castToOptions(results);
+
             this.selectOptions= this.settedOption[0][this.config.ngvalue];
           })
         }
@@ -87,10 +88,11 @@ export class FormSelectComponent implements Field, OnInit {
       }
 
       onChangesControl(changes:any){
-        if(changes) {
-          //setTimeout(()=>{
+
+        if(changes && !this.config.onlySelf) {
+          setTimeout(()=>{
             this.fs.pushChanges(this.config,{selectedOption:changes})
-        //},0);
+            },0)
         }
       }
 }

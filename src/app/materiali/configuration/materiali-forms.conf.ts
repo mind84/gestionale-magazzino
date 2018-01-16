@@ -99,7 +99,8 @@ export const INSERTMATERIALIFORMFIELDS:FieldConfig[]= [
     castToOptions: {
       name: 'umsymb',
       id: 'id'
-    }
+    },
+    onlySelf:true
   },
   {
     label: "Prezzo per collo",

@@ -21,6 +21,7 @@ export class DynFormsFieldConf {
      options: [],
      ngvalue:'name',
      castToOptions:null,
+     onlySelf:false,
      linkedFields:[],
      placeholder: "",
      inputType:'text',

@@ -102,22 +102,6 @@ export class MaterialiComponent implements OnInit {
     return this.isUpdating[index] = !this.isUpdating[index]
   }
 
-  // insert(form:FormGroup): any {
-  //   if(form.status == "INVALID") return;
-  //   else return this.matService.insert(form).subscribe((res:any)=>{
-  //       if (res && res.msg=="OK") {
-  //         this.hasError=false;
-  //         form.reset();
-  //       }
-  //       else this.hasError=true;
-  //       this.hasResponse=true;
-  //       this.notifyInsert=res;
-  //       setTimeout(()=>{this.hasResponse=false},1000)
-  //   })
-  //
-  //
-  // }
-
   updateSearchResults(ev:any){
     let index = _.findIndex(this.searchResults, {_id: ev[0]._id})
     if (index>-1) {
@@ -151,8 +135,9 @@ export class MaterialiComponent implements OnInit {
         if(this._inserMaterialiForm.runPreSubmitValidation()) {
           this.matService.insert(this._inserMaterialiForm.dynForm).subscribe((res:any)=>{
             this._inserMaterialiForm.displaySubmitResponse(res)
-            this._inserMaterialiForm.dynForm.reset()
-            this._inserMaterialiForm=res.cback;
+            if(res.msg==='OK') {
+              this._inserMaterialiForm.dynForm.reset()
+            }
            })
          //
         }

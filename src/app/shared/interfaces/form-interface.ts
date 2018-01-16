@@ -41,6 +41,7 @@ export interface FieldConfig {
   populateOptions?: string,
   ngvalue?:string,
   castToOptions?:any,
+  onlySelf?:boolean,
   placeholder?: string,
   type: TYPEINPUT,
   inputType?:string,
