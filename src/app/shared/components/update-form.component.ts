@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, AfterViewInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import {UmService} from '../../services/um.service';
 import {MaterialiService} from '../../services/materiali.service'
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+
 import {Observable} from 'rxjs/Observable'
 import {CategorieArticoliService} from '../../services/categorie-articoli.service'
 import 'rxjs/add/operator/distinctUntilChanged'
@@ -10,12 +11,22 @@ import 'rxjs/add/operator/debounceTime'
 import 'rxjs/add/operator/filter'
 import * as _ from 'lodash'
 
+import {DynamicFormComponent} from './dynamic-form.component'
+import {FormChanges, FormConfig, FieldConfig} from '../interfaces/form-interface'
+import {DynFormsFieldConf} from '../sharedClass/form-config.class'
+
+
 @Component({
   selector: 'app-update-form',
   templateUrl: './update-form.component.html',
   styleUrls: ['./update-form.component.css']
 })
 export class UpdateFormComponent implements OnInit, AfterViewInit {
+
+
+  @Input() formConfig:FormConfig
+  @Input() fieldsFormConfig:FieldConfig[]
+  @ViewChild('updateInsertForm') updateInsertForm:DynamicFormComponent
   _inputFields:any;
   _um:any;
   _index:any;
@@ -87,6 +98,12 @@ export class UpdateFormComponent implements OnInit, AfterViewInit {
     this.catcode= cat.id;
   }
   ngAfterViewInit(){
+    console.log(this.updateInsertForm);
+    setTimeout(()=>{
+    this.updateInsertForm.dynForm.patchValue(this._inputFields)
+    this.defVal= this.updateForm.getRawValue();
+
+    },0)
     setTimeout(()=>{
     Object.keys(this._inputFields).forEach((key)=>{
       if (key in this.updateForm.controls)

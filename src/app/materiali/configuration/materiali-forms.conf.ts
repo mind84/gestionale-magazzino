@@ -10,6 +10,7 @@ export const SEARCHFIELDS:FieldConfig[]= [
     label: "Codice Articolo",
     formControlName: "code",
     type: TYPEINPUT.input,
+        updateOn:'change'
   },
   {
     disabled:false,
@@ -17,6 +18,7 @@ export const SEARCHFIELDS:FieldConfig[]= [
     formControlName: "name",
     type: TYPEINPUT.input,
     elementStyle: ['large'],
+        updateOn:'change'
   },
   {
     type:TYPEINPUT.input,

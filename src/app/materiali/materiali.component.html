@@ -63,7 +63,13 @@
         <tr>
           <td colspan="7">
             <div class="update-div" *ngIf="isUpdating[i]"  [ngClass]="{'even': i % 2 == 0}" >
-              <app-update-form [inputFields]="searchRes" [ind]="i" [um]='um' (updateParent)='updateSearchResults($event)'></app-update-form>
+              <app-update-form [inputFields]="searchRes"
+              [formConfig]='formConfig.insertMaterialiForm'
+              [fieldsFormConfig]='insertMaterialiFormFields' 
+              [ind]="i"
+              [um]='um'
+              (updateParent)='updateSearchResults($event)'>
+             </app-update-form>
           </div>
           </td>
         </tr>
