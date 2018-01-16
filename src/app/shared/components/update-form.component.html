@@ -81,3 +81,4 @@
     <div><span>{{notifyInsert.result}}</span></div>
   </div>
 </div>
+<app-dynamic-form [config]='fieldConfig' [formConfig]='formConfig' #updateForm  (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
