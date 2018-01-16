@@ -1,6 +1,6 @@
 import { Component, OnInit, HostBinding, ChangeDetectorRef, ApplicationRef } from '@angular/core';
 import {Field} from '../../interfaces/form-interface'
-import {FieldConfig, FormChanges} from '../../interfaces/form-interface'
+import {FieldConfig, FormChanges, OptionsInterface} from '../../interfaces/form-interface'
 import {FormService} from '../../../services/form-service'
 import {FormGroup, AbstractControl} from '@angular/forms'
 
@@ -28,6 +28,7 @@ export class FormSelectComponent implements Field, OnInit {
   }
   get options(){return this.config.options}
   selectOptions:any;
+  settedOption: OptionsInterface[];
   updateControl:Function;
     constructor(private fs:FormService, private cdr:ChangeDetectorRef, private appRef:ApplicationRef) {
       this.updateControl =  this.onChangesControl.bind(this)
@@ -41,7 +42,31 @@ export class FormSelectComponent implements Field, OnInit {
         this.control= this.group.get(this.config.formControlName)
         this.controlDirectivesObject= this.controlDirectives;
 
-        if (this.options.length) this.selectOptions= this.options[0].name
+        if (this.options.length) {
+          this.settedOption = this.options;
+          this.selectOptions= this.settedOption[0].name;
+        }
+        else if(this.config.populateOptions){
+          this.fs.getUM().subscribe((results:any) => {
+            this.settedOption=this.castToOptions(results);
+            this.selectOptions= this.settedOption[0][this.config.ngvalue];
+          })
+        }
+      }
+
+      castToOptions(res:any):OptionsInterface[] {
+        if (!this.config.castToOptions) return
+        let options:OptionsInterface[] =[];
+        res.forEach((response)=>{
+            const name = response[this.config.castToOptions.name];
+            const id = response[this.config.castToOptions.id];
+            const opt:OptionsInterface = {
+              name:name,
+              id:id
+            }
+            options.push(opt)
+        })
+        return options;
       }
 
       addHostClasses(config:FieldConfig):void{
@@ -63,13 +88,9 @@ export class FormSelectComponent implements Field, OnInit {
 
       onChangesControl(changes:any){
         if(changes) {
-          setTimeout(()=>{this.fs.pushChanges(this.config,{selectedOption:changes})
-        },0);
+          //setTimeout(()=>{
+            this.fs.pushChanges(this.config,{selectedOption:changes})
+        //},0);
         }
       }
-      setModel(val:any){
-        return this.selectOptions = val.target.value.split(':')[1].trim()
-        //return this.selectOptions=val.name
-      }
-
 }

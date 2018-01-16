@@ -27,20 +27,20 @@ export class MaterialiComponent implements OnInit {
   insertMode:boolean = false
   searchResults:any = [];
   notifyInsert:any;
-  hasResponse:boolean = false;
-  hasError:boolean=false;
+  // hasResponse:boolean = false;
+  // hasError:boolean=false;
   isUpdating:any = {};
   um:any
   selectedSearchValue:any;
-  searchCat$: Subject<string> = new Subject<string>()
-  searchCat$Search: Subject<string> = new Subject<string>()
-  prevCat:any;
+  // searchCat$: Subject<string> = new Subject<string>()
+  // searchCat$Search: Subject<string> = new Subject<string>()
+  // prevCat:any;
   isSearchingCat:boolean;
-  catcode:number = null;
+  // catcode:number = null;
   catName:string = "";
-  prevCatSearch:any;
+  // prevCatSearch:any;
   isSearchingCatSearch:boolean;
-  catcodeSearch:number = null;
+  // catcodeSearch:number = null;
   catNameSearch:string = "";
 
 
@@ -91,46 +91,32 @@ export class MaterialiComponent implements OnInit {
       this.um=um;
       this.UMService.umreference=um;
       this.selectedSearchValue=um[0]
-
-      // this.insertMaterialiForm = this._fb.group({
-      //     code: ['', Validators.required ],
-      //     name: ['', Validators.required ],
-      //     categname: ['', Validators.required ],
-      //     categ:[''],
-      //     fornitore: ['', Validators.required ],
-      //     qta: ['', Validators.required],
-      //     umId: ['', Validators.required],
-      //     price: ['', Validators.required ],
-      //     collobj:['', Validators.required ],
-      //     note:''
-      //   })
     })
   }
 
   toggleInsert() {
     this.insertMode = !this.insertMode
-    //this.cdRef.detectChanges()
   }
   toggleUpdating(index):any {
     if(!(index in this.isUpdating)) this.isUpdating[index]=false
     return this.isUpdating[index] = !this.isUpdating[index]
   }
 
-  insert(form:FormGroup): any {
-    if(form.status == "INVALID") return;
-    else return this.matService.insert(form).subscribe((res:any)=>{
-        if (res && res.msg=="OK") {
-          this.hasError=false;
-          form.reset();
-        }
-        else this.hasError=true;
-        this.hasResponse=true;
-        this.notifyInsert=res;
-        setTimeout(()=>{this.hasResponse=false},1000)
-    })
-
-
-  }
+  // insert(form:FormGroup): any {
+  //   if(form.status == "INVALID") return;
+  //   else return this.matService.insert(form).subscribe((res:any)=>{
+  //       if (res && res.msg=="OK") {
+  //         this.hasError=false;
+  //         form.reset();
+  //       }
+  //       else this.hasError=true;
+  //       this.hasResponse=true;
+  //       this.notifyInsert=res;
+  //       setTimeout(()=>{this.hasResponse=false},1000)
+  //   })
+  //
+  //
+  // }
 
   updateSearchResults(ev:any){
     let index = _.findIndex(this.searchResults, {_id: ev[0]._id})
@@ -163,7 +149,12 @@ export class MaterialiComponent implements OnInit {
       break;
       case 'insertMaterialiForm':
         if(this._inserMaterialiForm.runPreSubmitValidation()) {
-          console.log('valid');
+          this.matService.insert(this._inserMaterialiForm.dynForm).subscribe((res:any)=>{
+            this._inserMaterialiForm.displaySubmitResponse(res)
+            this._inserMaterialiForm.dynForm.reset()
+            this._inserMaterialiForm=res.cback;
+           })
+         //
         }
       break;
       default:

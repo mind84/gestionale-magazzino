@@ -50,8 +50,10 @@ errorMsgs:string[] = [];
         }
         else Err.push(Vf.VALIDATOR_CONFIG[key])
       })
+      //setTimeout(()=>{
       this.showError=true;
       this.errorMsgs=Err
+    //},1);
     }
   }
 

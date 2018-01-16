@@ -121,10 +121,12 @@ export class MagazzinoComponent implements OnInit {
             const localFieldConf = this.addFormFields.filter(field=> field.formControlName=='numorder')[0]
             localFieldConf.visible=true;
             if (! this._addTransForm.dynForm.controls[localFieldConf.formControlName]) this._addTransForm.addControl(localFieldConf)
+
           }
           else {
             this.addFormFields.filter(field=> field.formControlName=='numorder')[0].visible=false;
             this._addTransForm.removeControl(this.addFormFields.filter(field=> field.formControlName=='numorder')[0])
+
           }
         }
       }

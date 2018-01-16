@@ -93,7 +93,13 @@ export const INSERTMATERIALIFORMFIELDS:FieldConfig[]= [
     formControlName: "umId",
     validation:[Validators.required],
     type: TYPEINPUT.select,
-    controlDirectives:['appFormatNumber']
+    controlDirectives:['appFormatNumber'],
+    populateOptions: 'getUM',
+    ngvalue:'id',
+    castToOptions: {
+      name: 'umsymb',
+      id: 'id'
+    }
   },
   {
     label: "Prezzo per collo",

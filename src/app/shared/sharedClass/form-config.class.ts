@@ -14,11 +14,13 @@ export class DynFormsFieldConf {
      disabled:false,
      label: "",
      formControlName: "",
-     needUpdateAndValidity: false,
      updateOn:'blur',
      dbAlias:'',
      type: null,
+     populateOptions: null,
      options: [],
+     ngvalue:'name',
+     castToOptions:null,
      linkedFields:[],
      placeholder: "",
      inputType:'text',
@@ -37,6 +39,7 @@ export class DynFormsFieldConf {
     const returnConfig =  opts.map(singleConf=>{
       if (singleConf.inputType==='hidden') singleConf.showLabel=false
       if (singleConf.type === 'select') singleConf.updateOn='change';
+      if(singleConf.options && singleConf.options.length) singleConf.populateOptions=null;
       return Object.assign(Object.assign({},this.field), singleConf)
     }
     )
