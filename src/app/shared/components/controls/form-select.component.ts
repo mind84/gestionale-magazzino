@@ -29,6 +29,7 @@ export class FormSelectComponent implements Field, OnInit {
   get options(){return this.config.options}
   selectOptions:any;
   settedOption: OptionsInterface[];
+  populateResults: any[];
   updateControl:Function;
     constructor(private fs:FormService, private cdr:ChangeDetectorRef, private appRef:ApplicationRef) {
       this.updateControl =  this.onChangesControl.bind(this)
@@ -51,10 +52,11 @@ export class FormSelectComponent implements Field, OnInit {
         }
         else if(this.config.populateOptions){
           //setTimeout(_=>{
-          this.fs.getUM().subscribe((results:any) => {
+          this.fs[this.config.populateOptions]().subscribe((results:any) => {
+          this.populateResults =results;
             this.settedOption=this.castToOptions(results);
             if (!this.patchValue) {
-              this.selectOptions= this.settedOption[0][this.config.ngvalue];
+              this.selectOptions=this.config.ngvalue ?  this.settedOption[0][this.config.ngvalue] : this.settedOption[0];
             }
             else this.patchValues()
           })
@@ -98,10 +100,19 @@ export class FormSelectComponent implements Field, OnInit {
       }
 
       onChangesControl(changes:any){
-
+        let ObjChanged;
         if(changes && !this.config.onlySelf) {
+          if (this.populateResults){
+            ObjChanged = this.populateResults.filter((obj)=>{
+              return obj[this.config.ngvalue] == changes
+            })[0]
+
+            console.log(ObjChanged)
+          }
+
+
           setTimeout(()=>{
-            this.fs.pushChanges(this.config,{selectedOption:changes})
+            this.fs.pushChanges(this.config,{selectedOption:changes, refObj:ObjChanged})
             },0)
         }
       }

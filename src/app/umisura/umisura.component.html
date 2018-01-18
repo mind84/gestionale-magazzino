@@ -1,9 +1,12 @@
 <div class="row maincontent">
   <div class="col-10 um-int">
     <div class="h4"><u>Ricerca o inserisci nuova unità di misra</u></div>
+    <div class='switchFunction'>
+      <span style=""><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuova Unità di Misura</button></span>
+    </div>
     <div class="search-control">
       <app-dynamic-form [config]='searchFormFields' [formConfig]='formConfig.searchForm' #searchForm  (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
-        <form *ngIf="hasLoaded" id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
+        <!--form *ngIf="hasLoaded" id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
           Simbolo: <select [(ngModel)]="selectedSearchValue" (ngModelChange)="onChange($event,searchForm)" class="form-control"
           formControlName="umsymb"
           autocorrect="off"
@@ -18,8 +21,7 @@
           spellcheck="off" type="text"
           value="" [attr.disabled]="true">
           <button type="submit" class="btn submit-btn">Cerca</button>
-        </form>
-      <span style="margin-left:140px;"><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuova Unità di Misura</button></span>
+        </form-->
     </div>
   </div>
   <div class="col-10 insert-form-container" *ngIf="insertMode && hasLoaded">

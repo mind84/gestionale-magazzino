@@ -14,7 +14,8 @@ import {SEARCHFIELDS} from './configuration/unita-misura-form.conf'
 @Component({
   selector: 'app-umisura',
   templateUrl: './umisura.component.html',
-  styleUrls: ['./umisura.component.css']
+  styleUrls: ['./umisura.component.css'],
+  providers: [DynFormsFieldConf]
 })
 export class UmisuraComponent implements OnInit {
   insertUMForm: FormGroup;
@@ -45,10 +46,10 @@ export class UmisuraComponent implements OnInit {
 
 
 
-  constructor(private UMService:UmService, private _fb: FormBuilder, private dynFieldsConf:DynFormsFieldConf,) { }
+  constructor(private UMService:UmService, private _fb: FormBuilder, private dynFieldsConf:DynFormsFieldConf) { }
 
   ngOnInit() {
-
+    this.searchFormFields = this.dynFieldsConf.getFormFields(SEARCHFIELDS)
     this.formConfig = {
       searchForm: {
         formName: 'searchForm'
@@ -83,6 +84,12 @@ export class UmisuraComponent implements OnInit {
       //     umsymb: null
       //   })
       })
+  }
+
+  manageFormChange(change:FormChanges){
+    if(change.targetForm =='searchForm'){
+      this.searchForm.updateFormValues(change);
+    }
   }
   toggleInsert():boolean {
     return this.insertMode = !this.insertMode
