@@ -66,7 +66,7 @@ updateControl:Function;
     }
 
     onChangesControl(changes:any){
-      return this.fs.pushChanges(this.config,changes);
+      return this.fs.pushChanges(this.config,{selectedOption:null, updateObj:changes});
     }
 
 }

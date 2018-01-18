@@ -106,13 +106,11 @@ export class FormSelectComponent implements Field, OnInit {
             ObjChanged = this.populateResults.filter((obj)=>{
               return obj[this.config.ngvalue] == changes
             })[0]
-
-            console.log(ObjChanged)
           }
 
 
           setTimeout(()=>{
-            this.fs.pushChanges(this.config,{selectedOption:changes, refObj:ObjChanged})
+            this.fs.pushChanges(this.config,{selectedOption:changes, updateObj:ObjChanged})
             },0)
         }
       }

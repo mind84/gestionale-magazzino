@@ -123,6 +123,18 @@ export class UmisuraComponent implements OnInit {
 
 
   }
+  onFormSubmit(formName:string){
+    if (formName=='searchForm') {
+      if(this.searchForm.runPreSubmitValidation()) {
+        this.insertMode = false;
+        let code = this.searchForm.dynForm.controls.umsymb.value;
+          if (!code) return;
+          else return this.UMService.search(code).subscribe((res:any)=>{
+            this.searchResults=res
+          })
+          }
+    }
+  }
   search(form:FormGroup):any{
     this.insertMode = false;
     let code = form.controls.umsymb.value.id;

@@ -37,7 +37,7 @@ export class FormService {
     let changes:FormChanges = {
       formControlName:config.formControlName,
       valueToUpdate:itemConf[config.formControlName],
-      fromService:itemConf,
+      fromService:itemConf.updateObj,
       selectedOption: itemConf.selectedOption ? itemConf.selectedOption : null
     }
     return changes;

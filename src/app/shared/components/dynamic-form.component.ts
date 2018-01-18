@@ -194,7 +194,7 @@ updateFormValues(changes:FormChanges){
   if(changes.fromService) {
     //recuperiamo gli alias da db per il singolo campo
     let updateArray:Update[] = []
-    updateArray.push(this.getUpdateObject(fieldConf,changes.fromService))
+    if(!changes.selectedOption) updateArray.push(this.getUpdateObject(fieldConf,changes.fromService))
     fieldConf.linkedFields.forEach(linkedField=>{
       updateArray.push(this.getUpdateObject(this.getControl(linkedField),changes.fromService))
     })
