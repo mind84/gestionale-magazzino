@@ -4,45 +4,7 @@ import {HOSTSTYLE, TYPEINPUT} from '../../shared/interfaces/form-interface'
 import * as Vf from '../../shared/functions/validators';
 
 
-export const SEARCHFIELDS:FieldConfig[]= [
-  {
-    disabled:false,
-    label: "Codice Articolo",
-    formControlName: "code",
-    type: TYPEINPUT.input,
-        updateOn:'change'
-  },
-  {
-    disabled:false,
-    label: "Nome",
-    formControlName: "name",
-    type: TYPEINPUT.input,
-    elementStyle: ['large'],
-        updateOn:'change'
-  },
-  {
-    type:TYPEINPUT.input,
-    label:'Categoria',
-    textSearchFunction:'categorieSearch',
-    dbAlias:'name',
-    linkedFields:['categ'],
-    formControlName:'categname'
-  },
-  {
-    type:TYPEINPUT.input,
-    label:'',
-    inputType:'hidden',
-    formControlName:'categ',
-    dbAlias:'id'
-  },
-  {
-    type:TYPEINPUT.button,
-    label:'Cerca',
-    formControlName:'submit'
-  }
-]
-
-export const INSERTMATERIALIFORMFIELDS:FieldConfig[]= [
+export const UPDATE_MATERIALI_FORM_FIELDS:FieldConfig[]= [
   {
     label: "Codice articolo",
     formControlName: "code",
@@ -72,7 +34,6 @@ export const INSERTMATERIALIFORMFIELDS:FieldConfig[]= [
   {
     type:TYPEINPUT.input,
     label:'',
-    validation:[Validators.required],
     inputType:'hidden',
     formControlName:'categ',
     dbAlias:'id'
@@ -129,7 +90,7 @@ export const INSERTMATERIALIFORMFIELDS:FieldConfig[]= [
   },
   {
     type:TYPEINPUT.button,
-    label:'Inserisci',
+    label:'Aggiorna',
     formControlName:'submit',
     elementStyle:['insertButtonStandard']
   }

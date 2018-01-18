@@ -7,6 +7,7 @@ import {FormChanges, FormConfig, FieldConfig} from '../shared/interfaces/form-in
 import {DynFormsFieldConf} from '../shared/sharedClass/form-config.class'
 
 import {SEARCHFIELDS, INSERTMATERIALIFORMFIELDS} from './configuration/materiali-forms.conf'
+import {UPDATE_MATERIALI_FORM_FIELDS} from './configuration/materiali-updateforms.conf'
 
 
 import {UmService} from '../services/um.service'
@@ -23,30 +24,15 @@ import * as _ from 'lodash';
   providers: [MaterialiService, DynFormsFieldConf]
 })
 export class MaterialiComponent implements OnInit {
-  insertMaterialiForm: FormGroup;
   insertMode:boolean = false
   searchResults:any = [];
-  notifyInsert:any;
-  // hasResponse:boolean = false;
-  // hasError:boolean=false;
-  isUpdating:any = {};
-  um:any
-  selectedSearchValue:any;
-  // searchCat$: Subject<string> = new Subject<string>()
-  // searchCat$Search: Subject<string> = new Subject<string>()
-  // prevCat:any;
-  isSearchingCat:boolean;
-  // catcode:number = null;
-  catName:string = "";
-  // prevCatSearch:any;
-  isSearchingCatSearch:boolean;
-  // catcodeSearch:number = null;
-  catNameSearch:string = "";
 
+  isUpdating:any = {};
 
   _inserMaterialiForm:DynamicFormComponent
   searchFormFields:FieldConfig[]
   insertMaterialiFormFields:FieldConfig[]
+  updateMaterialiFormFields: FieldConfig[]
   formConfig:FormConfig
   @ViewChild('searchForm')
     searchForm: DynamicFormComponent;
@@ -60,13 +46,13 @@ export class MaterialiComponent implements OnInit {
   constructor(
     private matService:MaterialiService,
     private _fb: FormBuilder,
-    private UMService:UmService,
     private catArtServ:CategorieArticoliService,
     private dynFieldsConf:DynFormsFieldConf,
     private cdRef:ChangeDetectorRef
    ) {
      this.searchFormFields = this.dynFieldsConf.getFormFields(SEARCHFIELDS)
      this.insertMaterialiFormFields = this.dynFieldsConf.getFormFields(INSERTMATERIALIFORMFIELDS)
+      this.updateMaterialiFormFields = this.dynFieldsConf.getFormFields(UPDATE_MATERIALI_FORM_FIELDS)
      this.formConfig = {
        searchForm: {
          formName: 'searchForm'
@@ -87,26 +73,23 @@ export class MaterialiComponent implements OnInit {
     }
   }
   ngOnInit() {
-    this.UMService.getMainReference().subscribe((um) =>{
-      this.um=um;
-      this.UMService.umreference=um;
-      this.selectedSearchValue=um[0]
-    })
+
   }
 
   toggleInsert() {
     this.insertMode = !this.insertMode
   }
   toggleUpdating(index):any {
-    if(!(index in this.isUpdating)) this.isUpdating[index]=false
-    return this.isUpdating[index] = !this.isUpdating[index]
+    if(!(index in this.isUpdating)) this.isUpdating[index]=null
+     this.isUpdating[index] = !this.isUpdating[index]
+
   }
 
   updateSearchResults(ev:any){
     let index = _.findIndex(this.searchResults, {_id: ev[0]._id})
     if (index>-1) {
       //è stata modificata la categoria?
-      ev[0].categname = ev[0].catdet[0].name;
+      //ev[0].categname = ev[0].catdet[0].name;
       this.searchResults.splice(index, 1, ev[0])
       this.isUpdating[ev[1]]=false;
     }
@@ -118,15 +101,12 @@ export class MaterialiComponent implements OnInit {
       case 'searchForm':
       if(this.searchForm.runPreSubmitValidation()) {
         this.insertMode = false;
+        this.isUpdating = {};
         let code = this[formName].dynForm.controls.code.value;
         let name = this[formName].dynForm.controls.name.value;
         let categ = this[formName].dynForm.controls.categ.value;
           if (!code && !name && !categ) return;
           else this.matService.search(code, name, categ).subscribe((res:any)=>{
-            //elaborare la risposta con lodash
-            _.forEach(res, (v,k)=>{
-              if (v.catdet.length) v.categname = v.catdet[0].name
-          })
             this.searchResults=res
           })
       }

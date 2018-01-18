@@ -15,7 +15,7 @@ interface Update {
   styleUrls: ['./dynamic-form.component.css'],
   providers:[FormService]
 })
-export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
+export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf, AfterViewInit {
   @HostBinding('class') hostClasses:string;
   elementClasses:string;
   contClasses:string;
@@ -31,10 +31,17 @@ export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
   @Output()
   notifyChanges: EventEmitter<FormChanges> = new EventEmitter<FormChanges>();
   @Output()
+  initialValue: EventEmitter<any> = new EventEmitter<any>()
+  @Output()
   formSubmit: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
   @Input()
   insertResponse:any
+  _patchValues:any;
+
   formName:string;
+  @Input() set patchValues(val){
+    if(val) this._patchValues = this.createPatchValues(val)
+  }
 
 
   get controls() { return this.config.filter(({type}) => type !== 'button'); }
@@ -48,22 +55,27 @@ export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
     this.addHostClasses(this.formConfig)
     this.addElemClasses(this.formConfig)
       this.dynForm = this.createFormGroup()
-      // this.formChanges()
       this.fs.pushChange$.subscribe((changes:FormChanges)=>{
         if(!changes.targetForm) changes.targetForm=this.formName;
         this.notifyChanges.emit(changes);
       })
   }
-  // formChanges(){
-  //   this.controls.forEach(control=>{
-  //     if(control.needUpdateAndValidity){
-  //       this.dynForm.get(control.formControlName).valueChanges.subscribe((val)=>{
-  //         console.log(val)
-  //         this.dynForm.get(control.formControlName).updateValueAndValidity({onlySelf:true, emitEvent:false})
-  //       })
-  //     }
-  //   })
-  // }
+  ngAfterViewInit(){
+  }
+
+  createPatchValues(obj){
+    if(!obj) return null;
+    const caster:any = {}
+    Object.keys(obj).forEach((key) =>{
+      var fld = this.controls.filter((control) =>{
+        return control.formControlName == key || control.dbAlias == key
+      })[0]
+      if(fld) caster[fld.formControlName] = obj[key]
+
+    })
+    if(caster) this.initialValue.emit(caster);
+    return caster;
+  }
   addHostClasses(config:SingleFormConf){
     if(this.classHost)
       this.hostClasses=this.classHost.join(" ");
@@ -73,6 +85,7 @@ export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
     if(this.classElem)
       this.elementClasses=this.classElem.join(" ");
   }
+
   ngOnChanges(){
     if(this.dynForm){
       const controls = Object.keys(this.dynForm.controls)
@@ -118,6 +131,13 @@ export class DynamicFormComponent implements OnInit, OnChanges, SingleFormConf {
   runPreSubmitValidation():boolean{
     Object.keys(this.dynForm.controls).forEach(name =>{
       const control = this.dynForm.get(name)
+      //se un input che ha un campo collegato nascosto è vuoto, svuota anche il campo collegato
+      const fieldConf = this.controls.filter(conf=> {return conf.formControlName == name})[0]
+      if (!control.value && (fieldConf.linkedFields.length >0)) {
+        fieldConf.linkedFields.forEach(key => {
+          this.dynForm.controls[key].setValue(null);
+        })
+      }
       control.markAsTouched();
       control.markAsDirty();
     })

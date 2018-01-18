@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding, ChangeDetectorRef, ApplicationRef } from '@angular/core';
+import { Component, OnInit, HostBinding, ChangeDetectorRef, ApplicationRef, Input } from '@angular/core';
 import {Field} from '../../interfaces/form-interface'
 import {FieldConfig, FormChanges, OptionsInterface} from '../../interfaces/form-interface'
 import {FormService} from '../../../services/form-service'
@@ -34,7 +34,9 @@ export class FormSelectComponent implements Field, OnInit {
       this.updateControl =  this.onChangesControl.bind(this)
     }
       config: FieldConfig;
-      group:FormGroup
+      group:FormGroup;
+      @Input()
+      patchValue:any;
 
       ngOnInit(){
         this.addHostClasses(this.config)
@@ -45,13 +47,18 @@ export class FormSelectComponent implements Field, OnInit {
         if (this.options.length) {
           this.settedOption = this.options;
           this.selectOptions= this.settedOption[0].name;
+          this.patchValues()
         }
         else if(this.config.populateOptions){
+          //setTimeout(_=>{
           this.fs.getUM().subscribe((results:any) => {
             this.settedOption=this.castToOptions(results);
-
-            this.selectOptions= this.settedOption[0][this.config.ngvalue];
+            if (!this.patchValue) {
+              this.selectOptions= this.settedOption[0][this.config.ngvalue];
+            }
+            else this.patchValues()
           })
+          //},0)
         }
       }
 
@@ -69,7 +76,10 @@ export class FormSelectComponent implements Field, OnInit {
         })
         return options;
       }
-
+      patchValues(){
+          if(this.patchValue)
+            this.selectOptions = this.patchValue
+      }
       addHostClasses(config:FieldConfig):void{
         if(this.classHost) {
           this.hostClasses=this.classHost.join(" ");

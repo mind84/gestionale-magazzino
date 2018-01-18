@@ -1,9 +1,13 @@
-import { Component, OnInit, Input, AfterViewInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {Observable} from 'rxjs/Observable'
 import {CategorieArticoliService} from '../../services/categorie-articoli.service'
 import 'rxjs/add/operator/distinctUntilChanged'
 import * as _ from 'lodash'
+import {DynamicFormComponent} from './dynamic-form.component'
+import {FormChanges, FormConfig, FieldConfig} from '../interfaces/form-interface'
+import {DynFormsFieldConf} from '../sharedClass/form-config.class'
+
 
 @Component({
   selector: 'app-update-cat',
@@ -12,6 +16,10 @@ import * as _ from 'lodash'
 })
 export class UpdateCatComponent implements OnInit, AfterViewInit {
 
+
+  @Input() formConfig:FormConfig
+  @Input() fieldsFormConfig:FieldConfig[]
+  @ViewChild('updateInsertForm') updateInsertForm:DynamicFormComponent
   _inputFields:any;
   _um:any;
   _index:any;
@@ -39,40 +47,38 @@ export class UpdateCatComponent implements OnInit, AfterViewInit {
    }
 
   ngOnInit() {
-    this.updateForm = this._fb.group({
-        name: ['', Validators.required ],
-        descr: ['', Validators.required ]
-    })
+
   }
   ngAfterViewInit(){
-    setTimeout(()=>{
-    Object.keys(this._inputFields).forEach((key)=>{
-      if (key in this.updateForm.controls)
-        this.updateForm.controls[key].patchValue(this._inputFields[key]);
-    })
-    this.defVal= this.updateForm.getRawValue();
 
-    },0)
   }
-  update(form:FormGroup, index:number) {
-    //form comparison
+
+  setInitValue(initValue:any){
+    this.defVal = initValue;
+  }
+
+  onFormSubmit(formName:string){
     let subjform = {}
-    _.forIn(form.getRawValue(), (v,k)=>{
+    _.forIn(this.updateInsertForm.dynForm.getRawValue(), (v,k)=>{
       if (v !== this.defVal[k]) subjform[k] = v;
     })
     if (_.isEmpty(subjform)) return;
     else {
       subjform['id'] = this._inputFields.id;
       this.carArtServ.update(subjform).subscribe((res:any)=>{
-        this.insertResponse=res;
+         this.updateInsertForm.displaySubmitResponse(res)
+         if(res.msg==='OK') {
+           let event= [res.cback, this._index]
+         }
         if (res && res.msg=="OK") {
           setTimeout(()=>{
-              let event= [this.insertResponse.cback, this._index]
+              let event= [res.cback, this._index]
               this.updateParent.emit(event)
           },2000)
         }
     })
     }
+
   }
 
 }

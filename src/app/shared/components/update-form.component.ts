@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit, EventEmitter, Output, ViewChild} from '@angular/core';
 import {UmService} from '../../services/um.service';
 import {MaterialiService} from '../../services/materiali.service'
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
@@ -59,90 +59,43 @@ export class UpdateFormComponent implements OnInit, AfterViewInit {
   }
   updateForm:any;
   isReady:boolean;
-  constructor(private UMServ: UmService, private _fb: FormBuilder, private matSer:MaterialiService, private catArtServ:CategorieArticoliService) {
+  constructor(private _fb: FormBuilder, private matSer:MaterialiService, private catArtServ:CategorieArticoliService) {
 
    }
 
   ngOnInit() {
-      this.updateForm = this._fb.group({
-          code: ['', Validators.required ],
-          name: ['', Validators.required ],
-          categname: ['', Validators.required ],
-          categ:[''],
-          fornitore: ['', Validators.required ],
-          qta: ['', Validators.required],
-          umId: ['', Validators.required],
-          price: ['', Validators.required ],
-          collobj:['', Validators.required ],
-          note:''
-      })
-      this.searchCat$
-        .debounceTime(300)
-        .distinctUntilChanged()
-        .subscribe((term:string)=>{
-          if (term.length <3) this.isSearchingCat = false;
-          else {
-
-            return this.catArtServ.search(term).subscribe((categories:any)=>{
-              if (categories.length) this.isSearchingCat=true;
-              this.prevCat = categories;
-            })
-          }
-        })
 
   }
 
-  setCurrentCat(cat:any){
-    this.isSearchingCat=false;
-    this.catName = cat.name;
-    this.catcode= cat.id;
-  }
   ngAfterViewInit(){
-    console.log(this.updateInsertForm);
-    setTimeout(()=>{
-    this.updateInsertForm.dynForm.patchValue(this._inputFields)
-    this.defVal= this.updateForm.getRawValue();
 
-    },0)
-    setTimeout(()=>{
-    Object.keys(this._inputFields).forEach((key)=>{
-      if (key in this.updateForm.controls)
-        this.updateForm.controls[key].patchValue(this._inputFields[key]);
-    })
-    this.defVal= this.updateForm.getRawValue();
-
-    },0)
   }
-  update(form:FormGroup, index:number) {
-    //form comparison
+
+  setInitValue(initValue:any){
+    this.defVal = initValue;
+  }
+
+  onFormSubmit(formName:string){
     let subjform = {}
-    _.forIn(form.getRawValue(), (v,k)=>{
+    _.forIn(this.updateInsertForm.dynForm.getRawValue(), (v,k)=>{
       if (v !== this.defVal[k]) subjform[k] = v;
     })
-    if (_.isEmpty(subjform)) return;
+    if (_.isEmpty(subjform)) {
+      return
+    }
     else {
       subjform['realcode'] = this._inputFields.code;
       this.matSer.update(subjform).subscribe((res:any)=>{
-        if (res && res.msg=="OK") {
-          this.hasError=false;
-          //emit dell'evento per notificare il parent
-        }
-        else this.hasError=true;
-        this.hasResponse=true;
-        this.notifyInsert=res;
-        setTimeout(()=>{
-          if (this.hasError) return;
-          else {
-            let event= [this.notifyInsert.cback, this._index]
-            this.updateParent.emit(event)
-            this.hasResponse=false;
-          }
 
-        },2000)
+          this.updateInsertForm.displaySubmitResponse(res)
+          if(res.msg==='OK') {
+            let event= [res.cback, this._index]
+            this.updateParent.emit(event)
+
+          }
 
     })
     }
   }
-
 
 }

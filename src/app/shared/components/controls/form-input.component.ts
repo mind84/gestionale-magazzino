@@ -1,4 +1,4 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, HostBinding, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import {Field} from '../../interfaces/form-interface'
 import {FieldConfig, FormChanges} from '../../interfaces/form-interface'
 import {FormService} from '../../../services/form-service'
@@ -10,7 +10,7 @@ import {FormGroup, AbstractControl} from '@angular/forms'
   templateUrl: './form-input.component.html',
   styleUrls: ['./form-input.component.css']
 })
-export class FormInputComponent implements Field, OnInit {
+export class FormInputComponent implements Field, OnInit, AfterViewInit {
 @HostBinding('class') hostClasses:string;
 elementClasses:string;
 contClasses:string;
@@ -27,19 +27,27 @@ get controlDirectives() {
   return arrayObj;
 }
 updateControl:Function;
-  constructor(private fs:FormService) {
+  constructor(private fs:FormService, private cd : ChangeDetectorRef) {
     this.updateControl =  this.onChangesControl.bind(this)
   }
     config: FieldConfig;
     group:FormGroup
+    @Input()
+    patchValue:any
 
     ngOnInit(){
       this.addHostClasses(this.config)
       this.addElemClasses(this.config)
       this.control= this.group.get(this.config.formControlName)
       this.controlDirectivesObject= this.controlDirectives;
+
     }
 
+    ngAfterViewInit(){
+        if (this.patchValue) setTimeout(()=>{
+          this.control.setValue(this.patchValue)
+        },0);
+    }
     addHostClasses(config:FieldConfig):void{
       if(this.classHost) {
         this.hostClasses=this.classHost.join(" ");

@@ -30,8 +30,9 @@ router.route("/insert").post((req: Request, res: Response, next: NFunc) => {
           qCat.exec((err,catres)=>{
             if (err) return res.send(err)
               else {
-                docs.catdet = [];
-                docs.catdet.push(catres);
+                docs.categname=catres.name
+                // docs.catdet = [];
+                // docs.catdet.push(catres);
                 return res.json({ msg: "OK", result: "Articolo modificato correttamente",cback: docs });
             }
           })
@@ -82,6 +83,12 @@ router.route("").get((req: Request, res: Response, next: NFunc) => {
         localField: "categ",
         foreignField: "id",
         as: "catdet"
+      }
+    },
+      {
+      $addFields: {
+        catdet: false,
+        categname: {$arrayElemAt: ["$catdet.name",0]}
       }
     }
   ], (err: any, docs:any)=> {

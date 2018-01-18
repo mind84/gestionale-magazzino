@@ -32,8 +32,7 @@ router.route("/update").post(function (req, res, next) {
             if (err)
                 return res.send(err);
             else {
-                docs.catdet = [];
-                docs.catdet.push(catres);
+                docs.categname = catres.name;
                 return res.json({ msg: "OK", result: "Articolo modificato correttamente", cback: docs });
             }
         });
@@ -82,6 +81,12 @@ router.route("").get(function (req, res, next) {
                 localField: "categ",
                 foreignField: "id",
                 as: "catdet"
+            }
+        },
+        {
+            $addFields: {
+                catdet: false,
+                categname: { $arrayElemAt: ["$catdet.name", 0] }
             }
         }
     ], function (err, docs) {

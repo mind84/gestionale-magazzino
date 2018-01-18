@@ -1,4 +1,4 @@
 <form [formGroup] = "dynForm" [displayResponse]="insertResponse" [attr.form-name]='formName' #dyn [ngClass]='elementClasses' (submit)="submit(dyn)">
-  <ng-container *ngFor="let field of config" appDynamicControls [config]="field" [form]="dynForm">
+  <ng-container *ngFor="let field of config" appDynamicControls [config]="field" [form]="dynForm" [patchValue]='_patchValues ? _patchValues[field.formControlName] : null'>
   </ng-container>
 </form>

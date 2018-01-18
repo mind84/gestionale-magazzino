@@ -10,11 +10,11 @@ export class DynFormsFieldConf {
   field:FieldConfig;
   constructor(){
      this.field = {
-      visible:true,
+     visible:true,
      disabled:false,
      label: "",
      formControlName: "",
-     updateOn:'blur',
+     updateOn:'change',
      dbAlias:'',
      type: null,
      populateOptions: null,

@@ -8,6 +8,7 @@ import {AppRoutingModule} from './shared/app-routing.module';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import {UmService} from './services/um.service'
 import {CategorieArticoliService} from './services/categorie-articoli.service'
+import {MaterialiService} from './services/materiali.service'
 
 
 
@@ -45,7 +46,7 @@ import { FormFieldErrorDisplayComponent } from './shared/components/form-field-e
     CostiComponent,
     MaterialiComponent,
     UmisuraComponent,
-    CategorieArticoliComponent, 
+    CategorieArticoliComponent,
     NumberFormatPipe,
     UpdateFormComponent,
     UpdateCatComponent,
@@ -72,7 +73,7 @@ import { FormFieldErrorDisplayComponent } from './shared/components/form-field-e
     DirectiveModule
   ],
   entryComponents: [DisplayResponseComponent, TextSearchComponent, FormInputComponent, FormButtonComponent, FormSelectComponent],
-  providers: [UmService, CategorieArticoliService],
+  providers: [UmService, CategorieArticoliService, MaterialiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

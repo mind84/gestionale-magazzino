@@ -30,6 +30,8 @@ config:FieldConfig;
 
 @Input()
 form:FormGroup;
+@Input()
+patchValue:any
 
 component: ComponentRef<any>;
   constructor(private resolver:ComponentFactoryResolver, private container: ViewContainerRef, private inj:Injector) {
@@ -44,14 +46,18 @@ component: ComponentRef<any>;
         );
       }
       const component = this.resolver.resolveComponentFactory<Field>(components[this.config.type]);
+
       this.component = this.container.createComponent(component,0,this.inj);
       this.component.instance.config = this.config;
       this.component.instance.group = this.form;
+      this.component.instance.patchValue = this.patchValue;
+
     }
     ngOnChanges(){
       if(this.component){
         this.component.instance.config = this.config;
         this.component.instance.group = this.form;
+        this.component.instance.patchValue = this.patchValue;
       }
     }
   }

@@ -65,9 +65,8 @@
             <div class="update-div" *ngIf="isUpdating[i]"  [ngClass]="{'even': i % 2 == 0}" >
               <app-update-form [inputFields]="searchRes"
               [formConfig]='formConfig.insertMaterialiForm'
-              [fieldsFormConfig]='insertMaterialiFormFields' 
+              [fieldsFormConfig]='updateMaterialiFormFields'
               [ind]="i"
-              [um]='um'
               (updateParent)='updateSearchResults($event)'>
              </app-update-form>
           </div>
