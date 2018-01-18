@@ -2,6 +2,7 @@
   <div class="col-10 um-int">
     <div class="h4"><u>Ricerca o inserisci nuova unità di misra</u></div>
     <div class="search-control">
+      <app-dynamic-form [config]='searchFormFields' [formConfig]='formConfig.searchForm' #searchForm  (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
         <form *ngIf="hasLoaded" id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
           Simbolo: <select [(ngModel)]="selectedSearchValue" (ngModelChange)="onChange($event,searchForm)" class="form-control"
           formControlName="umsymb"

@@ -96,7 +96,6 @@ export const INSERTMATERIALIFORMFIELDS:FieldConfig[]= [
     formControlName: "umId",
     validation:[Validators.required],
     type: TYPEINPUT.select,
-    controlDirectives:['appFormatNumber'],
     populateOptions: 'getUM',
     ngvalue:'id',
     castToOptions: {

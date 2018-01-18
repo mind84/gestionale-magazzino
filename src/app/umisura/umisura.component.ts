@@ -1,7 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {UmService} from '../services/um.service'
 import * as _ from 'lodash';
+
+import {DynamicFormComponent} from '../shared/components/dynamic-form.component'
+import {FormChanges, FormConfig, FieldConfig} from '../shared/interfaces/form-interface'
+import {DynFormsFieldConf} from '../shared/sharedClass/form-config.class'
+
+import {SEARCHFIELDS} from './configuration/unita-misura-form.conf'
+//import {UPDATE_CATEGORIE_FORM_FIELDS} from './configuration/update-categorie-articoli-form.conf'
+
 
 @Component({
   selector: 'app-umisura',
@@ -10,7 +18,7 @@ import * as _ from 'lodash';
 })
 export class UmisuraComponent implements OnInit {
   insertUMForm: FormGroup;
-  searchForm: FormGroup;
+  //searchForm: FormGroup;
   insertMode:boolean = false
   searchResults:any = [];
   notifyInsert:any;
@@ -21,9 +29,36 @@ export class UmisuraComponent implements OnInit {
   mainReference:any=[]
   selectedSearchValue:any;
   selectedMainReference:any;
-  constructor(private UMService:UmService, private _fb: FormBuilder,) { }
+
+
+  _inserCategorieForm:DynamicFormComponent
+  searchFormFields:FieldConfig[]
+  insertCategorieFormFields:FieldConfig[]
+  updateCategorieFormFields: FieldConfig[]
+  formConfig:FormConfig
+  @ViewChild('searchForm')
+    searchForm: DynamicFormComponent;
+
+  @ViewChild('insertUmisuraForm') set addUmisuraForm(val:DynamicFormComponent) {
+    this._inserCategorieForm = val
+  }
+
+
+
+  constructor(private UMService:UmService, private _fb: FormBuilder, private dynFieldsConf:DynFormsFieldConf,) { }
 
   ngOnInit() {
+
+    this.formConfig = {
+      searchForm: {
+        formName: 'searchForm'
+      },
+       insertCategorieForm: {
+        formName: 'insertCategorieForm',
+        elementStyle:['insertForm']
+      }
+    }
+
     //reperimento unità di misura disponibili
     this.UMService.getMainReference().subscribe((um) =>{
     this.UMService.umreference=um;
@@ -42,11 +77,11 @@ export class UmisuraComponent implements OnInit {
         conversione:['', Validators.required ]
       })
 
-
-      this.searchForm = this._fb.group({
-          umdesc: null,
-          umsymb: null
-        })
+      //
+      // this.searchForm = this._fb.group({
+      //     umdesc: null,
+      //     umsymb: null
+      //   })
       })
   }
   toggleInsert():boolean {
