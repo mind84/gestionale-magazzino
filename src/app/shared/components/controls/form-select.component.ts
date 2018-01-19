@@ -31,87 +31,78 @@ export class FormSelectComponent implements Field, OnInit {
   settedOption: OptionsInterface[];
   populateResults: any[];
   updateControl:Function;
-    constructor(private fs:FormService, private cdr:ChangeDetectorRef, private appRef:ApplicationRef) {
-      this.updateControl =  this.onChangesControl.bind(this)
+  config: FieldConfig;
+  group:FormGroup;
+  @Input()
+  patchValue:any;
+
+  constructor(private fs:FormService, private cdr:ChangeDetectorRef, private appRef:ApplicationRef) {
+    this.updateControl =  this.onChangesControl.bind(this)
+  }
+
+  ngOnInit(){
+    this.addHostClasses(this.config)
+    this.addElemClasses(this.config)
+    this.control= this.group.get(this.config.formControlName)
+    this.controlDirectivesObject= this.controlDirectives;
+
+    if (this.options.length) {
+      this.settedOption = this.options;
+      this.selectOptions= this.settedOption[0].name;
+      this.patchValues()
     }
-      config: FieldConfig;
-      group:FormGroup;
-      @Input()
-      patchValue:any;
-
-      ngOnInit(){
-        this.addHostClasses(this.config)
-        this.addElemClasses(this.config)
-        this.control= this.group.get(this.config.formControlName)
-        this.controlDirectivesObject= this.controlDirectives;
-
-        if (this.options.length) {
-          this.settedOption = this.options;
-          this.selectOptions= this.settedOption[0].name;
-          this.patchValues()
+    else if(this.config.populateOptions){
+      this.fs[this.config.populateOptions]().subscribe((results:any) => {
+      this.populateResults =results;
+      this.settedOption=this.castToOptions(results);
+        if (!this.patchValue) {
+          this.selectOptions=this.config.ngvalue ?  this.settedOption[0][this.config.ngvalue] : this.settedOption[0];
         }
-        else if(this.config.populateOptions){
-          //setTimeout(_=>{
-          this.fs[this.config.populateOptions]().subscribe((results:any) => {
-          this.populateResults =results;
-            this.settedOption=this.castToOptions(results);
-            if (!this.patchValue) {
-              this.selectOptions=this.config.ngvalue ?  this.settedOption[0][this.config.ngvalue] : this.settedOption[0];
-            }
-            else this.patchValues()
-          })
-          //},0)
-        }
-      }
+        else this.patchValues()
+      })
+    }
+  }
 
-      castToOptions(res:any):OptionsInterface[] {
-        if (!this.config.castToOptions) return
-        let options:OptionsInterface[] =[];
-        res.forEach((response)=>{
-            const name = response[this.config.castToOptions.name];
-            const id = response[this.config.castToOptions.id];
-            const opt:OptionsInterface = {
-              name:name,
-              id:id
-            }
-            options.push(opt)
-        })
-        return options;
+  castToOptions(res:any):OptionsInterface[] {
+    if (!this.config.castToOptions) return
+    let options:OptionsInterface[] =[];
+    res.forEach((response)=>{
+      const name = response[this.config.castToOptions.name];
+      const id = response[this.config.castToOptions.id];
+      const opt:OptionsInterface = {
+        name:name,
+        id:id
       }
-      patchValues(){
-          if(this.patchValue)
-            this.selectOptions = this.patchValue
-      }
-      addHostClasses(config:FieldConfig):void{
-        if(this.classHost) {
-          this.hostClasses=this.classHost.join(" ");
-        }
-      }
-      addContClasses(config:FieldConfig):void{
-            if(this.classCont) {
-              this.contClasses=this.classCont.join(" ");
-            }
-          }
+      options.push(opt)
+    })
+    return options;
+  }
 
-      addElemClasses(config:FieldConfig):void{
-        if(this.classElem) {
-          this.elementClasses=this.classElem.join(" ");
-        }
+  patchValues(){
+    if(this.patchValue) this.selectOptions = this.patchValue
+  }
+
+  addHostClasses(config:FieldConfig):void{
+    if(this.classHost) this.hostClasses=this.classHost.join(" ");
+  }
+
+  addContClasses(config:FieldConfig):void{
+    if(this.classCont) this.contClasses=this.classCont.join(" ");
+  }
+
+  addElemClasses(config:FieldConfig):void{
+    if(this.classElem) this.elementClasses=this.classElem.join(" ");
+  }
+
+  onChangesControl(changes:any){
+    let ObjChanged;
+    if(changes && !this.config.onlySelf) {
+      if (this.populateResults){
+        ObjChanged = this.populateResults.filter((obj)=>{return obj[this.config.ngvalue] == changes})[0]
       }
-
-      onChangesControl(changes:any){
-        let ObjChanged;
-        if(changes && !this.config.onlySelf) {
-          if (this.populateResults){
-            ObjChanged = this.populateResults.filter((obj)=>{
-              return obj[this.config.ngvalue] == changes
-            })[0]
-          }
-
-
-          setTimeout(()=>{
-            this.fs.pushChanges(this.config,{selectedOption:changes, updateObj:ObjChanged})
-            },0)
-        }
-      }
+      setTimeout(()=>{
+        this.fs.pushChanges(this.config,{selectedOption:changes, updateObj:ObjChanged})
+      },0)
+    }
+  }
 }

@@ -148,27 +148,27 @@ export class MagazzinoComponent implements OnInit {
       else return
     }
 
-  onFormSubmit(formName:string) {
-    switch(formName){
+  onFormSubmit(event:any) {
+    let ev = event;
+    switch(ev[0]){
       case "searchForm":
         let currentcode = this.searchForm.dynForm.getRawValue().code
         if (!currentcode || (this.currentArticle && this.currentArticle.code == currentcode)) return
         else this.setCodeForSearch.next(this.searchForm.dynForm.getRawValue().code)
       break;
       case "addTransForm":
-
-          if(this._addTransForm.dynForm.status =="VALID" && this.currentArticle){
-            this.storeServ.addTransaction(this._addTransForm.dynForm,this.currentArticle).subscribe((res:any)=>{
-              this._addTransForm.displaySubmitResponse(res)
-              if(res.msg==='OK') {
-                this._addTransForm.dynForm.reset()
-                if(res.cback) this.currentArticle=res.cback;
-              }
-            })
-          }
+        if(this.currentArticle){
+          this.storeServ.addTransaction(this._addTransForm.dynForm,this.currentArticle).subscribe((res:any)=>{
+            this._addTransForm.displaySubmitResponse(res)
+            if(res.msg==='OK') {
+              this._addTransForm.dynForm.reset()
+              if(res.cback) this.currentArticle=res.cback;
+            }
+          })
+        }
       break;
       case "remTransForm":
-        if(this._remTransForm.dynForm.status =="VALID" && this.currentArticle) {
+        if(this.currentArticle) {
           if (this._remTransForm.dynForm.controls.quantity.value > this.currentArticle.totalInStore.tot) {
             this._remTransForm.setWarning('quantity','Impossibile sottrarre più elementi di quelli presenti in magazzino')
             this.remFormFields.filter(conf=> conf.formControlName=='quantity')[0].warns = 'Impossibile sottrarre più elementi di quelli presenti in magazzino';

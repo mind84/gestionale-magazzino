@@ -42,3 +42,27 @@ export const INSERT_CATEGORIE_FORM_FIELDS:FieldConfig[]= [
     elementStyle:['insertButtonStandard']
   }
 ]
+
+export const UPDATE_CATEGORIE_FORM_FIELDS:FieldConfig[]= [
+  {
+    label: "Nome",
+    formControlName: "name",
+    type: TYPEINPUT.input,
+    validation:[Validators.required],
+    hostStyle:[HOSTSTYLE.block]
+  },
+  {
+    label: "Descrizione",
+    formControlName: "descr",
+    type: TYPEINPUT.input,
+    validation:[Validators.required],
+    elementStyle: ['large'],
+    hostStyle:[HOSTSTYLE.block]
+  },
+  {
+    type:TYPEINPUT.button,
+    label:'Aggiorna',
+    formControlName:'submit',
+    elementStyle:['insertButtonStandard']
+  }
+]

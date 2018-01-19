@@ -27,10 +27,9 @@ public umreference: object[] = [];
  insert(form:FormGroup) {
    let body:any = {};
    body = form.getRawValue();
-   body.refId= body.nameref.id;
-   delete body.nameref;
-   delete body.umrefsymb;
-   delete body.umref;
+   // delete body.nameref;
+   // delete body.umrefsymb;
+   // delete body.umref;
    return this.http.post("um/insert",body)
  }
 }

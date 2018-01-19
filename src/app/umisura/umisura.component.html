@@ -8,51 +8,8 @@
       <app-dynamic-form [config]='searchFormFields' [formConfig]='formConfig.searchForm' #searchForm  (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
     </div>
   </div>
-  <div class="col-10 insert-form-container" *ngIf="insertMode && hasLoaded">
+  <div class="col-10 insert-form-container" *ngIf="insertMode">
     <app-dynamic-form [config]='insertUmisuraFormFields' [formConfig]='formConfig.insertUmisuraForm' #insertUmisuraForm  (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
-    <!--form id="insertUMForm" [formGroup] = "insertUMForm" (ngSubmit)="insert(insertUMForm)">
-      Che tipo di unità di misura ti serve?: <select [(ngModel)]="selectedMainReference" (ngModelChange)="onRefChange($event,insertUMForm)"class = "form-control nameref"
-      formControlName="nameref"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="off" type="text">
-      <option *ngFor="let ur of mainReference; let i = index;" [ngValue]="ur">{{ur.descr}}</option>
-    </select>
-      Riferimento principale: <input class = "form-control umref"
-      #refMain
-      formControlName="umref"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="off" type="text"
-      value="" [attr.disabled]="true"/>
-      <input class = "form-control umrefsymb"   formControlName="umrefsymb" [attr.disabled]="true"/>
-      <div>
-      Nome nuova unità di misura: <input class = "form-control umdesc"
-      formControlName="umdesc"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="off" type="text"
-      value="">
-      Simbolo: <input class = "form-control umsymb"
-      #umname
-      formControlName="umsymb"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="off" type="text"
-      value="">
-      <div id="conversione">
-        <span  class="form-control" id="first" [attr.disabled]="true">{{umname.value}}</span> <span id="second">sono pari a:</span><input class = "form-control conversione"
-        appFormatNumber
-        formControlName="conversione"
-        autocorrect="off"
-        autocapitalize="off"
-        spellcheck="off" type="text"
-        value="">
-        <span id="third" [attr.disabled]="true">{{refMain.value}}</span>
-      </div>
-      <button type="submit" class="btn submit-btn">Inserisci</button>
-    </div>
-  </form-->
     <div *ngIf="hasResponse" class="insert-result">
       <div class="insResp" [ngClass]="{'hasError':hasError}">
         <div><span><b>{{notifyInsert.msg}}</b></span></div>
@@ -79,9 +36,10 @@
           CONVERSIONE
         </th>
       </tr>
-      <tr *ngFor="let searchRes of searchResults">
+      <ng-template ngFor let-searchRes [ngForOf]="searchResults" let-i="index">
+      <tr>
         <td class="mod">
-          <span><i class="fa fa-pencil" aria-hidden="true"></i></span>
+          <span><!--i class="fa fa-pencil" aria-hidden="true" (click)="toggleUpdating(i)"></i--></span>
         </td>
         <td class="code">
           {{searchRes.id}}
@@ -97,6 +55,28 @@
           {{searchRes.conversione}}
         </td>
       </tr>
+      <tr>
+        <td colspan="5">
+          <div class="update-div" *ngIf="isUpdating[i]"  [ngClass]="{'even': i % 2 == 0}" >
+            <!--app-dynamic-form
+              [config]='updateUmisuraFormFields'
+              [formConfig]='formConfig.updateUmisuraForm'
+              [patchValues]='searchRes'
+              #updateUmisuraForm
+              (initialValue)='setInitValue($event)'
+              (notifyChanges)='manageFormChange($event)'
+              (formSubmit)='onFormSubmit($event)'>
+            </app-dynamic-form-->
+            <!--app-update-um [inputFields]="searchRes"
+              [formConfig]='formConfig.insertUmisuraForm'
+              [fieldsFormConfig]='updateUmisuraFormFields'
+              [ind]="i"
+              (updateParent)='updateSearchResults($event)'>
+            </app-update-um-->
+          </div>
+        </td>
+      </tr>
+    </ng-template>
     </table>
   </div>
 </div>

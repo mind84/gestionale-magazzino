@@ -23,8 +23,6 @@ import { CategorieArticoliComponent } from './categorie-articoli/categorie-artic
 import { NumberFormatPipe } from './shared/pipes/number-format.pipe';
 import { DirectiveModule } from './shared/modules/directive.module';
 import { AngularMaterialModule } from './shared/modules/angular-material.module';
-import { UpdateFormComponent } from './shared/components/update-form.component';
-import { UpdateCatComponent } from './shared/components/update-cat.component';
 import { DisplayResponseComponent } from './shared/components/display-response.component';
 import { TextSearchComponent } from './shared/components/text-search.component';
 import { DynamicFormComponent } from './shared/components/dynamic-form.component';
@@ -48,15 +46,13 @@ import { FormFieldErrorDisplayComponent } from './shared/components/form-field-e
     UmisuraComponent,
     CategorieArticoliComponent,
     NumberFormatPipe,
-    UpdateFormComponent,
-    UpdateCatComponent,
     DisplayResponseComponent,
     TextSearchComponent,
     DynamicFormComponent,
     FormInputComponent,
     FormSelectComponent,
     FormButtonComponent,
-    FormFieldErrorDisplayComponent,
+    FormFieldErrorDisplayComponent
 
   ],
   imports: [
