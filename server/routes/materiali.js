@@ -117,4 +117,13 @@ router.route("/bycode").get(function (req, res, next) {
         res.json(docs);
     });
 });
+router.route('/all').get(function (req, res, next) {
+    var qs = materiali_1.Materiali.find({}).collation({ locale: 'it', strength: 2 }).sort({ name: 1 });
+    qs.exec(function (err, docs) {
+        if (err)
+            return res.send(err);
+        else
+            return res.json(docs);
+    });
+});
 //# sourceMappingURL=materiali.js.map

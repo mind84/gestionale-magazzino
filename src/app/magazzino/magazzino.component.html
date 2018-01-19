@@ -2,8 +2,8 @@
   <div class="col-10 magazzino-int">
     <div class="h4"><u>Gestione Magazzino</u></div>
     <div class="navigation-panel">
-      <span><button type="button" class="btn btn-primary variazioni" (click)="toggleState()">Variazioni</button></span>
       <span><button type="button" class="btn btn-primary storequery" (click)="toggleState()">Interroga Magazzino</button></span>
+      <span><button type="button" class="btn btn-primary variazioni" (click)="toggleState()">Variazioni</button></span>
     </div>
   </div>
   <div class="col-10 insert-form-container" *ngIf="variationMode">
@@ -35,6 +35,40 @@
     </div>
   </div>
   <div class="col-10 insert-form-container" *ngIf="!variationMode">
-    Interrogo
+    <div class="col-10 results-container" *ngIf="!insertMode">
+      <table class="tab-results">
+        <tr>
+          <th>
+            CODICE
+          </th>
+          <th>
+            NOME ARTICOLO
+          </th>
+          <th>
+            FORNITORE
+          </th>
+          <th>
+            TOTALE A MAGAZZINO
+          </th>
+        </tr>
+        <ng-template ngFor let-article [ngForOf]="articles" let-i="index">
+          <tr [ngClass]="{'even': i % 2 == 0}">
+            <td class="code">
+              {{article.code}}
+            </td>
+            <td class="name">
+              {{article.name}}
+            </td>
+            <td class="fornitore">
+              {{article.fornitore}}
+            </td>
+            <td class="totale">
+              {{article.totalInStore?.tot}}
+            </td>
+          </tr>
+          <tr>
+        </ng-template>
+      </table>
+    </div>
   </div>
 </div>

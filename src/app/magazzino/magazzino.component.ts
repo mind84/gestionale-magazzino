@@ -30,7 +30,7 @@ export class MagazzinoComponent implements OnInit {
 
   _addTransForm: DynamicFormComponent;
   _remTransForm: DynamicFormComponent;
-  variationMode:boolean = true;
+  variationMode:boolean = false;
   currentArticle:MaterialiItem;
 
   private setCodeForSearch:Subject<any> = new Subject<any>();
@@ -42,6 +42,7 @@ export class MagazzinoComponent implements OnInit {
   addFormFields:FieldConfig[];
   remFormFields:FieldConfig[];
   formConfig:FormConfig
+  articles: any[];
 
   @ViewChild('searchForm')
     searchForm: DynamicFormComponent;
@@ -95,10 +96,21 @@ export class MagazzinoComponent implements OnInit {
             this.manageFormChange(config);
           }
         })
-  }
 
+    /*parte sull'interrogazione del magazzino*/
+    this.callStore()
+
+  }
+  callStore(){
+    this.matService.getAll().subscribe((prod:any)=>{
+        this.articles = prod;
+    })
+  }
   toggleState(){
+
+    if (this.variationMode) this.callStore();
     this.variationMode = !this.variationMode
+
   }
 
 
