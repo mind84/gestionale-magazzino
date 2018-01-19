@@ -1,7 +1,12 @@
 .large {
   width:300px;
 }
-
+.medium {
+  width:175px;
+}
+.xl {
+  width:500px;
+}
 select {
   display:inline;
     width:120px;

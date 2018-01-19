@@ -4,6 +4,14 @@
 .xl {
   width:500px;
 }
+.medium {
+  width:175px;
+}
+.flat {
+  background: transparent;
+  border: 0px;
+  box-shadow: none;
+}
 input {
   display:inline;
     width:120px;

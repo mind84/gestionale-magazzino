@@ -13,7 +13,10 @@ public umreference: object[] = [];
   constructor(private http:HttpClient) { }
 
  getMainReference():Observable<any> {
-   return this.http.get("/um")
+   return this.http.get("/um/main")
+ }
+ get():Observable<any> {
+    return this.http.get("/um")
  }
 
  search(code){

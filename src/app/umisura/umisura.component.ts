@@ -7,7 +7,7 @@ import {DynamicFormComponent} from '../shared/components/dynamic-form.component'
 import {FormChanges, FormConfig, FieldConfig} from '../shared/interfaces/form-interface'
 import {DynFormsFieldConf} from '../shared/sharedClass/form-config.class'
 
-import {SEARCHFIELDS} from './configuration/unita-misura-form.conf'
+import {SEARCHFIELDS, INSERT_UMISURA_FORM_FIELDS} from './configuration/unita-misura-form.conf'
 //import {UPDATE_CATEGORIE_FORM_FIELDS} from './configuration/update-categorie-articoli-form.conf'
 
 
@@ -32,16 +32,16 @@ export class UmisuraComponent implements OnInit {
   selectedMainReference:any;
 
 
-  _inserCategorieForm:DynamicFormComponent
+  _insertUmisuraForm:DynamicFormComponent
   searchFormFields:FieldConfig[]
-  insertCategorieFormFields:FieldConfig[]
+  insertUmisuraFormFields:FieldConfig[]
   updateCategorieFormFields: FieldConfig[]
   formConfig:FormConfig
   @ViewChild('searchForm')
     searchForm: DynamicFormComponent;
 
   @ViewChild('insertUmisuraForm') set addUmisuraForm(val:DynamicFormComponent) {
-    this._inserCategorieForm = val
+    this._insertUmisuraForm = val
   }
 
 
@@ -50,12 +50,13 @@ export class UmisuraComponent implements OnInit {
 
   ngOnInit() {
     this.searchFormFields = this.dynFieldsConf.getFormFields(SEARCHFIELDS)
+    this.insertUmisuraFormFields= this.dynFieldsConf.getFormFields(INSERT_UMISURA_FORM_FIELDS)
     this.formConfig = {
       searchForm: {
         formName: 'searchForm'
       },
-       insertCategorieForm: {
-        formName: 'insertCategorieForm',
+       insertUmisuraForm: {
+        formName: 'insertUmisuraForm',
         elementStyle:['insertForm']
       }
     }
@@ -89,6 +90,9 @@ export class UmisuraComponent implements OnInit {
   manageFormChange(change:FormChanges){
     if(change.targetForm =='searchForm'){
       this.searchForm.updateFormValues(change);
+    }
+    else if(change.targetForm =='insertUmisuraForm'){
+     this._insertUmisuraForm.updateFormValues(change);
     }
   }
   toggleInsert():boolean {

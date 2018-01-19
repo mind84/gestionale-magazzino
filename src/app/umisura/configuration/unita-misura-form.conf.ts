@@ -32,21 +32,64 @@ export const SEARCHFIELDS:FieldConfig[]= [
   }
 ]
 
-export const INSERT_CATEGORIE_FORM_FIELDS:FieldConfig[]= [
+export const INSERT_UMISURA_FORM_FIELDS:FieldConfig[]= [
   {
-    label: "Nome",
-    formControlName: "name",
-    type: TYPEINPUT.input,
+    label: "Che tipo di unità di misura ti serve?",
+    formControlName: "nameref",
+    type: TYPEINPUT.select,
+    populateOptions: 'getUMMain',
+    linkedFields: ['umref','umrefsymb', 'reminder'],
+    ngvalue:'id',
     validation:[Validators.required],
-    hostStyle:[HOSTSTYLE.block]
+    castToOptions: {
+      name: 'descr',
+      id: 'id'
+    },
+    elementStyle: ['medium']
   },
   {
-    label: "Descrizione",
-    formControlName: "descr",
+    label: "Riferimento principale",
+    formControlName: "umref",
+    dbAlias:'umsymb',
     type: TYPEINPUT.input,
-    validation:[Validators.required],
-    elementStyle: ['large'],
-    hostStyle:[HOSTSTYLE.block]
+    disabled:true
+  },
+  {
+    label: "",
+    showLabel:false,
+    formControlName: "umrefsymb",
+    dbAlias:'umdesc',
+    type: TYPEINPUT.input,
+    disabled:true
+  },
+  {
+    label:'Nome nuova unità di misura',
+    formControlName:'umdesc',
+    type: TYPEINPUT.input,
+    validation: [Validators.required],
+    hostStyle: [HOSTSTYLE.block]
+  },
+  {
+    label:'Simbolo',
+    formControlName:'umsymb',
+    type: TYPEINPUT.input,
+    validation: [Validators.required],
+  },
+  {
+    label:'sono pari a',
+    formControlName:'umsyconversione',
+    controlDirectives: ['appFormatNumber'],
+    type: TYPEINPUT.input,
+    validation: [Validators.required],
+  },
+  {
+    label:'',
+    showLabel:false,
+    formControlName:'reminder',
+    dbAlias:'umsymb',
+    type: TYPEINPUT.input,
+    disabled:true,
+    elementStyle:['flat']
   },
   {
     type:TYPEINPUT.button,

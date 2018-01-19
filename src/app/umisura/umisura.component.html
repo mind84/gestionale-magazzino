@@ -6,26 +6,11 @@
     </div>
     <div class="search-control">
       <app-dynamic-form [config]='searchFormFields' [formConfig]='formConfig.searchForm' #searchForm  (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
-        <!--form *ngIf="hasLoaded" id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
-          Simbolo: <select [(ngModel)]="selectedSearchValue" (ngModelChange)="onChange($event,searchForm)" class="form-control"
-          formControlName="umsymb"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="off" type="text">
-          <option *ngFor="let u of um; let i = index;" [ngValue]="u">{{u.umsymb}}</option>
-        </select>
-          Nome unità di misura : <input class="form-control"
-          formControlName="umdesc"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="off" type="text"
-          value="" [attr.disabled]="true">
-          <button type="submit" class="btn submit-btn">Cerca</button>
-        </form-->
     </div>
   </div>
   <div class="col-10 insert-form-container" *ngIf="insertMode && hasLoaded">
-    <form id="insertUMForm" [formGroup] = "insertUMForm" (ngSubmit)="insert(insertUMForm)">
+    <app-dynamic-form [config]='insertUmisuraFormFields' [formConfig]='formConfig.insertUmisuraForm' #insertUmisuraForm  (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
+    <!--form id="insertUMForm" [formGroup] = "insertUMForm" (ngSubmit)="insert(insertUMForm)">
       Che tipo di unità di misura ti serve?: <select [(ngModel)]="selectedMainReference" (ngModelChange)="onRefChange($event,insertUMForm)"class = "form-control nameref"
       formControlName="nameref"
       autocorrect="off"
@@ -67,7 +52,7 @@
       </div>
       <button type="submit" class="btn submit-btn">Inserisci</button>
     </div>
-    </form>
+  </form-->
     <div *ngIf="hasResponse" class="insert-result">
       <div class="insResp" [ngClass]="{'hasError':hasError}">
         <div><span><b>{{notifyInsert.msg}}</b></span></div>

@@ -33,7 +33,8 @@ export class DynFormsFieldConf {
      validation: [],
      value: null,
      controlDirectives:[],
-     warns:null
+     warns:null,
+     excludeFromSubmit:false
    }
   }
   getFormFields(opts:FieldConfig[]):FieldConfig[] {

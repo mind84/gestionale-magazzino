@@ -53,7 +53,8 @@ export interface FieldConfig {
   validation?: ValidatorFn[],
   value?: any,
   controlDirectives?:string[],
-  warns?:string
+  warns?:string,
+  excludeFromSubmit?:boolean
 }
 
 export interface Field {

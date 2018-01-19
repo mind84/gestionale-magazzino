@@ -30,7 +30,10 @@ export class FormService {
     return this.catServ.search(par)
   }
   public getUM(){
-    return this.um.getMainReference();
+    return this.um.get();
+  }
+  public getUMMain(){
+      return this.um.getMainReference()
   }
 
   public createChangeItem(config:FieldConfig,itemConf):FormChanges{
