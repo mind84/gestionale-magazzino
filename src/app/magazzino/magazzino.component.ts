@@ -1,13 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import {AddMotivation} from '../shared/sharedClass/AddMotivation';
-import {RemoveMotivation} from '../shared/sharedClass/RemoveMotivation'
+import { Component,ChangeDetectorRef, OnInit,ViewChild, AfterViewInit, AfterViewChecked, Injector} from '@angular/core';
+
 import {MaterialiService} from '../services/materiali.service';
 import {MagazzinoService} from '../services/magazzino.service';
-import {gtZero} from '../shared/functions/validators';
+import {MaterialiItem} from '../shared/interfaces/item-materiali.interface'
 import {Subject} from 'rxjs/Subject'
 import {BehaviorSubject} from 'rxjs/BehaviorSubject'
 import {Observable} from 'rxjs/Observable'
+import {DynamicFormComponent} from '../shared/components/dynamic-form.component'
+import {FormChanges, FormConfig, FieldConfig} from '../shared/interfaces/form-interface'
+import {DynFormsFieldConf} from '../shared/sharedClass/form-config.class'
+/*configurazioni*/
+import {SEARCHFIELDS, ADDTRANSFIELDS, REMTRANSFIELDS} from './configuration/magazzino-forms.conf'
+
 import 'rxjs/add/operator/pairwise'
 import 'rxjs/add/operator/switchMap'
 
@@ -16,146 +20,187 @@ import 'rxjs/add/operator/switchMap'
   selector: 'app-magazzino',
   templateUrl: './magazzino.component.html',
   styleUrls: ['./magazzino.component.css'],
-    providers: [MaterialiService, MagazzinoService]
+    providers: [
+      MaterialiService,
+       MagazzinoService,
+       DynFormsFieldConf
+     ]
 })
 export class MagazzinoComponent implements OnInit {
-  searchForm: FormGroup;
-  addForm:FormGroup;
-  remForm:FormGroup;
-  variationMode:boolean = true;
-  currentArticle:any;
-  addMotivation:AddMotivation;
-  removeMotivation:any;
-  setCodeForSearch:Subject<FormGroup> = new Subject<FormGroup>();
-  //setCodeForSearch:BehaviorSubject<FormGroup> = new BehaviorSubject<FormGroup>(null);
-  setCodeForSearch$:Observable<any> = this.setCodeForSearch.asObservable()
-  public subsFunction:Function;
-  public findFunction:Function;
+
+  _addTransForm: DynamicFormComponent;
+  _remTransForm: DynamicFormComponent;
+  variationMode:boolean = false;
+  currentArticle:MaterialiItem;
+
+  private setCodeForSearch:Subject<any> = new Subject<any>();
+  public setCodeForSearch$:Observable<any> = this.setCodeForSearch.asObservable()
+
   private isAddingMode:boolean = true;
-  motivazioniAdd:any;
-  motivazioniRem:any;
-  byorder:boolean;
-  totWarn:boolean=false;
-  insertResponse:any;
+
+  searchFormFields:FieldConfig[];
+  addFormFields:FieldConfig[];
+  remFormFields:FieldConfig[];
+  formConfig:FormConfig
+  articles: any[];
+
+  @ViewChild('searchForm')
+    searchForm: DynamicFormComponent;
+
+  @ViewChild('addTransForm') set addTransForm(val:DynamicFormComponent) {
+    this._addTransForm = val
+  }
+
+  @ViewChild('remTransForm') set remTransForm(val:DynamicFormComponent) {
+      this._remTransForm=val;
+    }
+
   constructor(
     private matService:MaterialiService,
-    private _fb: FormBuilder,
-    private storeServ: MagazzinoService
+    private storeServ: MagazzinoService,
+    private dynFieldsConf:DynFormsFieldConf,
+    private cdRef:ChangeDetectorRef
   ) {
-    this.addMotivation = new AddMotivation().motivArray;
-    this.motivazioniAdd=this.addMotivation[0].motName;
-    this.removeMotivation = new RemoveMotivation().motivArray;
-    this.motivazioniRem=this.removeMotivation[0].motName;
+    //forms configuration
+    this.searchFormFields = this.dynFieldsConf.getFormFields(SEARCHFIELDS)
+    this.addFormFields = this.dynFieldsConf.getFormFields(ADDTRANSFIELDS)
+    this.remFormFields = this.dynFieldsConf.getFormFields(REMTRANSFIELDS)
+    this.formConfig = {
+      searchForm: {
+        formName: 'searchForm'
+      },
+      addTransForm: {
+        formName:'addTransForm',
+        elementStyle:['insertForm']
+      },
+      remTransForm: {
+        formName:'remTransForm',
+        elementStyle:['insertForm']
+      }
+    }
    }
 
   ngOnInit() {
-    this.searchForm = this._fb.group({
-        code: null,
-        name: null,
-        datfrom: null,
-        datto: null
-      })
-    this.addForm = this._fb.group({
-      qtadd:[null, Validators.compose([Validators.required, gtZero])],
-      motivazioni:[],
-      note:""
-    })
-
-    this.remForm = this._fb.group({
-      qtsub:[null, Validators.compose([Validators.required, gtZero])],
-      motivazioni:[],
-      note:""
-    })
-
-      this.matService.currentSelectedArticle$.subscribe((art)=>{
-        this.searchForm.controls.name.setValue(art.name);
-        this.searchForm.controls.code.setValue(art.code);
-        this.currentArticle = art;
-      })
-
-      this.setCodeForSearch$
-      .pairwise()
-      .filter((p)=>{
-        return (p[0] !== p[1])
-      }).switchMap((val:any)=>{
-        return this.matService.searchByCode(val[1]);
+    this.setCodeForSearch$
+      .switchMap((val:any)=>{
+        return this.matService.searchByCode(val);
       }).subscribe(
         (v:any)=>{
           if (v && v.length) {
-            this.searchForm.controls.name.setValue(v[0].name);
-            this.currentArticle=v[0];
+            let config:FormChanges = {
+              targetForm:'searchForm',
+              valueToUpdate:v[0].code,
+              formControlName:"code",
+              fromService:v[0]
+            }
+            this.manageFormChange(config);
           }
         })
 
-      this.subsFunction = this.matService.setCurrentFunc;
-      this.findFunction = this.matService.findFunction;
-      this.setCodeForSearch.next(this.searchForm.getRawValue().code)
-  }
+    /*parte sull'interrogazione del magazzino*/
+    this.callStore()
 
+  }
+  callStore(){
+    this.matService.getAll().subscribe((prod:any)=>{
+        this.articles = prod;
+    })
+  }
   toggleState(){
-    return this.variationMode = !this.variationMode
-  }
-  search(form:FormGroup){
-    if (!form.getRawValue().code) return;
-    else this.setCodeForSearch.next(form.getRawValue().code)
+
+    if (this.variationMode) this.callStore();
+    this.variationMode = !this.variationMode
 
   }
+
+
   addItem(type:boolean){
-    return this.isAddingMode=type;
+    this.isAddingMode=type;
   }
 
-  onChangeAdd(ev,form){
-    if (ev=="Da Ordine") {
-      this.byorder=true;
-      this.addForm.addControl('numorder',new FormControl(null,Validators.required))
-    }
-    else {
-      this.byorder=false;
-        if(form.controls.numorder) form.controls.numorder.setValue("");
-        this.addForm.removeControl('numorder');
 
-    }
-  }
-  onChangeRem(ev,form){
-    if (ev=="Storno da Ordine") {
-      this.byorder=true;
-      this.remForm.addControl('numorder',new FormControl(null,Validators.required))
-    }
-    else {
-      this.byorder=false;
-        if(form.controls.numorder) form.controls.numorder.setValue("");
-        this.remForm.removeControl('numorder');
-
-    }
-  }
-
-  addTrans(form){
-      if(form.status =="VALID" && this.currentArticle){
-        this.storeServ.addTransaction(form,this.currentArticle).subscribe((res:any)=>{
-          this.insertResponse= res;
-          setTimeout(()=>{this.insertResponse=null},2000)
-          this.currentArticle=res.cback;
-          this.addForm.reset();
-        })
+  manageFormChange(change:FormChanges){
+    if(change.targetForm =='searchForm'){
+      //in questo caso, qualsiasi cambiamento comporta un update globale della form
+      if(!change.fromService) throw 'Oggetto per update non ricevuto'
+        this.searchForm.updateWholeForm(change)
+        this.setCurrentArticle(<MaterialiItem>change.fromService)
       }
+      else if (change.targetForm == "addTransForm"){
+        if (!this._addTransForm) this.cdRef.detectChanges()
+        if(change.formControlName=="motivazioni") {
+          if (change.selectedOption =='Da Ordine'){
+            const localFieldConf = this.addFormFields.filter(field=> field.formControlName=='numorder')[0]
+            localFieldConf.visible=true;
+            if (! this._addTransForm.dynForm.controls[localFieldConf.formControlName]) this._addTransForm.addControl(localFieldConf)
 
-    //gestione middleware di salvataggio
-  }
-  remTrans(form){
-    if(form.status =="VALID" && this.currentArticle) {
-    if (form.controls.qtsub.value > this.currentArticle.totalInStore.tot) {
-      this.totWarn = true;
-      return setTimeout(()=>{this.totWarn=false},1900);
+          }
+          else {
+            this.addFormFields.filter(field=> field.formControlName=='numorder')[0].visible=false;
+            this._addTransForm.removeControl(this.addFormFields.filter(field=> field.formControlName=='numorder')[0])
+
+          }
+        }
+      }
+      else if(change.targetForm == "remTransForm") {
+        if (!this._remTransForm) this.cdRef.detectChanges()
+        if(change.formControlName =="motivazioni") {
+          var localFieldConf = this.remFormFields.filter(field=> field.formControlName=='numorder')[0]
+          if (change.selectedOption =='Storno da Ordine'){
+            localFieldConf.visible=true;
+            if (! this._remTransForm.dynForm.controls[localFieldConf.formControlName]) this._remTransForm.addControl(localFieldConf)
+          }
+          else {
+
+            this._remTransForm.removeControl(this.remFormFields.filter(field=> field.formControlName=='numorder')[0])
+            this.remFormFields.filter(field=> field.formControlName=='numorder')[0].visible=false;
+          }
+        }
+      }
+      else return
     }
-    else return this.storeServ.remTransaction(form, this.currentArticle).subscribe((res:any)=>{
-      this.insertResponse= res;
-      setTimeout(()=>{this.insertResponse=null},2000)
-      this.currentArticle=res.cback;
-      this.remForm.reset();
-    });
-  }
 
-    //gestione middleware di salvataggio
+  onFormSubmit(event:any) {
+    let ev = event;
+    switch(ev[0]){
+      case "searchForm":
+        let currentcode = this.searchForm.dynForm.getRawValue().code
+        if (!currentcode || (this.currentArticle && this.currentArticle.code == currentcode)) return
+        else this.setCodeForSearch.next(this.searchForm.dynForm.getRawValue().code)
+      break;
+      case "addTransForm":
+        if(this.currentArticle){
+          this.storeServ.addTransaction(this._addTransForm.dynForm,this.currentArticle).subscribe((res:any)=>{
+            this._addTransForm.displaySubmitResponse(res)
+            if(res.msg==='OK') {
+              this._addTransForm.dynForm.reset()
+              if(res.cback) this.currentArticle=res.cback;
+            }
+          })
+        }
+      break;
+      case "remTransForm":
+        if(this.currentArticle) {
+          if (this._remTransForm.dynForm.controls.quantity.value > this.currentArticle.totalInStore.tot) {
+            this._remTransForm.setWarning('quantity','Impossibile sottrarre più elementi di quelli presenti in magazzino')
+            this.remFormFields.filter(conf=> conf.formControlName=='quantity')[0].warns = 'Impossibile sottrarre più elementi di quelli presenti in magazzino';
+          }
+          else return this.storeServ.remTransaction(this._remTransForm.dynForm, this.currentArticle).subscribe((res:any)=>{
+            this._remTransForm.displaySubmitResponse(res)
+            if(res.msg==='OK') {
+              this._remTransForm.dynForm.reset()
+              this.currentArticle=res.cback;
+            }
+
+          });
+        }
+      break;
+      default:
+       return
+     }
+  }
+  setCurrentArticle(article:MaterialiItem) {
+    this.currentArticle = article;
   }
 
 }

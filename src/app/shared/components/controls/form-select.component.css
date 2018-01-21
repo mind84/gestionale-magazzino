@@ -1,0 +1,42 @@
+.large {
+  width:300px;
+}
+.medium {
+  width:175px;
+}
+.xl {
+  width:500px;
+}
+select {
+  display:inline;
+    width:120px;
+height: auto !important;
+}
+.inline {
+  display: inline-block;
+}
+:host {
+  margin-left:1em;
+  margin-right:1em;
+}
+:host(.block) {
+  width:100%;
+}
+.dynamic-field {
+  display:flex;
+  align-items: center;
+}
+.select-container{
+  position:relative;
+}
+select.ng-invalid:not(.ng-untouched) {
+  background-color:#ff00004f;
+  border-color: red;
+}
+.totWarn {
+  position: absolute;
+    display: block;
+    background-color: red;
+    padding: 5px;
+    color: white;
+  }

@@ -41,5 +41,10 @@ router.route("/code").get((req: Request, res: Response, next: NFunc) => {
     res.json(docs)
   })
 })
+router.route("/main").get((req: Request, res: Response, next: NFunc) => {
+  UMisura.find({class:'mainReference'}, (err: any, docs:any)=> {
+    res.json(docs)
+  })
+})
 
 export { router };

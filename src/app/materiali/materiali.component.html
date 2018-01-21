@@ -1,141 +1,15 @@
 <div class="row maincontent">
   <div class="col-10 materiali-int">
     <div class="h4"><u>Ricerca o inserisci nuovo articolo</u></div>
-    <div class="search-control">
-        <form id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
-          <div>
-          <span>Codice articolo :</span> <input class="form-control"
-          formControlName="code"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="off" type="text"
-          value="">
-          </div>
-          <div>
-          <span id="nmSearch">Nome : </span><input class="form-control"
-          formControlName="name"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="off" type="text"
-          value="">
-        </div>
-        <div class="categoriesSearch">
-          <span id="catSearch">Categoria:</span>
-
-            <input class = "form-control categname"
-            [(ngModel)]="catNameSearch"
-            #catSelSearch
-            formControlName="categname"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="off" type="text"
-            value="" (keyup)="searchCat$Search.next(catSelSearch.value)">
-            <input class = "form-control categ"
-            [(ngModel)] = "catcodeSearch"
-            formControlName="categ"
-            autocorrect="off"
-            autocapitalize="off"
-            spellcheck="off" type="hidden"
-            value="">
-            <div class="catSearhcResSearch" *ngIf="isSearchingCatSearch">
-              <div class="singleCatRes" *ngFor="let singleCat of prevCatSearch" (click)="setCurrentCatSearch(singleCat)">
-                {{singleCat.name}}
-              </div>
-            </div>
-
-          </div>
-          <button type="submit" class="btn submit-btn">Cerca</button>
-        </form>
+    <div class='switchFunction'>
       <span style=""><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuovo articolo</button></span>
+    </div>
+    <div class="search-control">
+      <app-dynamic-form [config]='searchFormFields' [formConfig]='formConfig.searchForm' #searchForm  (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
     </div>
   </div>
   <div class="col-10 insert-form-container" *ngIf="insertMode">
-    <form id="insertMaterialiForm" [formGroup] = "insertMaterialiForm" (ngSubmit)="insert(insertMaterialiForm)">
-      <span>Codice articolo:</span> <input class = "form-control code"
-      formControlName="code"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="off" type="text"
-      value="">
-      <span>Nome:</span><input class = "form-control name"
-      formControlName="name"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="off" type="text"
-      value="">
-      <div class="categories">
-        <span>Categoria:</span> <input class = "form-control categname"
-        [(ngModel)]="catName"
-        #catSel
-        formControlName="categname"
-        autocorrect="off"
-        autocapitalize="off"
-        spellcheck="off" type="text"
-        value="" (keyup)="searchCat$.next(catSel.value)">
-        <input class = "form-control categ"
-        [(ngModel)] = "catcode"
-        formControlName="categ"
-        autocorrect="off"
-        autocapitalize="off"
-        spellcheck="off" type="hidden"
-        value="">
-        <div class="catSearhcRes" *ngIf="isSearchingCat">
-          <div class="singleCatRes" *ngFor="let singleCat of prevCat" (click)="setCurrentCat(singleCat)">
-            {{singleCat.name}}
-          </div>
-        </div>
-      </div>
-      <div class="prod-det">
-      <span>N articoli/collo:</span> <input class = "form-control collobj"
-      appFormatNumber
-      formControlName="collobj"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="off" type="text"
-      value="">
-      <span>Quantità singolo articolo:</span> <input class = "form-control qta"
-      appFormatNumber
-      formControlName="qta"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="off" type="text"
-      value="">
-      <span>Unità di misura:</span>
-      <select class = "form-control umId" [(ngModel)]="selectedSearchValue"
-      formControlName="umId"
-      >
-      <option *ngFor="let u of um; let i = index;" [ngValue]="u.id">{{u.umsymb}}</option>
-      </select>
-    </div>
-    <div>
-      <span>Prezzo per collo:</span> <input class = "form-control price"
-      appFormatNumber
-      formControlName="price"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="off" type="text"
-      value="">
-      <span>Fornitore:</span> <input class = "form-control forn"
-      formControlName="fornitore"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="off" type="text"
-      value="">
-      <span>Note:</span> <input class = "form-control note"
-      formControlName="note"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="off" type="textarea"
-      value="">
-    </div>
-      <button type="submit" class="btn submit-btn">Inserisci</button>
-    </form>
-    <div *ngIf="hasResponse" class="insert-result">
-      <div class="insResp" [ngClass]="{'hasError':hasError}">
-        <div><span><b>{{notifyInsert.msg}}</b></span></div>
-        <div><span>{{notifyInsert.result}}</span></div>
-      </div>
-    </div>
+    <app-dynamic-form [config]='insertMaterialiFormFields' [formConfig]='formConfig.insertMaterialiForm' #insertMaterialiForm  (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
   </div>
   <div class="col-10 results-container" *ngIf="!insertMode">
     <table class="tab-results">
@@ -189,7 +63,17 @@
         <tr>
           <td colspan="7">
             <div class="update-div" *ngIf="isUpdating[i]"  [ngClass]="{'even': i % 2 == 0}" >
-              <app-update-form [inputFields]="searchRes" [ind]="i" [um]='um' (updateParent)='updateSearchResults($event)'></app-update-form>
+              <app-dynamic-form
+              [config]='updateMaterialiFormFields'
+              [formConfig]='formConfig.updateMaterialiForm'
+              [patchValues]='searchRes'
+              #updateMaterialiForm
+              (initialValue)='setInitValue($event)'
+              (notifyChanges)='manageFormChange($event)'
+              (formSubmit)='onFormSubmit($event)'
+              [ind]="i"
+              >
+            </app-dynamic-form>
           </div>
           </td>
         </tr>

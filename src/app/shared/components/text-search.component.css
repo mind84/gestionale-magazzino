@@ -4,4 +4,13 @@
   background-color: white;
     border: 1px solid gray;
     padding: 5px;
+    left:0;
+    right:0;
+    z-index: 10;
+}
+
+.list:hover {
+  cursor: pointer;
+  background-color: #5383da;
+
 }

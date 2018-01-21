@@ -1,0 +1,26 @@
+<ng-container *ngIf="config.visible">
+  <div class="dynamic-field form-group" [ngClass]='contClasses'
+   [formGroup]="group">
+   <div>
+     <label>{{ config.label }}:</label>
+    </div>
+    <div class="select-container">
+      <select  class="form-control"
+      (ngModelChange)="onChangesControl($event)" [ngModel]="selectOptions"
+      [formControlName]="config.formControlName"
+      [ngClass]='elementClasses'
+      >
+      <option *ngFor="let opt of settedOption" [ngValue]="opt[config.ngvalue]">{{opt.name}}</option>
+      </select>
+      <!--app-form-field-error-display
+      [formCntr]='control'
+      [isPristine]='control.pristine'
+      [isInvalid]='control.invalid'
+      [isTouched]='control.touched'
+      [conf]='config'></app-form-field-error-display-->
+      <ng-container *ngIf="config.warns">
+      <span class="totWarn">{{warns}}</span>
+      </ng-container>
+    </div>
+  </div>
+</ng-container>

@@ -13,7 +13,10 @@ public umreference: object[] = [];
   constructor(private http:HttpClient) { }
 
  getMainReference():Observable<any> {
-   return this.http.get("/um")
+   return this.http.get("/um/main")
+ }
+ get():Observable<any> {
+    return this.http.get("/um")
  }
 
  search(code){
@@ -24,10 +27,9 @@ public umreference: object[] = [];
  insert(form:FormGroup) {
    let body:any = {};
    body = form.getRawValue();
-   body.refId= body.nameref.id;
-   delete body.nameref;
-   delete body.umrefsymb;
-   delete body.umref;
+   // delete body.nameref;
+   // delete body.umrefsymb;
+   // delete body.umref;
    return this.http.post("um/insert",body)
  }
 }

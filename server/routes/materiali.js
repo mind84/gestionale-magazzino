@@ -32,8 +32,7 @@ router.route("/update").post(function (req, res, next) {
             if (err)
                 return res.send(err);
             else {
-                docs.catdet = [];
-                docs.catdet.push(catres);
+                docs.categname = catres.name;
                 return res.json({ msg: "OK", result: "Articolo modificato correttamente", cback: docs });
             }
         });
@@ -83,6 +82,12 @@ router.route("").get(function (req, res, next) {
                 foreignField: "id",
                 as: "catdet"
             }
+        },
+        {
+            $addFields: {
+                catdet: false,
+                categname: { $arrayElemAt: ["$catdet.name", 0] }
+            }
         }
     ], function (err, docs) {
         res.json(docs);
@@ -104,12 +109,21 @@ router.route("/bycode").get(function (req, res, next) {
     var qcode = null;
     var qs;
     if (req.query.code !== 'null')
-        qcode = '^' + req.query.code + '.*';
+        qcode = req.query.code;
     if (qcode) {
-        qs = { code: { $regex: qcode, $options: "i" } };
+        qs = { code: qcode };
     }
     materiali_1.Materiali.find(qs, function (err, docs) {
         res.json(docs);
+    });
+});
+router.route('/all').get(function (req, res, next) {
+    var qs = materiali_1.Materiali.find({}).collation({ locale: 'it', strength: 2 }).sort({ name: 1 });
+    qs.exec(function (err, docs) {
+        if (err)
+            return res.send(err);
+        else
+            return res.json(docs);
     });
 });
 //# sourceMappingURL=materiali.js.map

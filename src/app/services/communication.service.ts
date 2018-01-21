@@ -5,12 +5,11 @@ import {Subject} from 'rxjs/Subject'
 export class CommunicationService {
   private getCom: Subject<any> = new Subject<any>()
   public getCom$: Observable<any> = this.getCom.asObservable()
-  public doCom:Function;
   constructor() {
-    this.doCom = this.communicate.bind(this)
+
    }
 
   public communicate(par?:any){
-    this.getCom.next(par);
+    this.getCom.next(par ? par : null);
   }
 }

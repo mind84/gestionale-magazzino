@@ -1,0 +1,31 @@
+<ng-container *ngIf="config.visible">
+  <div
+     class="dynamic-field form-group" [ngClass]='contClasses'
+     [formGroup]="group">
+     <div *ngIf="config.showLabel">
+       <label>{{ config.label }}:</label>
+      </div>
+     <div class="input-container">
+       <input
+        #element
+        [appFormatNumber]='controlDirectivesObject.appFormatNumber'
+        [type]="config.inputType" class="form-control" [ngClass]='elementClasses'
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="off"
+        [attr.placeholder]="config.placeholder"
+        [formControlName]="config.formControlName"
+        [textSearch]="element.value" [searchFunction]="config.textSearchFunction"
+        [changeSubs] ='updateControl'>
+        <!--app-form-field-error-display
+        [formCntr]='control'
+        [isPristine]='control.pristine'
+        [isInvalid]='control.invalid'
+        [isTouched]='control.touched'
+        [conf]='config'></app-form-field-error-display-->
+     </div>
+     <ng-container *ngIf="config.warns">
+       <span class="totWarn">{{config.warns}}</span>
+     </ng-container>
+   </div>
+</ng-container>

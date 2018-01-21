@@ -3,15 +3,16 @@ import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import { FormGroup} from '@angular/forms';
+import {MaterialiItem} from '../shared/interfaces/item-materiali.interface'
 
 @Injectable()
 export class MaterialiService implements OnInit {
-  private currentSelectedArticle: Subject<any> = new Subject<any>();
-  public currentSelectedArticle$: Observable<any> = this.currentSelectedArticle.asObservable();
+  //private currentSelectedArticle: Subject<any> = new Subject<any>();
+//  public currentSelectedArticle$: Observable<any> = this.currentSelectedArticle.asObservable();
   public setCurrentFunc: Function;
-  public findFunction:Function
+  public findFunction: Function
   constructor(private http:HttpClient) {
-    this.setCurrentFunc = this.setCurrentSelectedArticle.bind(this)
+    //this.setCurrentFunc = this.setCurrentSelectedArticle.bind(this)
     this.findFunction = this.searchByName.bind(this)
    }
   ngOnInit(){
@@ -30,17 +31,17 @@ export class MaterialiService implements OnInit {
   update(form:any){
     return this.http.post("/mat/update", form)
   }
-  searchByName(term:string){
+  searchByName(term:string):Observable<any>{
     return this.http.get(`/mat/byname?name=${term}`)
   }
   searchByCode(code:string){
     return this.http.get(`/mat/bycode?code=${code}`)
   }
-  public setCurrentSelectedArticle(article:any){
-    this.currentSelectedArticle.next(article);
+  getAll(){
+    return this.http.get(`/mat/all`)
   }
+  // public setCurrentSelectedArticle(article:any){
+  //   this.currentSelectedArticle.next(article);
+  // }
 
-  tryFunc(){
-    console.log('triggered')
-  }
 }

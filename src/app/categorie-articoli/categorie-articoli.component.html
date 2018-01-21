@@ -1,36 +1,15 @@
 <div class="row maincontent">
   <div class="col-10 categ-int">
     <div class="h4"><u>Ricerca o inserisci nuova categoria</u></div>
+    <div class='switchFunction'>
+      <span style=""><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuova Categoria</button></span>
+    </div>
     <div class="search-control">
-        <form id="searchForm" [formGroup] = "searchForm" class = "search-form" (ngSubmit)="search(searchForm)">
-          <span>Categoria:</span> <input class="form-control name"
-          formControlName="name"
-          autocorrect="off"
-          autocapitalize="off"
-          spellcheck="off" type="text">
-          <button type="submit" class="btn submit-btn">Cerca</button>
-        </form>
-      <span style="margin-left:140px;"><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuova Categoria</button></span>
+      <app-dynamic-form [config]='searchFormFields' [formConfig]='formConfig.searchForm' #searchForm  (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
     </div>
   </div>
   <div class="col-10 insert-form-container" *ngIf="insertMode" >
-    <form id="insertCatForm" [formGroup] = "insertCatForm" [displayResponse]="insertResponse" (ngSubmit)="insert(insertCatForm)">
-      <span>Nome</span>: <input class = "form-control name"
-      formControlName="name"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="off" type="text"
-      value="">
-      <div>
-      <span>Descrizione</span><input class = "form-control descr"
-      formControlName="descr"
-      autocorrect="off"
-      autocapitalize="off"
-      spellcheck="off" type="text"
-      value="">
-      <button type="submit" class="btn submit-btn">Inserisci</button>
-      </div>
-    </form>
+    <app-dynamic-form [config]='insertCategorieFormFields' [formConfig]='formConfig.insertCategorieForm' #insertCategorieForm  (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
   </div>
   <div class="col-10 results-container" *ngIf="!insertMode">
     <table class="tab-results">
@@ -66,7 +45,17 @@
         <tr>
           <td colspan="7">
             <div class="update-div" *ngIf="isUpdating[i]"  [ngClass]="{'even': i % 2 == 0}" >
-              <app-update-cat [inputFields]="searchRes" [ind]="i" (updateParent)='updateSearchResults($event)'></app-update-cat>
+              <app-dynamic-form
+              [config]='updateCategorieFormFields'
+              [formConfig]='formConfig.updateCategorieForm'
+              [patchValues]='searchRes'
+              #updateCategorieForm
+              (initialValue)='setInitValue($event)'
+              (notifyChanges)='manageFormChange($event)'
+              (formSubmit)='onFormSubmit($event)'
+              [ind]="i"
+              >
+            </app-dynamic-form>
           </div>
           </td>
         </tr>

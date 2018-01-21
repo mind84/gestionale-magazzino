@@ -1,0 +1,47 @@
+.large {
+  width:300px;
+}
+.xl {
+  width:500px;
+}
+.medium {
+  width:175px;
+}
+.flat {
+  background: transparent;
+  border: 0px;
+  box-shadow: none;
+}
+input {
+  display:inline;
+    width:120px;
+}
+.inline {
+  display: inline-block;
+}
+:host {
+  margin-left:1em;
+  margin-right:1em;
+}
+:host(.block) {
+  width:100%;
+}
+.dynamic-field {
+  display:flex;
+  align-items: center;
+}
+.input-container{
+  position:relative;
+}
+input.ng-invalid:not(.ng-untouched):not(.ng-pristine) {
+  background-color:#ff00004f;
+  border-color: red;
+  border-left: 4px solid red;
+}
+.totWarn {
+  position: absolute;
+    display: block;
+    background-color: red;
+    padding: 5px;
+    color: white;
+  }

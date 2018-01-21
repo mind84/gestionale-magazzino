@@ -8,6 +8,7 @@ import {AppRoutingModule} from './shared/app-routing.module';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import {UmService} from './services/um.service'
 import {CategorieArticoliService} from './services/categorie-articoli.service'
+import {MaterialiService} from './services/materiali.service'
 
 
 
@@ -22,10 +23,14 @@ import { CategorieArticoliComponent } from './categorie-articoli/categorie-artic
 import { NumberFormatPipe } from './shared/pipes/number-format.pipe';
 import { DirectiveModule } from './shared/modules/directive.module';
 import { AngularMaterialModule } from './shared/modules/angular-material.module';
-import { UpdateFormComponent } from './shared/components/update-form.component';
-import { UpdateCatComponent } from './shared/components/update-cat.component';
 import { DisplayResponseComponent } from './shared/components/display-response.component';
 import { TextSearchComponent } from './shared/components/text-search.component';
+import { DynamicFormComponent } from './shared/components/dynamic-form.component';
+import { FormInputComponent } from './shared/components/controls/form-input.component';
+import { FormSelectComponent } from './shared/components/controls/form-select.component';
+import { FormButtonComponent } from './shared/components/controls/form-button.component';
+import { FormFieldErrorDisplayComponent } from './shared/components/form-field-error-display.component';
+
 //import {addMotivation} from './shared/classes/addMotivation'
 
 
@@ -41,10 +46,14 @@ import { TextSearchComponent } from './shared/components/text-search.component';
     UmisuraComponent,
     CategorieArticoliComponent,
     NumberFormatPipe,
-    UpdateFormComponent,
-    UpdateCatComponent,
     DisplayResponseComponent,
-    TextSearchComponent
+    TextSearchComponent,
+    DynamicFormComponent,
+    FormInputComponent,
+    FormSelectComponent,
+    FormButtonComponent,
+    FormFieldErrorDisplayComponent
+
   ],
   imports: [
     BrowserModule,
@@ -59,8 +68,8 @@ import { TextSearchComponent } from './shared/components/text-search.component';
     HttpClientModule,
     DirectiveModule
   ],
-  entryComponents: [DisplayResponseComponent, TextSearchComponent],
-  providers: [UmService, CategorieArticoliService],
+  entryComponents: [DisplayResponseComponent, TextSearchComponent, FormInputComponent, FormButtonComponent, FormSelectComponent],
+  providers: [UmService, CategorieArticoliService, MaterialiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

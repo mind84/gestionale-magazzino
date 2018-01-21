@@ -1,0 +1,7 @@
+.errMsg {
+  border: 1px solid #c36a57;
+    border-radius: 4px;
+    background: #ff6a6a;
+    padding: 0.5em;
+    color: white;
+}

@@ -15,7 +15,7 @@ router.route("/add").post((req: Request, res: Response, next: NFunc) => {
         insertObj.refId = req.body.currArt.code;
         insertObj.dateTime = date;
         insertObj.operation = 'add';
-        insertObj.quantity = +req.body.trans.qtadd;
+        insertObj.quantity = +req.body.trans.quantity;
         insertObj.reason = req.body.trans.motivazioni;
         if (req.body.trans.numorder) insertObj.ordernum = req.body.trans.numorder;
         if (req.body.trans.note) insertObj.note = req.body.trans.note;
@@ -25,7 +25,7 @@ router.route("/add").post((req: Request, res: Response, next: NFunc) => {
         newAddTransaction.save((err:any, savedoc:any)=>{
           if (err) return res.json({msg:"Errore", result: err});
           else {
-            let trs = {totalInStore: {tot: (+req.body.currArt.totalInStore.tot) + (+req.body.trans.qtadd),date: date}}
+            let trs = {totalInStore: {tot: (+req.body.currArt.totalInStore.tot) + (+req.body.trans.quantity),date: date}}
             let qupd = Materiali.findOneAndUpdate({code: req.body.currArt.code},{$set: trs},{ new: true }).lean()
 
             qupd.exec((saverr:any, savedoc:any)=>{
@@ -51,7 +51,7 @@ router.route("/add").post((req: Request, res: Response, next: NFunc) => {
         Materiali.findOne({code: req.body.currArt.code}, (err: any, docs:any)=>{
           if(err) return res.json({msg:"Errore", result: err})
           else if (docs && docs.code) {
-            if (docs.totalInStore.tot < req.body.trans.qtsub) {
+            if (docs.totalInStore.tot < req.body.trans.quantity) {
               return res.json({msg:"Errore", result: 'Impossibile sottrarre più elementi di quelli presenti'})
             }
             let date= Date.now();
@@ -59,7 +59,7 @@ router.route("/add").post((req: Request, res: Response, next: NFunc) => {
             insertObj.refId = req.body.currArt.code;
             insertObj.dateTime = date;
             insertObj.operation = 'remove';
-            insertObj.quantity = +req.body.trans.qtsub;
+            insertObj.quantity = +req.body.trans.quantity;
             insertObj.reason = req.body.trans.motivazioni;
             if (req.body.trans.numorder) insertObj.ordernum = req.body.trans.numorder;
             if (req.body.trans.note) insertObj.note = req.body.trans.note;
@@ -69,7 +69,7 @@ router.route("/add").post((req: Request, res: Response, next: NFunc) => {
             newAddTransaction.save((err:any, savedoc:any)=>{
               if (err) return res.json({msg:"Errore", result: err});
               else {
-                let trs = {totalInStore: {tot:(+req.body.currArt.totalInStore.tot) - (+req.body.trans.qtsub),date: date}}
+                let trs = {totalInStore: {tot:(+req.body.currArt.totalInStore.tot) - (+req.body.trans.quantity),date: date}}
                 let qupd = Materiali.findOneAndUpdate({code: req.body.currArt.code},{$set: trs},{ new: true }).lean()
 
                 qupd.exec((saverr:any, savedoc:any)=>{
