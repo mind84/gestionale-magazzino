@@ -75,7 +75,11 @@ export class MaterialiComponent implements OnInit {
 
   toggleUpdating(index):any {
     if(!(index in this.isUpdating)) this.isUpdating[index]=null
-    this.isUpdating[index] = !this.isUpdating[index]
+    //contestualmente chiudere tutte le altre
+    Object.keys(this.isUpdating).forEach((key)=>{
+      if (key == index) this.isUpdating[index] = !this.isUpdating[index]
+      else this.isUpdating[key] = false
+  })
   }
 
   manageFormChange(change:FormChanges){

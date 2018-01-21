@@ -78,7 +78,10 @@ export class CategorieArticoliComponent implements OnInit {
   }
   toggleUpdating(index):any {
     if(!(index in this.isUpdating)) this.isUpdating[index]=false
-    return this.isUpdating[index] = !this.isUpdating[index]
+    Object.keys(this.isUpdating).forEach((key)=>{
+      if (key == index) this.isUpdating[index] = !this.isUpdating[index]
+      else this.isUpdating[key] = false
+    })
   }
 
   updateSearchResults(ev:any){

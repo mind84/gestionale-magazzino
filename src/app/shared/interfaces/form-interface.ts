@@ -67,7 +67,8 @@ export interface FormChanges {
   valueToUpdate:any,
   formControlName:string,
   fromService?:any,
-  selectedOption?:any
+  selectedOption?:any,
+  indexForm?:number
 }
 export interface SingleFormConf {
   formName:string,
