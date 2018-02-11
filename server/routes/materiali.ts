@@ -131,7 +131,7 @@ router.route("/bycode").get((req: Request, res: Response, next: NFunc) => {
 })
 
 router.route('/all').get((req: Request, res: Response, next: NFunc) => {
-  let qs = Materiali.find({}).collation({locale:'it',strength:2}).sort({name:1})
+  let qs = Materiali.find({"totalInStore.tot":{$gt:0}}).collation({locale:'it',strength:2}).sort({name:1})
   qs.exec((err:any, docs:any)=>{
     if (err) return res.send(err)
     else return res.json(docs);

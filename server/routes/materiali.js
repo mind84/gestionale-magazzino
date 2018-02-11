@@ -118,7 +118,7 @@ router.route("/bycode").get(function (req, res, next) {
     });
 });
 router.route('/all').get(function (req, res, next) {
-    var qs = materiali_1.Materiali.find({}).collation({ locale: 'it', strength: 2 }).sort({ name: 1 });
+    var qs = materiali_1.Materiali.find({ "totalInStore.tot": { $gt: 0 } }).collation({ locale: 'it', strength: 2 }).sort({ name: 1 });
     qs.exec(function (err, docs) {
         if (err)
             return res.send(err);
