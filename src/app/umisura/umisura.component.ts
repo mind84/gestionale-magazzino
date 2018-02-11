@@ -89,7 +89,7 @@ export class UmisuraComponent implements OnInit {
 
 
   onFormSubmit(formName:string){
-    if (formName=='searchForm') {
+    if (formName[0]=='searchForm') {
       if(this.searchForm.runPreSubmitValidation()) {
         this.insertMode = false;
         let code = this.searchForm.dynForm.controls.umsymb.value;
@@ -99,7 +99,7 @@ export class UmisuraComponent implements OnInit {
           })
           }
     }
-    else if (formName =='insertUmisuraForm'){
+    else if (formName[0] =='insertUmisuraForm'){
       return this.UMService.insert(this._insertUmisuraForm.dynForm).subscribe((res:any)=>{
         this._insertUmisuraForm.displaySubmitResponse(res)
           if (res && res.msg=="OK") {

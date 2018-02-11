@@ -113,3 +113,4 @@ public/**/*.js.map
 config/config.js
 
 public
+*-lock.json
