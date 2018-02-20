@@ -105,7 +105,7 @@ router.route("").get((req: Request, res: Response, next: NFunc) => {
       $addFields: {
         categname: {$arrayElemAt: ["$catdet.name",0]},
         fornitore: {$arrayElemAt: ["$forn.name",0]},
-        scontoFornitore: {$arrayElemAt: ["$forn.sconto",0]}
+        scontoforn: {$arrayElemAt: ["$forn.sconto",0]}
       }
     }
   ], (err: any, docs:any)=> {

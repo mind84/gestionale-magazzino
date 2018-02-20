@@ -273,7 +273,10 @@ export const UPDATE_MATERIALI_FORM_FIELDS:FieldConfig[]= [
     validation:[Validators.required],
     type: TYPEINPUT.input,
     controlDirectives:['appFormatNumber'],
-    hostStyle:[HOSTSTYLE.block]
+    simpleChange:true,
+    linkedSimpleChangeFields:['prezzofinale'],
+    paramSimpleChange:['price','scontoforn','scontoprod'],
+    simleChangeFunction:'prezzoArticolo'
   },
   {
     label: "Sconto Fornitore",

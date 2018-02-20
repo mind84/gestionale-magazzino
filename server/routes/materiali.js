@@ -94,7 +94,7 @@ router.route("").get(function (req, res, next) {
             $addFields: {
                 categname: { $arrayElemAt: ["$catdet.name", 0] },
                 fornitore: { $arrayElemAt: ["$forn.name", 0] },
-                scontoFornitore: { $arrayElemAt: ["$forn.sconto", 0] }
+                scontoforn: { $arrayElemAt: ["$forn.sconto", 0] }
             }
         }
     ], function (err, docs) {
