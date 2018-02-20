@@ -9,6 +9,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import {UmService} from './services/um.service'
 import {CategorieArticoliService} from './services/categorie-articoli.service'
 import {MaterialiService} from './services/materiali.service'
+import {FornitoriService} from './services/fornitori.service'
 
 
 
@@ -30,6 +31,7 @@ import { FormInputComponent } from './shared/components/controls/form-input.comp
 import { FormSelectComponent } from './shared/components/controls/form-select.component';
 import { FormButtonComponent } from './shared/components/controls/form-button.component';
 import { FormFieldErrorDisplayComponent } from './shared/components/form-field-error-display.component';
+import { FornitoriComponent } from './fornitori/fornitori.component';
 
 //import {addMotivation} from './shared/classes/addMotivation'
 
@@ -52,7 +54,8 @@ import { FormFieldErrorDisplayComponent } from './shared/components/form-field-e
     FormInputComponent,
     FormSelectComponent,
     FormButtonComponent,
-    FormFieldErrorDisplayComponent
+    FormFieldErrorDisplayComponent,
+    FornitoriComponent
 
   ],
   imports: [
@@ -69,7 +72,7 @@ import { FormFieldErrorDisplayComponent } from './shared/components/form-field-e
     DirectiveModule
   ],
   entryComponents: [DisplayResponseComponent, TextSearchComponent, FormInputComponent, FormButtonComponent, FormSelectComponent],
-  providers: [UmService, CategorieArticoliService, MaterialiService],
+  providers: [UmService, CategorieArticoliService, MaterialiService, FornitoriService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

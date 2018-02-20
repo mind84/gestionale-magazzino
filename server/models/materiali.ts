@@ -9,13 +9,17 @@ var materiali = new Schema({
     searchFor: {type: Array, default: []},
     qta: {type:Number, required:true},
     umId: {type:String, required:true},
-    fornitore: {type: String, required: true},
+    forncode: {type: String, required: true},
     categ: {type:String, required:true},
     totalInStore: {
       tot: {type:Number, default:0},
       date: {type:Date, default:Date.now}
     },
     price: {type: Number, required: true},
+    scontoprod: {type:Number},
+    prezzoforn:{type:Number},
+    iva:{type:Number, required:true},
+    prezzofinale: {type:Number},
     collobj:{type: Number, required: true},
     note: String,
 }, { timestamps: true, collection: "Materiali" });

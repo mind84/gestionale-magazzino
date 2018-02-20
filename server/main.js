@@ -9,6 +9,7 @@ var materiali_1 = require("./routes/materiali");
 var umisura_1 = require("./routes/umisura");
 var categorie_articoli_1 = require("./routes/categorie-articoli");
 var transazioni_1 = require("./routes/transazioni");
+var fornitori_1 = require("./routes/fornitori");
 var redisStore = require("connect-redis")(session);
 var app = express();
 app.use("/node_modules", express.static("node_modules"));
@@ -21,6 +22,7 @@ app.use("/mat", materiali_1.router);
 app.use("/um", umisura_1.router);
 app.use("/catart", categorie_articoli_1.router);
 app.use("/transaz", transazioni_1.router);
+app.use("/forn", fornitori_1.router);
 app.use(function (req, res) { return res.sendFile(path.join(__dirname, '../public', 'index.html')); });
 app.listen(9005);
 //# sourceMappingURL=main.js.map

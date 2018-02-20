@@ -40,6 +40,17 @@ export class FormInputComponent implements Field, OnInit, AfterViewInit {
     this.addElemClasses(this.config)
     this.control= this.group.get(this.config.formControlName)
     this.controlDirectivesObject= this.controlDirectives;
+    this.control.valueChanges.subscribe(change=>{
+      let valuetoupdate;
+      if (this.config.simpleChange)
+        if (this.config.simleChangeFunction) {
+          valuetoupdate = this.fs[this.config.simleChangeFunction](this.group, this.config.paramSimpleChange)
+          this.config.linkedSimpleChangeFields.forEach(field=>{
+            this.group.controls[field].setValue(valuetoupdate)
+          })
+        }
+
+    })
   }
 
   ngAfterViewInit(){

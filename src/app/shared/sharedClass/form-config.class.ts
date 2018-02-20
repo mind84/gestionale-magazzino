@@ -34,7 +34,11 @@ export class DynFormsFieldConf {
      value: null,
      controlDirectives:[],
      warns:null,
-     excludeFromSubmit:false
+     isFormControl:true,
+     simpleChange:false,
+     simleChangeFunction:"",
+     linkedSimpleChangeFields:[],
+     paramSimpleChange:[]
    }
   }
   getFormFields(opts:FieldConfig[]):FieldConfig[] {

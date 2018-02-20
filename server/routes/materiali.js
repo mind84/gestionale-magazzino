@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var materiali_1 = require("../models/materiali");
 var categorie_articoli_1 = require("../models/categorie-articoli");
+var fornitori_1 = require("../models/fornitori");
 var _ = require("lodash");
 var router = express.Router();
 exports.router = router;
@@ -27,14 +28,12 @@ router.route("/update").post(function (req, res, next) {
     var qs = _.omit(req.body, 'realcode');
     var qm = materiali_1.Materiali.findOneAndUpdate({ code: req.body.realcode }, { $set: qs }, { new: true }).lean();
     qm.exec(function (err, docs) {
-        var qCat = categorie_articoli_1.Categorie.findOne({ id: docs.categ });
-        qCat.exec(function (err, catres) {
-            if (err)
-                return res.send(err);
-            else {
-                docs.categname = catres.name;
-                return res.json({ msg: "OK", result: "Articolo modificato correttamente", cback: docs });
-            }
+        var qCat = categorie_articoli_1.Categorie.findOne({ id: docs.categ }).exec();
+        var forn = fornitori_1.Fornitori.findOne({ code: docs.forncode }).exec();
+        Promise.all([qCat, forn]).then(function (rep) {
+            docs.categname = rep[0].name;
+            docs.fornitore = rep[1].name;
+            return res.json({ msg: "OK", result: "Articolo modificato correttamente", cback: docs });
         });
     });
 });
@@ -84,9 +83,18 @@ router.route("").get(function (req, res, next) {
             }
         },
         {
+            $lookup: {
+                from: "Fornitori",
+                localField: "forncode",
+                foreignField: "code",
+                as: "forn"
+            }
+        },
+        {
             $addFields: {
-                catdet: false,
-                categname: { $arrayElemAt: ["$catdet.name", 0] }
+                categname: { $arrayElemAt: ["$catdet.name", 0] },
+                fornitore: { $arrayElemAt: ["$forn.name", 0] },
+                scontoFornitore: { $arrayElemAt: ["$forn.sconto", 0] }
             }
         }
     ], function (err, docs) {

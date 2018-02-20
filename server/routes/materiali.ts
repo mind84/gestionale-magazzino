@@ -2,9 +2,12 @@ import { Request, Response, NextFunction as NFunc } from "express";
 import * as express from "express";
 import { Materiali } from "../models/materiali";
 import { Categorie } from "../models/categorie-articoli";
+import {Fornitori} from '../models/fornitori'
 import * as _ from 'lodash'
+import * as mongoose from 'mongoose'
 
 var router = express.Router();
+
 
 router.route("/insert").post((req: Request, res: Response, next: NFunc) => {
 
@@ -26,16 +29,21 @@ router.route("/insert").post((req: Request, res: Response, next: NFunc) => {
         let qm = Materiali.findOneAndUpdate({code: req.body.realcode},{$set: qs},{ new: true }).lean()
         qm.exec((err: any, docs:any)=>{
           //ricerca categoria
-          let qCat = Categorie.findOne({id:docs.categ})
-          qCat.exec((err,catres)=>{
-            if (err) return res.send(err)
-              else {
-                docs.categname=catres.name
-                // docs.catdet = [];
-                // docs.catdet.push(catres);
+          let qCat = Categorie.findOne({id:docs.categ}).exec()
+          let forn = Fornitori.findOne({code:docs.forncode}).exec()
+
+          Promise.all([qCat,forn]).then((rep)=>{
+                docs.categname=rep[0].name
+                docs.fornitore=rep[1].name
                 return res.json({ msg: "OK", result: "Articolo modificato correttamente",cback: docs });
-            }
           })
+          // qCat.exec((err,catres)=>{
+          //   if (err) return res.send(err)
+          //     else {
+          //       docs.categname=catres.name
+          //       return res.json({ msg: "OK", result: "Articolo modificato correttamente",cback: docs });
+          //   }
+          // })
 
 
             })
@@ -85,10 +93,19 @@ router.route("").get((req: Request, res: Response, next: NFunc) => {
         as: "catdet"
       }
     },
+    {
+      $lookup : {
+        from:"Fornitori",
+        localField: "forncode",
+        foreignField: "code",
+        as: "forn"
+      }
+    },
       {
       $addFields: {
-        catdet: false,
-        categname: {$arrayElemAt: ["$catdet.name",0]}
+        categname: {$arrayElemAt: ["$catdet.name",0]},
+        fornitore: {$arrayElemAt: ["$forn.name",0]},
+        scontoFornitore: {$arrayElemAt: ["$forn.sconto",0]}
       }
     }
   ], (err: any, docs:any)=> {

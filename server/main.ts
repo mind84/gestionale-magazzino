@@ -17,6 +17,7 @@ import { router as materiali } from "./routes/materiali"
 import { router as umisura } from "./routes/umisura"
 import { router as categorieArticoli } from "./routes/categorie-articoli"
 import { router as transazioni } from "./routes/transazioni"
+import { router as fornitori } from "./routes/fornitori"
 /*import { router as imgal } from "./routes/imgal"
 import { router as comments } from "./routes/comments"
 import { router as imgUsers } from "./routes/imgUsers"
@@ -88,5 +89,6 @@ app.use("/mat", materiali);
 app.use("/um", umisura);
 app.use("/catart", categorieArticoli);
 app.use("/transaz", transazioni);
+app.use("/forn", fornitori);
 app.use((req, res) => res.sendFile(path.join(__dirname, '../public', 'index.html')));
 app.listen(9005);

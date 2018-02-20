@@ -54,7 +54,11 @@ export interface FieldConfig {
   value?: any,
   controlDirectives?:string[],
   warns?:string,
-  excludeFromSubmit?:boolean
+  isFormControl?:boolean,
+  simpleChange?:boolean,
+  simleChangeFunction?:string,
+  linkedSimpleChangeFields?:string[],
+  paramSimpleChange?:string[]
 }
 
 export interface Field {

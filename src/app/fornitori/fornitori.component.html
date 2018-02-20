@@ -1,0 +1,83 @@
+<div class="row maincontent">
+  <div class="col-10 fornitori-int">
+    <div class="h4"><u>Ricerca o inserisci nuovo fornitore</u></div>
+    <div class='switchFunction'>
+      <span style=""><button type="button" class="btn btn-primary" (click)="toggleInsert()">Nuovo fornitore</button></span>
+    </div>
+    <div class="search-control">
+      <app-dynamic-form [config]='searchFormFields' [formConfig]='formConfig.searchForm' #searchForm  (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
+    </div>
+  </div>
+  <div class="col-10 insert-form-container" *ngIf="insertMode">
+    <app-dynamic-form [config]='insertFornitoriFormFields' [formConfig]='formConfig.insertFornitoriForm' #insertFornitoriForm  (notifyChanges)='manageFormChange($event)' (formSubmit)='onFormSubmit($event)'></app-dynamic-form>
+  </div>
+  <div class="col-10 results-container" *ngIf="!insertMode">
+    <table class="tab-results">
+      <tr>
+        <th>
+          Mod
+        </th>
+        <th>
+          NOME FORNITORE
+        </th>
+        <th>
+          SCONTO
+        </th>
+        <th>
+          MAIL
+        </th>
+        <th>
+        TELEFONO
+        </th>
+        <th>
+        INDIRIZZO
+        </th>
+        <th>
+        NOTE
+        </th>
+      </tr>
+      <ng-template ngFor let-searchRes [ngForOf]="searchResults" let-i="index">
+        <tr [ngClass]="{'even': i % 2 == 0}">
+          <td class="mod">
+            <span><i class="fa fa-pencil" aria-hidden="true" (click)="toggleUpdating(i)"></i></span>
+          </td>
+          <td class="name">
+            {{searchRes.name}}
+          </td>
+          <td class="fornitore">
+            {{searchRes.sconto}}
+          </td>
+          <td class="price">
+            {{searchRes.mail}}
+          </td>
+          <td class="collobj">
+            {{searchRes.telefono}}
+          </td>
+          <td class="note">
+            {{searchRes.indirizzo}}
+          </td>
+          <td class="note">
+            {{searchRes.note}}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="7">
+            <div class="update-div" *ngIf="isUpdating[i]"  [ngClass]="{'even': i % 2 == 0}" >
+              <app-dynamic-form
+              [config]='updateFornitoriFormFields'
+              [formConfig]='formConfig.updateFornitoriForm'
+              [patchValues]='searchRes'
+              #updateFornitoriForm
+              (initialValue)='setInitValue($event)'
+              (notifyChanges)='manageFormChange($event)'
+              (formSubmit)='onFormSubmit($event)'
+              [ind]="i"
+              >
+            </app-dynamic-form>
+          </div>
+          </td>
+        </tr>
+      </ng-template>
+    </table>
+  </div>
+</div>
