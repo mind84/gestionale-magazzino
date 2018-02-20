@@ -250,20 +250,12 @@ export const UPDATE_MATERIALI_FORM_FIELDS:FieldConfig[]= [
     onlySelf:true
   },
   {
-    label: "Prezzo per collo",
-    formControlName: "price",
-    validation:[Validators.required],
-    type: TYPEINPUT.input,
-    controlDirectives:['appFormatNumber'],
-    hostStyle:[HOSTSTYLE.block]
-  },
-  {
     label: "Fornitore",
     formControlName: "fornitore",
     dbAlias:'name',
     validation:[Validators.required],
     textSearchFunction:'fornitoriSearch',
-    linkedFields:['forncode'],
+    linkedFields:['forncode', 'scontoforn'],
     type: TYPEINPUT.input,
     hostStyle:[HOSTSTYLE.block]
   },
@@ -274,6 +266,53 @@ export const UPDATE_MATERIALI_FORM_FIELDS:FieldConfig[]= [
     inputType:'hidden',
     dbAlias:'code',
     type: TYPEINPUT.input,
+  },
+  {
+    label: "Prezzo per collo",
+    formControlName: "price",
+    validation:[Validators.required],
+    type: TYPEINPUT.input,
+    controlDirectives:['appFormatNumber'],
+    hostStyle:[HOSTSTYLE.block]
+  },
+  {
+    label: "Sconto Fornitore",
+    formControlName: "scontoforn",
+    dbAlias:'sconto',
+    isFormControl:false,
+    type: TYPEINPUT.input,
+    disabled:true,
+    simpleChange:true,
+    linkedSimpleChangeFields:['prezzofinale'],
+    paramSimpleChange:['price','scontoforn','scontoprod'],
+    simleChangeFunction:'prezzoArticolo'
+  },
+  {
+    label: "Sconto Aggiuntivo",
+    formControlName: "scontoprod",
+    validation:[Validators.required],
+    type: TYPEINPUT.input,
+    controlDirectives:['appFormatNumber'],
+    simpleChange:true,
+    linkedSimpleChangeFields:['prezzofinale'],
+    paramSimpleChange:['price','scontoforn','scontoprod'],
+    simleChangeFunction:'prezzoArticolo'
+
+  },
+  {
+    label: "Prezzo finale",
+    formControlName: "prezzofinale",
+    validation:[Validators.required],
+    type: TYPEINPUT.input,
+    controlDirectives:['appFormatNumber'],
+    disabled:true
+  },
+  {
+    label: "IVA",
+    formControlName: "iva",
+    validation:[Validators.required],
+    type: TYPEINPUT.input,
+    controlDirectives:['appFormatNumber']
   },
   {
     label: "Note",
