@@ -168,7 +168,6 @@ export const INSERTMATERIALIFORMFIELDS:FieldConfig[]= [
   {
     label: "IVA",
     formControlName: "iva",
-    validation:[Validators.required],
     type: TYPEINPUT.input,
     controlDirectives:['appFormatNumber']
   },
@@ -313,7 +312,6 @@ export const UPDATE_MATERIALI_FORM_FIELDS:FieldConfig[]= [
   {
     label: "IVA",
     formControlName: "iva",
-    validation:[Validators.required],
     type: TYPEINPUT.input,
     controlDirectives:['appFormatNumber']
   },

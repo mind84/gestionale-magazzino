@@ -18,7 +18,7 @@ var materiali = new Schema({
     price: {type: Number, required: true},
     scontoprod: {type:Number},
     prezzoforn:{type:Number},
-    iva:{type:Number, required:true},
+    iva:{type:Number},
     prezzofinale: {type:Number},
     collobj:{type: Number, required: true},
     note: String,
